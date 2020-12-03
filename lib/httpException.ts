@@ -164,7 +164,7 @@ export class HttpError extends Error {
    *
    * Best practice is to use the `HttpStatus` enum.
    */
-   constructor(public readonly message:string, public readonly status:number = 500) {
+   constructor(public readonly message:string, public readonly status:number = HttpStatus.INTERNALSERVERERROR) {
      super();
    }
 

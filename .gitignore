@@ -1,0 +1,9 @@
+# IDE
+/.idea/
+
+# GitHub
+/gh-pages/
+
+# MacOS generated files
+.DS_Store
+.DS_Store?

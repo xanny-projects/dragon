@@ -1,0 +1,24 @@
+# From https://github.com/Danimoth/gitattributes/blob/master/Web.gitattributes
+
+# Handle line endings automatically for files detected as text
+# and leave all files detected as binary untouched.
+* text=auto
+
+#
+## These files are text and should be normalized (Convert crlf => lf)
+#
+# source code
+*.ts text eol=lf
+*.json text
+*.htm text
+*.html text
+
+# misc config
+*.yaml text
+*.yml text
+.editorconfig text
+
+# Documentation
+*.md text
+LICENSE text
+AUTHORS text

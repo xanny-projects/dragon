@@ -16,6 +16,8 @@
 
 import { assert, DefaultServer, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpException.ts";
+import { HttpRequest } from './httpRequest.ts';
+import { HttpResponse } from './httpResponse.ts';
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -33,10 +35,16 @@ export enum RequestMethod {
   HEAD,
 }
 
+// Handler sets a handler for the route.
+export interface HandlerCallableFun {
+  Request: HttpRequest;
+  ResponseWriter: HttpResponse,
+}
+
 // RouteMatch stores information about a matched route.
 export interface RouteMatch {
   path: string;
-  handler: Function;
+  handler: HandlerCallableFun;
   name: string | "<anonymous>";
   params?: Map<String, String> | null | undefined;
 }
@@ -146,7 +154,7 @@ export class NewApplication {
   public async NewRoute(
     method: RequestMethod | RequestMethod[],
     path: string,
-    handler: Function,
+    handler: HandlerCallableFun,
     name: string = "<anonymous>",
     params?: Map<String, String> | null,
   ): Promise<void> {
@@ -170,6 +178,6 @@ export class NewApplication {
       params: params || null,
       path
     });
-
   }
+
 }

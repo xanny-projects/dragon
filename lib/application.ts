@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { DefaultServer, ServerTLS } from "../deps.ts";
+import { HttpError } from "./httpException.ts";
+
 /**
  * Request methods to indicate the desired action to be performed.
  *
@@ -32,7 +35,7 @@ export enum RequestMethod {
 
 export interface ApplicationOptions {
   /** An initial set of key for signing cookies and sessions produced by the application. */
-  key?: { cookie: string; session: string;}
+  key?: { cookie: string; session: string };
   /** If set to `true`, proxy headers will be trusted when processing requests.
    * This defaults to `false`. */
   proxy?: boolean;
@@ -41,7 +44,7 @@ export interface ApplicationOptions {
   subdomainOffset?: string[] | 2;
   /** Return header for identifying the originating IP address of a client connecting to a web server
    * through an HTTP proxy or a load balancer */
-  proxyIpHeader?: string | 'X-Forwarded-For';
+  proxyIpHeader?: string | "X-Forwarded-For";
 }
 
 export interface ListenSimpleOptions {
@@ -64,14 +67,13 @@ export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
 /* Initialize and Expose `NewApplication` class */
 export class NewApplication {
-
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
   */
- constructor(private readonly options: ApplicationOptions = {}) {}
+  constructor(private readonly options: ApplicationOptions = {}) {}
 
- /**
+  /**
    * Check if TLS is enabled.
    *
    * @param {ListenOptions} options
@@ -101,5 +103,4 @@ export class NewApplication {
   public Inspect(value: unknown): string {
     return Deno.inspect(value);
   }
-
 }

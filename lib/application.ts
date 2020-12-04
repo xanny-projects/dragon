@@ -205,6 +205,7 @@ export class NewApplication {
    *
    * @param {string} name
    * @returns {string | HttpError}
+   * @api public
    */
   public async GetPath(name: string): Promise<string | HttpError> {
     const findPath = this.mapRoutes.get(name);
@@ -212,6 +213,21 @@ export class NewApplication {
       throw new HttpError("Path not found.");
     }
     return findPath.path;
+  }
+
+  /**
+   * Inspect Router.
+   *
+   * @param {string} name
+   * @returns {string | HttpError}
+   * @api public
+   */
+  public async RouterInspector(name: string): Promise<string | HttpError> {
+    const routeInfo = this.mapRoutes.get(name);
+    if(!routeInfo) {
+      throw new HttpError("Router not found.");
+    }
+    return Deno.inspect(routeInfo);
   }
 
 }

@@ -71,4 +71,15 @@ export class NewApplication {
   */
  constructor(private readonly options: ApplicationOptions = {}) {}
 
+ /**
+   * Check if TLS is enabled.
+   *
+   * @param {ListenOptions} options
+   * @returns {boolean}
+   * @api public
+   */
+  public IsSecure(options: ListenOptions): options is ListenTlsOptions {
+    return "secure" in options;
+  }
+
 }

@@ -82,4 +82,14 @@ export class NewApplication {
     return "secure" in options;
   }
 
+  /**
+   * Return showing settings.
+   *
+   * @returns {object}
+   * @api public
+   */
+  public Settings(): ApplicationOptions {
+    return this.options;
+  }
+
 }

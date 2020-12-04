@@ -15,6 +15,5 @@
  */
 
 /** External dependencies that xanny depends upon */
-export default {
-  "deno_server": "https://deno.land/std@1.5.4/http/server.ts"
-}
+export { serve as DefaultServer , serveTLS as ServerTLS } from "https://deno.land/std@0.77.0/http/server.ts";
+export { assert } from "https://deno.land/std@0.77.0/_util/assert.ts";

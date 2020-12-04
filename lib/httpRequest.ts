@@ -33,4 +33,16 @@ export class HttpRequest {
   public GetHeaders(): Headers {
     return this.req.headers;
   }
+
+  /**
+   * Retrieves the HTTP method of the request.
+   *
+   * @return {string}
+   * @api public
+   */
+   public GetMethod(): string {
+     return this.req.method;
+   }
+
+
 }

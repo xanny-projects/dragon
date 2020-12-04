@@ -37,21 +37,23 @@ export enum RequestMethod {
 export interface RouteMatch {
   path: string;
   handler: Function;
-  params?: string;
-  name?: string;
+  name: string | "<anonymous>";
+  params?: Map<String, String> | null | undefined;
 }
 
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
-  maxParamLength: number;
+  maxParamLength?: number;
   /** Allow unsage regex. This defaults to `false` */
-  allowUnsafeRegex: boolean;
+  allowUnsafeRegex?: boolean;
   /** Ignore trailing slashes in routes. This option applies to all route registrations for the resulting server instance
    * This defaults to `false`. */
-  ignoreTrailingSlash: boolean;
+  ignoreTrailingSlash?: boolean;
+  /** Allow case sensitive. This default to `true` */
+  caseSensitive?: boolean;
 }
 
-export interface ApplicationOptions {
+export interface ApplicationOptions extends RoutingOptions {
   /** An initial set of key for signing cookies and sessions produced by the application. */
   key?: { cookie: string; session: string };
   /** If set to `true`, proxy headers will be trusted when processing requests.
@@ -91,7 +93,7 @@ export class NewApplication {
    * @see {@link https://en.wikipedia.org/wiki/Radix_tree}
    * @internal
    */
-  private readonly mapRoutes = new Map<string,string>();
+  private readonly mapRoutes: RouteMatch[] = [];
 
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
@@ -130,4 +132,44 @@ export class NewApplication {
     return Deno.inspect(value);
   }
 
+  /**
+   * Register new given routes.
+   *
+   * @param {RequestMethod | RequestMethod[]} method
+   * @param {string} path
+   * @param {Function} handler
+   * @param {string} name
+   * @param {Map<String, String> | null} params
+   * @returns {void}
+   * @api public
+   */
+  public async NewRoute(
+    method: RequestMethod | RequestMethod[],
+    path: string,
+    handler: Function,
+    name: string = "<anonymous>",
+    params?: Map<String, String> | null,
+  ): Promise<void> {
+    if (Array.isArray(method)) {
+      for (var k = 0; k < method.length; k++) {
+        this.NewRoute(method[k], path, handler, name, params);
+      }
+      return;
+    }
+    // method validation.
+    assert(typeof method === "string", "Method must be a string");
+
+    if(!this.options.caseSensitive) {
+      path = path.toLowerCase();
+    }
+
+    // Add route information to mapRoutes.
+    this.mapRoutes.push({
+      name,
+      handler,
+      params: params || null,
+      path
+    });
+
+  }
 }

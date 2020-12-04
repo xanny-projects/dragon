@@ -43,9 +43,9 @@ export interface HandlerCallableFun {
 
 // RouteMatch stores information about a matched route.
 export interface RouteMatch {
+  methods: string;
   path: string;
   handler: HandlerCallableFun;
-  name: string | "<anonymous>";
   params?: Map<String, String> | null | undefined;
 }
 
@@ -101,7 +101,7 @@ export class NewApplication {
    * @see {@link https://en.wikipedia.org/wiki/Radix_tree}
    * @internal
    */
-  private readonly mapRoutes: RouteMatch[] = [];
+  private readonly mapRoutes = new Map<string, RouteMatch>();
 
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
@@ -152,32 +152,37 @@ export class NewApplication {
    * @api public
    */
   public async NewRoute(
-    method: RequestMethod | RequestMethod[],
+    methods: RequestMethod | RequestMethod[],
     path: string,
     handler: HandlerCallableFun,
     name: string = "<anonymous>",
     params?: Map<String, String> | null,
   ): Promise<void> {
-    if (Array.isArray(method)) {
-      for (var k = 0; k < method.length; k++) {
-        this.NewRoute(method[k], path, handler, name, params);
+    if (Array.isArray(methods)) {
+      for (var k = 0; k < methods.length; k++) {
+        this.NewRoute(methods[k], path, handler, name, params);
       }
       return;
     }
     // method validation.
-    assert(typeof method === "string", "Method must be a string");
+    assert(typeof methods === "string", "Method must be a string");
 
     if(!this.options.caseSensitive) {
       path = path.toLowerCase();
     }
 
+    if(this.mapRoutes.has(name)) {
+      throw new HttpError(`Handler with name ${name} already exists.`);
+    }
+
     // Add route information to mapRoutes.
-    this.mapRoutes.push({
-      name,
+    this.mapRoutes.set(name,{
+      methods,
+      path,
       handler,
-      params: params || null,
-      path
+      params
     });
+
   }
 
 }

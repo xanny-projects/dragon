@@ -52,3 +52,11 @@ export interface ListenSimpleOptions {
    * This defaults to `4200` */
   port: number;
 }
+
+export interface ListenTlsOptions extends ListenSimpleOptions {
+  certFile: string;
+  keyFile: string;
+  /** The listening will be over HTTPS */
+  secure: true;
+}
+

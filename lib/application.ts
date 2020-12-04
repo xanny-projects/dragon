@@ -185,4 +185,19 @@ export class NewApplication {
 
   }
 
+  /**
+   * GetHandler returns the handler for the route.
+   *
+   * @param {string} name
+   * @returns {HandlerCallableFun | HandlerCallableFun[] | HttpError}
+   * @api public
+   */
+  public async GetHandler(name: string): Promise<HandlerCallableFun | HandlerCallableFun[] | HttpError> {
+    const findHandler = this.mapRoutes.get(name);
+    if(!findHandler) {
+      throw new HttpError("Handler not found.");
+    }
+    return findHandler.handler;
+  }
+
 }

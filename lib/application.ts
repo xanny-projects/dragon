@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DefaultServer, ServerTLS } from "../deps.ts";
+import { assert, DefaultServer, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpException.ts";
 
 /**
@@ -33,9 +33,16 @@ export enum RequestMethod {
   HEAD,
 }
 
+// RouteMatch stores information about a matched route.
+export interface RouteMatch {
+  path: string;
+  handler: Function;
+  params?: string;
+  name?: string;
+}
+
 export interface RoutingOptions {
-  /** A custom length for parameters
-   * This defaults to `100 characters`. */
+  /** A custom length for parameters * This defaults to `100 characters`. */
   maxParamLength: number;
   /** Allow unsage regex. This defaults to `false` */
   allowUnsafeRegex: boolean;
@@ -78,6 +85,13 @@ export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
 /* Initialize and Expose `NewApplication` class */
 export class NewApplication {
+  /**
+   * Register list of routes using The Radix Tree datastructure.
+   *
+   * @see {@link https://en.wikipedia.org/wiki/Radix_tree}
+   * @internal
+   */
+  private readonly mapRoutes = new Map<string,string>();
 
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.

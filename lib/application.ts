@@ -43,3 +43,12 @@ export interface ApplicationOptions {
    * through an HTTP proxy or a load balancer */
   proxyIpHeader?: string | 'X-Forwarded-For';
 }
+
+export interface ListenSimpleOptions {
+  /** A unique name for a computer or network node in a network
+   * This defaults to `0.0.0.0` */
+  hostname?: string;
+  /** Numbers used by protocols for operation of network applications.
+   * This defaults to `4200` */
+  port: number;
+}

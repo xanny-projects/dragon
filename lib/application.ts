@@ -200,4 +200,18 @@ export class NewApplication {
     return findHandler.handler;
   }
 
+  /**
+   * GetPath returns the path for the route.
+   *
+   * @param {string} name
+   * @returns {string | HttpError}
+   */
+  public async GetPath(name: string): Promise<string | HttpError> {
+    const findPath = this.mapRoutes.get(name);
+    if(!findPath) {
+      throw new HttpError("Path not found.");
+    }
+    return findPath.path;
+  }
+
 }

@@ -29,3 +29,17 @@ export enum RequestMethod {
   OPTIONS,
   HEAD,
 }
+
+export interface ApplicationOptions {
+  /** An initial set of key for signing cookies and sessions produced by the application. */
+  key?: { cookie: string; session: string;}
+  /** If set to `true`, proxy headers will be trusted when processing requests.
+   * This defaults to `false`. */
+  proxy?: boolean;
+  /** Return array of subdomains in the domain name of the request.
+   * This defaults to `2`. */
+  subdomainOffset?: string[] | 2;
+  /** Return header for identifying the originating IP address of a client connecting to a web server
+   * through an HTTP proxy or a load balancer */
+  proxyIpHeader?: string | 'X-Forwarded-For';
+}

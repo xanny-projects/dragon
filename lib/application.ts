@@ -62,4 +62,13 @@ export interface ListenTlsOptions extends ListenSimpleOptions {
 
 export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
+/* Initialize and Expose `NewApplication` class */
+export class NewApplication {
 
+  /**
+  * Construct a new, empty instance of the {@code NewApplication} object.
+  * @param {ApplicationOptions} options
+  */
+ constructor(private readonly options: ApplicationOptions = {}) {}
+
+}

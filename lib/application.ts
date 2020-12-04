@@ -60,3 +60,6 @@ export interface ListenTlsOptions extends ListenSimpleOptions {
   secure: true;
 }
 
+export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
+
+

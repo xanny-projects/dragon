@@ -92,4 +92,14 @@ export class NewApplication {
     return this.options;
   }
 
+  /**
+   * Converts the input into a string that has the same format console.log().
+   *
+   * @returns {string}
+   * @api public
+   */
+  public Inspect(value: unknown): string {
+    return Deno.inspect(value);
+  }
+
 }

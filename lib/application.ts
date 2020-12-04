@@ -33,6 +33,17 @@ export enum RequestMethod {
   HEAD,
 }
 
+export interface RoutingOptions {
+  /** A custom length for parameters
+   * This defaults to `100 characters`. */
+  maxParamLength: number;
+  /** Allow unsage regex. This defaults to `false` */
+  allowUnsafeRegex: boolean;
+  /** Ignore trailing slashes in routes. This option applies to all route registrations for the resulting server instance
+   * This defaults to `false`. */
+  ignoreTrailingSlash: boolean;
+}
+
 export interface ApplicationOptions {
   /** An initial set of key for signing cookies and sessions produced by the application. */
   key?: { cookie: string; session: string };
@@ -67,6 +78,7 @@ export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
 /* Initialize and Expose `NewApplication` class */
 export class NewApplication {
+
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
@@ -103,4 +115,5 @@ export class NewApplication {
   public Inspect(value: unknown): string {
     return Deno.inspect(value);
   }
+
 }

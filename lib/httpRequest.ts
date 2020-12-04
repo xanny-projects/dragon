@@ -24,4 +24,13 @@ export class HttpRequest {
    */
   constructor(private readonly req: ServerRequest) {}
 
+  /**
+   * Return request headers.
+   *
+   * @returns {Headers}
+   * @api public
+   */
+  public GetHeaders(): Headers {
+    return this.req.headers;
+  }
 }

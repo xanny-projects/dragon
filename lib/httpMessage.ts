@@ -64,4 +64,22 @@ export class HttpMessage {
     return this.headers.has(name);
   }
 
+  /**
+   * Return an instance with the provided value replacing the specified header.
+   *
+   * @param {string} name
+   * @param {string} value
+   * @returns {Object}
+   * @api public
+   */
+  public WithHeader(name: string, value: string): this {
+    // Header validation.
+    assert(name === null, "Header name must not be null");
+    if (this.headers.has(name)) {
+      throw new HttpError(`Header ${name} already exists`);
+    }
+    this.headers.set(name, value);
+    return this;
+  }
+
 }

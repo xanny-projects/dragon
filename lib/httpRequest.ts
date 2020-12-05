@@ -81,6 +81,16 @@ export class HttpRequest {
   }
 
   /**
+   * Checks if a header exists by the given case-sensitive name.
+   *
+   * @param {string} name
+   * @returns {boolean}
+   */
+  public HasHeader(name: string):boolean {
+    return this.req.headers.has(name);
+  }
+
+  /**
    * Return an instance with the provided value replacing the specified header.
    *
    * @param {string} name

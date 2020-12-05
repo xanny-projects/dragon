@@ -220,4 +220,18 @@ export class HttpRequest {
     return listQueries;
   }
 
+  /**
+   * Verify if the request is secure.
+   *
+   * Short-hand for:
+   *
+   *    req.proto === 'https'
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public Secure(): boolean {
+    return this.GetProtocol() === "https";
+  }
+
 }

@@ -107,4 +107,14 @@ export class HttpRequest {
     return val.toLowerCase() === "xmlhttprequest";
   }
 
+  /**
+   * Return the `Host` header field to a hostname.
+   *
+   * @returns {string}
+   * @api public
+   */
+  public HostName(): string {
+    return this.GetHeader("X-Forwarded-Host") || "0.0.0.0";
+  }
+
 }

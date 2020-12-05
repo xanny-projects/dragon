@@ -51,4 +51,18 @@ export class HttpResponse extends HttpMessage {
     return this.res.status || HttpStatus.OK;
   }
 
+  /**
+   * Return an instance with the specified status code.
+   *
+   * @param {number | HttpStatus} statusCode
+   * @returns {Object}
+   * @see {@link http://tools.ietf.org/html/rfc7231#section-6}
+   * @see {@link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml}
+   * @api public
+   */
+  public WithStatus(statusCode: number | HttpStatus): this {
+    this.res.status = statusCode;
+    return this;
+  }
+
 }

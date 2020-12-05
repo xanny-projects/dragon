@@ -16,7 +16,7 @@
 
 import { Response } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
-import { HttpStatus } from "./httpError.ts";
+import { HttpError, HttpStatus } from "./httpError.ts";
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
@@ -121,6 +121,25 @@ export class HttpResponse extends HttpMessage {
       HttpStatus.TEMPORARYREDIRECT,
       HttpStatus.PERMANENTREDIRECT
     ].includes(status);
+  }
+
+  /**
+   * Set response body.
+   *
+   * @param {string | Deno.Reader | Uint8Array | undefined } body
+   * @returns {Object}
+   * @api public
+   */
+  public WithBody(body?: string | Deno.Reader | Uint8Array | undefined): this | HttpError | void {
+    if(typeof body === "undefined") {
+      this.WithStatus(HttpStatus.NOCONTENT);
+      this.RemoveHeader("Content-Type");
+      this.RemoveHeader("Content-Length");
+      this.RemoveHeader("Transfer-Encoding");
+      return;
+    }
+    this.res.body = body;
+    return this;
   }
 
 }

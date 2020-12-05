@@ -42,4 +42,16 @@ export class HttpMessage {
     return this.headers;
   }
 
+  /**
+   * Retrieves a message header value by the given case-sensitive name.
+   * If the header does not appear in the message, this method MUST return null.
+   *
+   * @param {string} name
+   * @returns {string | null}
+   * @api public
+   */
+  public GetHeader(name: string): string | null {
+    return this.headers.get(name);
+  }
+
 }

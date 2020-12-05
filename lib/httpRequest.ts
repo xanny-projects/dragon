@@ -117,4 +117,14 @@ export class HttpRequest {
     return this.GetHeader("X-Forwarded-Host") || this.GetHeader("Host") || "0.0.0.0";
   }
 
+  /**
+   * Value must be valid IPv4.
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public IsIpv4(): boolean {
+    return /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/.test(this.HostName());
+  }
+
 }

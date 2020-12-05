@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-import { assert, Response } from "../deps.ts";
+import { Response } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
 import { HttpStatus } from "./httpError.ts";
+
+/* "Back" is special-cased to provide Referrer support. */
+export enum RedirectOptions {
+  Back
+}
 
 /**
  * Representation of an outgoing, server-side response.
@@ -75,6 +80,46 @@ export class HttpResponse extends HttpMessage {
   public WithContentLength(n: number): this {
     this.WithHeader("Content-Length", n.toString());
     return this;
+  }
+
+  /**
+   * Perform redirection to `url`.
+   *
+   * Examples:
+   *
+   *    Redirect("/")
+   *    Redirect(RedirectOptions.Back)
+   *
+   * @param {string} url
+   * @api public
+   */
+  public Redirect(url: string | RedirectOptions): void {
+    // Location
+    if(url === RedirectOptions.Back) { url = this.GetHeader("Referrer") || "/"; }
+    if(!this.GetStatusCode()) {
+      this.WithStatus(HttpStatus.FOUND);
+    }
+    this.WithHeader("Location", url);
+  }
+
+
+  /**
+   * Determines if a HTTP `Status` is a `RedirectStatus` (3XX).
+   *
+   * @param {number} status
+   * @returns {boolean}
+   * @api public
+   */
+  public IsRedirectStatus(status: number | HttpStatus): boolean {
+    return [
+      HttpStatus.MULTIPLECHOICES,
+      HttpStatus.MOVEDPERMANENTLY,
+      HttpStatus.FOUND,
+      HttpStatus.SEEOTHER,
+      HttpStatus.USEPROXY,
+      HttpStatus.TEMPORARYREDIRECT,
+      HttpStatus.PERMANENTREDIRECT
+    ].includes(status);
   }
 
 }

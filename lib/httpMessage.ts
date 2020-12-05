@@ -60,8 +60,23 @@ export class HttpMessage {
    * @param {string} name
    * @returns {boolean}
    */
-  public HasHeader(name: string):boolean {
+  public HasHeader(name: string): boolean {
     return this.headers.has(name);
+  }
+
+  /**
+   * Remove given header if exists.
+   *
+   * @param {string} name
+   * @returns {Object}
+   * @api public
+   */
+  public RemoveHeader(name: string): this {
+    if(!this.headers.has(name)) {
+      throw new HttpError(`Header ${name} does not exists`);
+    }
+    this.headers.delete(name);
+    return this;
   }
 
   /**

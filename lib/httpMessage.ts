@@ -71,7 +71,7 @@ export class HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public RemoveHeader(name: string): this {
+  public RemoveHeader(name: string): this | HttpError {
     if(!this.headers.has(name)) {
       throw new HttpError(`Header ${name} does not exists`);
     }

@@ -17,6 +17,11 @@
 import { ServerRequest, assert } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 
+interface QueryPayload {
+  key: string;
+  value: string;
+}
+
 /**
  * Representation of an outgoing, client-side request.
  *
@@ -197,8 +202,22 @@ export class HttpRequest {
    * @api public
    */
   public GetQueryParam(query: string): string | null {
-    const getQuery = new URL(this.Url()).searchParams.get(query);
-    return getQuery;
+    return new URL(this.Url()).searchParams.get(query);
+  }
+
+  /**
+   * Retrieve query string arguments.
+   *
+   * @returns {QueryPayload[]}
+   * @api public
+   */
+  public GetQueryParams(): Array<QueryPayload> {
+    const listQueries: QueryPayload[] = [];
+    const queries = new URL(this.Url()).searchParams;
+    queries.forEach((value, key) => {
+      listQueries.push({ value, key });
+    });
+    return listQueries;
   }
 
 }

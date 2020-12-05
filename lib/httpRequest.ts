@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Cookie } from "https://deno.land/std@0.77.0/http/cookie.ts";import { ServerRequest, assert , getCookies, Cookies } from "../deps.ts";
+import { assert, Cookies, getCookies, ServerRequest } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 
 /** Query Payload */
@@ -36,12 +36,11 @@ interface QueryPayload {
  *
  */
 export class HttpRequest {
-
   /** /
    * For example, if the domain is "deno.land.example.com":
    * This defaults to `2`
    */
-  private defaultOffset:number = 2;
+  private defaultOffset: number = 2;
 
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
@@ -55,9 +54,9 @@ export class HttpRequest {
    * @return {string}
    * @api public
    */
-   public GetMethod(): string {
-     return this.req.method;
-   }
+  public GetMethod(): string {
+    return this.req.method;
+  }
 
   /**
    * Retrieves all message header values.
@@ -65,9 +64,9 @@ export class HttpRequest {
    * @returns {Headers}
    * @api public
    */
-   public GetHeaders(): Headers {
+  public GetHeaders(): Headers {
     return this.req.headers;
-   }
+  }
 
   /**
    * Retrieves a message header value by the given case-sensitive name.
@@ -77,9 +76,9 @@ export class HttpRequest {
    * @returns {string | null}
    * @api public
    */
-   public GetHeader(name: string): string | null {
+  public GetHeader(name: string): string | null {
     return this.req.headers.get(name);
-   }
+  }
 
   /**
    * Return an instance with the provided value replacing the specified header.
@@ -89,15 +88,15 @@ export class HttpRequest {
    * @returns {Object}
    * @api public
    */
-   public WithHeader(name:string, value:string): this {
+  public WithHeader(name: string, value: string): this {
     // Header validation.
-    assert(name === null , "Header name must not be null");
-    if(this.req.headers.has(name)) {
+    assert(name === null, "Header name must not be null");
+    if (this.req.headers.has(name)) {
       throw new HttpError(`Header ${name} already exists`);
     }
     this.req.headers.set(name, value);
     return this;
-   }
+  }
 
   /**
    * Get the URL (no query string) for the request.
@@ -106,7 +105,7 @@ export class HttpRequest {
    * @api public
    */
   public Url(): string {
-    return this.req.url.replace(/\?.+/i,"");
+    return this.req.url.replace(/\?.+/i, "");
   }
 
   /**
@@ -127,7 +126,8 @@ export class HttpRequest {
    * @api public
    */
   public HostName(): string {
-    return this.GetHeader("X-Forwarded-Host") || this.GetHeader("Host") || "0.0.0.0";
+    return this.GetHeader("X-Forwarded-Host") || this.GetHeader("Host") ||
+      "0.0.0.0";
   }
 
   /**
@@ -137,17 +137,20 @@ export class HttpRequest {
    * @api public
    */
   public IsIpv4(): boolean {
-    return /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/.test(this.HostName());
+    return /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/.test(
+      this.HostName(),
+    );
   }
 
-   /**
+  /**
    * Value must be valid IPv6.
    *
    * @returns {boolean}
    * @api public
    */
   public IsIpv6(): boolean {
-    return /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/.test(this.HostName());
+    return /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/
+      .test(this.HostName());
   }
 
   /**
@@ -160,7 +163,7 @@ export class HttpRequest {
    * @api public
    */
   public SubDomains(): string[] | null {
-    if(this.IsIpv4() || this.IsIpv6()){
+    if (this.IsIpv4() || this.IsIpv6()) {
       return this.HostName().split(".").splice(0, this.defaultOffset);
     }
     return null;
@@ -260,5 +263,4 @@ export class HttpRequest {
     this.req.headers.set("Cookie", value);
     return this;
   }
-
 }

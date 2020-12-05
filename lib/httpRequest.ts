@@ -86,4 +86,14 @@ export class HttpRequest {
     return this;
    }
 
+  /**
+   * Get the URL (no query string) for the request.
+   *
+   * @returns {string}
+   * @api public
+   */
+   public Url(): string {
+    return this.req.url.replace(/\?.+/i,"");
+   }
+
 }

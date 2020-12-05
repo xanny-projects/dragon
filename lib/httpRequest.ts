@@ -127,4 +127,14 @@ export class HttpRequest {
     return /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/.test(this.HostName());
   }
 
+   /**
+   * Value must be valid IPv6.
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public IsIpv6(): boolean {
+    return /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/.test(this.HostName());
+  }
+
 }

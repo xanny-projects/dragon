@@ -16,4 +16,5 @@
 
 /** External dependencies that xanny depends upon */
 export { serve as DefaultServer , serveTLS as ServerTLS, ServerRequest } from "https://deno.land/std@0.77.0/http/server.ts";
+export { Cookies } from "https://deno.land/std@0.77.0/http/cookie.ts";
 export { assert } from "https://deno.land/std@0.77.0/_util/assert.ts";

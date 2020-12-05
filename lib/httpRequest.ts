@@ -30,6 +30,13 @@ import { HttpError } from "./httpError.ts";
  *
  */
 export class HttpRequest {
+
+  /** /
+   * For example, if the domain is "deno.land.example.com":
+   * This defaults to `2`
+   */
+  private defaultOffset:number = 2;
+
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
    * @param {ServerRequest} req
@@ -135,6 +142,22 @@ export class HttpRequest {
    */
   public IsIpv6(): boolean {
     return /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/.test(this.HostName());
+  }
+
+  /**
+   * Return subdomains as an array.
+   *
+   * Subdomains are the dot-separated parts of the host before the main domain of the app.
+   * By default, the domain of the app is assumed to be the last two parts of the host.
+   *
+   * @returns {string[] | null}
+   * @api public
+   */
+  public SubDomains(): string[] | null {
+    if(this.IsIpv4() || this.IsIpv6()){
+      return this.HostName().split(".").splice(0, this.defaultOffset);
+    }
+    return null;
   }
 
 }

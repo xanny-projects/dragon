@@ -40,4 +40,13 @@ export class HttpRouting {
    */
   public path: string;
 
+  /**
+   * The HTTP methods the route responds to.
+   *
+   * @var {Array<RequestMethod>}
+   */
+  public methods: RequestMethod[]
+
+  
+
 }

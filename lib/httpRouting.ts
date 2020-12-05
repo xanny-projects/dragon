@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { HttpRequest } from "./httpRequest.ts";
+import { HttpResponse } from "./httpResponse.ts";
+
 /**
  * Request methods to indicate the desired action to be performed.
  *
@@ -28,6 +31,12 @@ export enum RequestMethod {
   ALL,
   OPTIONS,
   HEAD,
+}
+
+// Handler sets a handler for the route.
+export interface HandlerCallable {
+  Request: HttpRequest;
+  ResponseWriter: HttpResponse,
 }
 
 /* Initialize and Expose `HttpRouting` class */
@@ -46,6 +55,13 @@ export class HttpRouting {
    * @var {Array<RequestMethod>}
    */
   public methods: RequestMethod[]
+
+  /**
+   * The route handler.
+   *
+   * @var {HandlerCallable}
+   */
+  public action:HandlerCallable;
 
   
 

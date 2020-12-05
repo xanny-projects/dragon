@@ -71,5 +71,11 @@ export class HttpRouting {
    */
   public isFallback: boolean = false;
 
+  /**
+   * Unique route name.
+   *
+   * @var {string}
+   */
+  public name: string = "<anonymous>";
 
 }

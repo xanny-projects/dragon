@@ -28,8 +28,18 @@ export class HttpMessage {
 
   /**
    * Construct a new, empty instance of the {@code HttpMessage} object.
-   * @param {Headers} header
+   * @param {Headers} headers
    */
-  constructor(private readonly header: Headers) {}
+  constructor(private readonly headers: Headers) {}
+
+  /**
+   * Retrieves all message header values.
+   *
+   * @returns {Headers}
+   * @api public
+   */
+  public GetHeaders(): Headers {
+    return this.headers;
+  }
 
 }

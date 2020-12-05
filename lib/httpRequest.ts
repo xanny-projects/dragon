@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { ServerRequest, assert } from "../deps.ts";
+import { Cookie } from "https://deno.land/std@0.77.0/http/cookie.ts";import { ServerRequest, assert , getCookies, Cookies } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 
+/** Query Payload */
 interface QueryPayload {
   key: string;
   value: string;
@@ -232,6 +233,32 @@ export class HttpRequest {
    */
   public Secure(): boolean {
     return this.GetProtocol() === "https";
+  }
+
+  /**
+   * Retrieves cookies sent by the client to the server.
+   *
+   * @returns {Cookies}
+   * @api public
+   */
+  public GetCookie(): Cookies {
+    return getCookies(this.req);
+  }
+
+  /**
+   * Return an instance with the specified cookies.
+   *
+   * For example:
+   *
+   *   WithCookie("full=of; tasty=chocolate")
+   *
+   * @returns {string}
+   * @api public
+   */
+  public WithCookie(value: string): this {
+    assert(typeof value === "string", "Cookie must be string");
+    this.req.headers.set("Cookie", value);
+    return this;
   }
 
 }

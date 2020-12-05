@@ -160,4 +160,14 @@ export class HttpRequest {
     return null;
   }
 
+  /**
+   * Return content length.
+   *
+   * @returns {number | null}
+   * @api public
+   */
+  public ContentLength(): number | null {
+    return this.req.contentLength;
+  }
+
 }

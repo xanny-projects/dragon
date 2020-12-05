@@ -54,4 +54,14 @@ export class HttpMessage {
     return this.headers.get(name);
   }
 
+  /**
+   * Checks if a header exists by the given case-sensitive name.
+   *
+   * @param {string} name
+   * @returns {boolean}
+   */
+  public HasHeader(name: string):boolean {
+    return this.headers.has(name);
+  }
+
 }

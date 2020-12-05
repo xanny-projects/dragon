@@ -170,4 +170,14 @@ export class HttpRequest {
     return this.req.contentLength;
   }
 
+  /**
+   * Gets the body of the message.
+   *
+   * @returns {Deno.Reader}
+   * @api public
+   */
+  public GetBody(): Deno.Reader {
+    return this.req.body;
+  }
+
 }

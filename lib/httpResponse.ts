@@ -96,7 +96,8 @@ export class HttpResponse extends HttpMessage {
   public Redirect(url: string | RedirectOptions): void {
     // Location
     if(url === RedirectOptions.Back) { url = this.GetHeader("Referrer") || "/"; }
-    if(!this.GetStatusCode()) {
+    const statusCode = this.GetStatusCode();
+    if(!statusCode || this.IsRedirectStatus(statusCode)) {
       this.WithStatus(HttpStatus.FOUND);
     }
     this.WithHeader("Location", url);

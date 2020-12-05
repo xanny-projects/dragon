@@ -65,4 +65,16 @@ export class HttpResponse extends HttpMessage {
     return this;
   }
 
+  /**
+   * Set Content-Length field to `n`.
+   *
+   * @param {number} n
+   * @returns {Object}
+   * @api public
+   */
+  public WithContentLength(n: number): this {
+    this.WithHeader("Content-Length", n.toString());
+    return this;
+  }
+
 }

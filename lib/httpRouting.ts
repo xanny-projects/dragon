@@ -23,14 +23,14 @@ import { HttpResponse } from "./httpResponse.ts";
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods}
  * */
 export enum RequestMethod {
-  GET = 0,
-  POST,
-  PUT,
-  DELETE,
-  PATCH,
-  ALL,
-  OPTIONS,
-  HEAD,
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  ALL = "ALL",
+  OPTIONS = "OPTIONS",
+  HEAD = "HEAD",
 }
 
 // Handler sets a handler for the route.
@@ -54,7 +54,7 @@ export class HttpRouting {
    *
    * @var {Array<RequestMethod>}
    */
-  public methods: RequestMethod[]
+  public methods: RequestMethod[];
 
   /**
    * The route handler.
@@ -62,7 +62,6 @@ export class HttpRouting {
    * @var {HandlerCallable}
    */
   public action:HandlerCallable;
-
 
   /**
    * Indicates whether the route is a fallback route.
@@ -77,5 +76,23 @@ export class HttpRouting {
    * @var {string}
    */
   public name: string = "<anonymous>";
+
+  /**
+  * Construct a new, instance of the {@code Routing} object.
+  *
+  * @param {string} path
+  * @param {RequestMethod[]} methods
+  * @param {HandlerCallable} action
+  * @returns {void}
+  */
+  constructor(path: string, methods: RequestMethod[], action: HandlerCallable) {
+    this.path = path;
+    this.action = action;
+    this.methods = methods;
+    // Push "HEAD" if the method is GET.
+    if(methods.includes(RequestMethod.GET) && !methods.includes(RequestMethod.HEAD)) {
+      this.methods.push(RequestMethod.HEAD);
+    }
+  }
 
 }

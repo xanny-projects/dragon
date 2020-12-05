@@ -180,4 +180,14 @@ export class HttpRequest {
     return this.req.body;
   }
 
+  /**
+   * Return the protocol string "http" or "https".
+   *
+   * @returns {string}
+   * @api public
+   */
+  public GetProtocol(): string {
+    return this.req.proto;
+  }
+
 }

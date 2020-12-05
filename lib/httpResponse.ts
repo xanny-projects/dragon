@@ -18,6 +18,11 @@ import { Response } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 
+/** Return respond using Response class instead of ServerRequest. */
+export interface ServerResponse extends Response {
+  respond(r: Response): Promise<void>;
+}
+
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
   Back
@@ -38,9 +43,9 @@ export class HttpResponse extends HttpMessage {
 
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.
-   * @param {Response} res
+   * @param {ServerResponse} res
    */
-  constructor(private readonly res: Response) {
+  constructor(private readonly res: ServerResponse) {
     super(res.headers || new Headers());
   }
 

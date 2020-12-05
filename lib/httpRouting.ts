@@ -78,6 +78,13 @@ export class HttpRouting {
   public name: string = "<anonymous>";
 
   /**
+   * The array of matched parameters.
+   *
+   * @var {string[]}
+   */
+  public parameters: string[] = [];
+
+  /**
   * Construct a new, instance of the {@code Routing} object.
   *
   * @param {string} path
@@ -93,6 +100,16 @@ export class HttpRouting {
     if(methods.includes(RequestMethod.GET) && !methods.includes(RequestMethod.HEAD)) {
       this.methods.push(RequestMethod.HEAD);
     }
+  }
+
+  /**
+   * Determine if the route has parameters.
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public HasParameters(): boolean {
+    return this.parameters.length === 0;
   }
 
 }

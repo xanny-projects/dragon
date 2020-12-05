@@ -190,4 +190,15 @@ export class HttpRequest {
     return this.req.proto;
   }
 
+  /**
+   * Retrieve query string argument.
+   *
+   * @returns {string[]}
+   * @api public
+   */
+  public GetQueryParam(query: string): string | null {
+    const getQuery = new URL(this.Url()).searchParams.get(query);
+    return getQuery;
+  }
+
 }

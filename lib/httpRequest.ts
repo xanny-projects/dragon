@@ -15,7 +15,7 @@
  */
 
 import { assert, Cookies, getCookies, ServerRequest } from "../deps.ts";
-import { HttpError } from "./httpError.ts";
+import { HttpMessage } from "./httpMessage.ts";
 
 /** Query Payload */
 interface QueryPayload {
@@ -35,7 +35,7 @@ interface QueryPayload {
  * - Message body
  *
  */
-export class HttpRequest {
+export class HttpRequest extends HttpMessage {
   /** /
    * For example, if the domain is "deno.land.example.com":
    * This defaults to `2`
@@ -46,7 +46,9 @@ export class HttpRequest {
    * Construct a new, empty instance of the {@code HttpRequest} object.
    * @param {ServerRequest} req
    */
-  constructor(private readonly req: ServerRequest) {}
+  constructor(private readonly req: ServerRequest) {
+    super(req.headers);
+  }
 
   /**
    * Retrieves the HTTP method of the request.
@@ -56,56 +58,6 @@ export class HttpRequest {
    */
   public GetMethod(): string {
     return this.req.method;
-  }
-
-  /**
-   * Retrieves all message header values.
-   *
-   * @returns {Headers}
-   * @api public
-   */
-  public GetHeaders(): Headers {
-    return this.req.headers;
-  }
-
-  /**
-   * Retrieves a message header value by the given case-sensitive name.
-   * If the header does not appear in the message, this method MUST return null.
-   *
-   * @param {string} name
-   * @returns {string | null}
-   * @api public
-   */
-  public GetHeader(name: string): string | null {
-    return this.req.headers.get(name);
-  }
-
-  /**
-   * Checks if a header exists by the given case-sensitive name.
-   *
-   * @param {string} name
-   * @returns {boolean}
-   */
-  public HasHeader(name: string):boolean {
-    return this.req.headers.has(name);
-  }
-
-  /**
-   * Return an instance with the provided value replacing the specified header.
-   *
-   * @param {string} name
-   * @param {string} value
-   * @returns {Object}
-   * @api public
-   */
-  public WithHeader(name: string, value: string): this {
-    // Header validation.
-    assert(name === null, "Header name must not be null");
-    if (this.req.headers.has(name)) {
-      throw new HttpError(`Header ${name} already exists`);
-    }
-    this.req.headers.set(name, value);
-    return this;
   }
 
   /**

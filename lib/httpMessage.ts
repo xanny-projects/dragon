@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, Response } from "../deps.ts";
+import { assert } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 
 /**

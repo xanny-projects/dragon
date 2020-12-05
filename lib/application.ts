@@ -15,7 +15,7 @@
  */
 
 import { assert, DefaultServer, ServerTLS } from "../deps.ts";
-import { HttpError } from "./httpException.ts";
+import { HttpError } from "./httpError.ts";
 import { HttpRequest } from './httpRequest.ts';
 import { HttpResponse } from './httpResponse.ts';
 

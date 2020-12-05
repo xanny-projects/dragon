@@ -114,7 +114,7 @@ export class HttpRequest {
    * @api public
    */
   public HostName(): string {
-    return this.GetHeader("X-Forwarded-Host") || "0.0.0.0";
+    return this.GetHeader("X-Forwarded-Host") || this.GetHeader("Host") || "0.0.0.0";
   }
 
 }

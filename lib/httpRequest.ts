@@ -92,8 +92,19 @@ export class HttpRequest {
    * @returns {string}
    * @api public
    */
-   public Url(): string {
+  public Url(): string {
     return this.req.url.replace(/\?.+/i,"");
-   }
+  }
+
+  /**
+   * Check if the request was an `_XMLHttpRequest_`.
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public IsXHR(): boolean {
+    const val = this.GetHeader("X-Requested-With") || "";
+    return val.toLowerCase() === "xmlhttprequest";
+  }
 
 }

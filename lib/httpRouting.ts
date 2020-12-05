@@ -39,6 +39,12 @@ export interface HandlerCallable {
   ResponseWriter: HttpResponse,
 }
 
+// Parameter Payload.
+interface IParameterPayload {
+  name: string;
+  value: string | null;
+}
+
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
 
@@ -82,7 +88,7 @@ export class HttpRouting {
    *
    * @var {string[]}
    */
-  public parameters: string[] = [];
+  public parameters: IParameterPayload[] = [];
 
   /**
   * Construct a new, instance of the {@code Routing} object.
@@ -110,6 +116,22 @@ export class HttpRouting {
    */
   public HasParameters(): boolean {
     return this.parameters.length === 0;
+  }
+
+  /**
+   * Determine a given parameter exists from the route.
+   *
+   * @param {string} key
+   * @returns {boolean}
+   * @api public
+   */
+  public HasParameter(key: string): boolean {
+    for(const parameter of this.parameters) {
+      if(parameter.name === key) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

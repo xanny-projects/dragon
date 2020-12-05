@@ -147,4 +147,18 @@ export class HttpResponse extends HttpMessage {
     return this;
   }
 
+  /**
+   * Send a response.
+   *
+   * @returns {void}
+   * @api public
+   */
+  public Send(): void {
+    this.res.respond({
+      body: this.res.body || "",
+      headers: this.GetHeaders(),
+      status: this.GetStatusCode()
+    });
+  }
+
 }

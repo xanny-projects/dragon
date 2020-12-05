@@ -14,25 +14,27 @@
  * limitations under the License.
  */
 
-import { ServerRequest } from "../deps.ts";
+import { ServerRequest, assert } from "../deps.ts";
+import { HttpError } from "./httpError.ts";
 
-/* An interface which provides information about the current request. */
+/**
+ * Representation of an outgoing, client-side request.
+ *
+ * Per the HTTP specification, this class includes properties for
+ * each of the following:
+ *
+ * - HTTP method
+ * - URI
+ * - Headers
+ * - Message body
+ *
+ */
 export class HttpRequest {
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
    * @param {ServerRequest} req
    */
   constructor(private readonly req: ServerRequest) {}
-
-  /**
-   * Return request headers.
-   *
-   * @returns {Headers}
-   * @api public
-   */
-  public GetHeaders(): Headers {
-    return this.req.headers;
-  }
 
   /**
    * Retrieves the HTTP method of the request.
@@ -44,5 +46,44 @@ export class HttpRequest {
      return this.req.method;
    }
 
+  /**
+   * Retrieves all message header values.
+   *
+   * @returns {Headers}
+   * @api public
+   */
+   public GetHeaders(): Headers {
+    return this.req.headers;
+   }
+
+  /**
+   * Retrieves a message header value by the given case-sensitive name.
+   * If the header does not appear in the message, this method MUST return null.
+   *
+   * @param {string} name
+   * @returns {string | null}
+   * @api public
+   */
+   public GetHeader(name: string): string | null {
+    return this.req.headers.get(name);
+   }
+
+  /**
+   * Return an instance with the provided value replacing the specified header.
+   *
+   * @param {string} name
+   * @param {string} value
+   * @returns {Object}
+   * @api public
+   */
+   public WithHeader(name:string, value:string): this {
+    // Header validation.
+    assert(name === null , "Header name must not be null");
+    if(this.req.headers.has(name)) {
+      throw new HttpError(`Header ${name} already exists`);
+    }
+    this.req.headers.set(name, value);
+    return this;
+   }
 
 }

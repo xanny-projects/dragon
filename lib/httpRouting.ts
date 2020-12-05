@@ -63,6 +63,13 @@ export class HttpRouting {
    */
   public action:HandlerCallable;
 
-  
+
+  /**
+   * Indicates whether the route is a fallback route.
+   *
+   * @var {boolean}
+   */
+  public isFallback: boolean = false;
+
 
 }

@@ -154,7 +154,7 @@ export class HttpRouting {
    * @api public
    */
   public HasParameter(key: string): boolean {
-    for (const parameter of this.parameters) {
+    for (var parameter of this.parameters) {
       if (parameter.name === key) {
         return true;
       }
@@ -209,6 +209,22 @@ export class HttpRouting {
    */
   public GetHandler(): HandlerCallable {
     return this.action;
+  }
+
+  /**
+   * Check if a middlewareGroup with the given name exists.
+   *
+   * @param {string} name
+   * @returns {boolean}
+   * @api public
+   */
+  public HasMiddlewareGroups(name: string): boolean {
+    for (var middleware of this.middlewareGroups) {
+      if (middleware.name === name) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

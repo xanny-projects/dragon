@@ -171,10 +171,10 @@ export class HttpRouting {
    * @api public
    */
   public WithParameter(name: string, value: string | null): this | HttpError {
-    if(this.HasParameter(name)) {
+    if (this.HasParameter(name)) {
       throw new HttpError(`Parameter ${name} already exists`);
     }
-    this.parameters.push({ name,value });
+    this.parameters.push({ name, value });
     return this;
   }
 
@@ -196,7 +196,7 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public WithFallback():this {
+  public WithFallback(): this {
     this.isFallback = true;
     return this;
   }
@@ -248,7 +248,7 @@ export class HttpRouting {
   public WithMiddlewareGroups(name: string, middleware: Middleware): this {
     this.middlewareGroups.push({
       name,
-      handlers: [...this.middleware, middleware]
+      handlers: [...this.middleware, middleware],
     });
     return this;
   }
@@ -261,6 +261,18 @@ export class HttpRouting {
    */
   public HasName(): boolean {
     return this.name !== "<anonymous>";
+  }
+
+  /**
+   * HandlerFunc sets a handler function for the route.
+   *
+   * @param {HandlerCallable} handler
+   * @returns {Object}
+   * @api public
+   */
+  public HandleFunc(handler: HandlerCallable): this {
+    this.action = handler;
+    return this;
   }
 
 }

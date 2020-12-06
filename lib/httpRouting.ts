@@ -16,6 +16,7 @@
 
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
+import { HttpError } from "./httpError.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -36,7 +37,7 @@ export enum RequestMethod {
 // Handler sets a handler for the route.
 export interface HandlerCallable {
   Request: HttpRequest;
-  ResponseWriter: HttpResponse,
+  ResponseWriter: HttpResponse;
 }
 
 // Parameter Payload.
@@ -47,7 +48,6 @@ interface IParameterPayload {
 
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
-
   /**
    * The Path the route responds to.
    *
@@ -67,7 +67,7 @@ export class HttpRouting {
    *
    * @var {HandlerCallable}
    */
-  public action:HandlerCallable;
+  public action: HandlerCallable;
 
   /**
    * Indicates whether the route is a fallback route.
@@ -103,7 +103,10 @@ export class HttpRouting {
     this.action = action;
     this.methods = methods;
     // Push "HEAD" if the method is GET.
-    if(methods.includes(RequestMethod.GET) && !methods.includes(RequestMethod.HEAD)) {
+    if (
+      methods.includes(RequestMethod.GET) &&
+      !methods.includes(RequestMethod.HEAD)
+    ) {
       this.methods.push(RequestMethod.HEAD);
     }
   }
@@ -126,12 +129,28 @@ export class HttpRouting {
    * @api public
    */
   public HasParameter(key: string): boolean {
-    for(const parameter of this.parameters) {
-      if(parameter.name === key) {
+    for (const parameter of this.parameters) {
+      if (parameter.name === key) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Set a parameter to the given value.
+   *
+   * @param {string} name
+   * @param {string | null } value
+   * @returns {Object | HttpError}
+   * @api public
+   */
+  public WithParameter(name: string, value: string | null): this | HttpError {
+    if(this.HasParameter(name)) {
+      throw new HttpError(`Parameter ${name} already exists`);
+    }
+    this.parameters.push({ name,value });
+    return this;
   }
 
 }

@@ -111,6 +111,37 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
+   * Set the Last-Modified date using a string or a Date.
+   *
+   * Example :
+   *
+   *   WithLastModified(new Date())
+   *   WithLastModified("2020-12-06")
+   *
+   * @param {Date} value
+   * @returns {Object}
+   * @api public
+   */
+  public WithLastModified(value: string | Date): this {
+    if(typeof value === "string") {
+      value = new Date(value);
+    }
+    this.WithHeader("Last-Modified", value.toUTCString());
+    return this;
+  }
+
+  /**
+   * Get the Last-Modified date in Date form, if it exists.
+   *
+   * @returns {Date}
+   * @api public
+   */
+  public GetLastModified() {
+    const date = this.GetHeader("Last-Modified");
+    if(date) return new Date(date);
+  }
+
+  /**
    * Perform redirection to `url`.
    *
    * Examples:

@@ -46,8 +46,15 @@ interface IParameterPayload {
   value: string | null;
 }
 
+// Middleware interface is anything with Next function.
 export interface Middleware extends HandlerCallable {
   Next: Function;
+}
+
+// Groups of middleware.
+export interface MiddlewareGroups {
+  name: string;
+  handlers: Middleware[];
 }
 
 /* Initialize and Expose `HttpRouting` class */
@@ -92,7 +99,14 @@ export class HttpRouting {
    *
    * @var {Middleware[]}
    */
-  public middlewares: Middleware[] = [];
+  public middleware: Middleware[] = [];
+
+  /**
+   * All of the middleware groups.
+   *
+   * @var {MiddlewareGroups[]}
+   */
+  public middlewareGroups: MiddlewareGroups[] = [];
 
   /**
    * The array of matched parameters.

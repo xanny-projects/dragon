@@ -15,9 +15,9 @@
  */
 
 import { assert, DefaultServer, ServerTLS } from "../deps.ts";
-import { HttpError } from "./httpError.ts";
-import { HttpRequest } from './httpRequest.ts';
-import { HttpResponse } from './httpResponse.ts';
+import { HttpRequest } from "./httpRequest.ts";
+import { HttpResponse } from "./httpResponse.ts";
+import { HttpRouting, Middleware } from "./httpRouting.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -59,6 +59,8 @@ export interface RoutingOptions {
   ignoreTrailingSlash?: boolean;
   /** Allow case sensitive. This default to `true` */
   caseSensitive?: boolean;
+  /** Configurable Handler to be used when no route matches. */
+  notFoundHandler?: Middleware;
 }
 
 export interface ApplicationOptions extends RoutingOptions {
@@ -96,12 +98,12 @@ export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 /* Initialize and Expose `NewApplication` class */
 export class NewApplication {
   /**
-   * Register list of routes using The Radix Tree datastructure.
+   * Register list of routes.
    *
-   * @see {@link https://en.wikipedia.org/wiki/Radix_tree}
+   * @var {routes}
    * @internal
    */
-  private readonly mapRoutes = new Map<string, RouteMatch>();
+  private readonly routes: HttpRouting[] = [];
 
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
@@ -138,96 +140,6 @@ export class NewApplication {
    */
   public Inspect(value: unknown): string {
     return Deno.inspect(value);
-  }
-
-  /**
-   * Register new given routes.
-   *
-   * @param {RequestMethod | RequestMethod[]} method
-   * @param {string} path
-   * @param {Function} handler
-   * @param {string} name
-   * @param {Map<String, String> | null} params
-   * @returns {void}
-   * @api public
-   */
-  public async NewRoute(
-    methods: RequestMethod | RequestMethod[],
-    path: string,
-    handler: HandlerCallableFun,
-    name: string = "<anonymous>",
-    params?: Map<String, String> | null,
-  ): Promise<void> {
-    if (Array.isArray(methods)) {
-      for (var k = 0; k < methods.length; k++) {
-        this.NewRoute(methods[k], path, handler, name, params);
-      }
-      return;
-    }
-    // method validation.
-    assert(typeof methods === "string", "Method must be a string");
-
-    if(!this.options.caseSensitive) {
-      path = path.toLowerCase();
-    }
-
-    if(this.mapRoutes.has(name)) {
-      throw new HttpError(`Handler with name ${name} already exists.`);
-    }
-
-    // Add route information to mapRoutes.
-    this.mapRoutes.set(name,{
-      methods,
-      path,
-      handler,
-      params
-    });
-
-  }
-
-  /**
-   * GetHandler returns the handler for the route.
-   *
-   * @param {string} name
-   * @returns {HandlerCallableFun | HandlerCallableFun[] | HttpError}
-   * @api public
-   */
-  public async GetHandler(name: string): Promise<HandlerCallableFun | HandlerCallableFun[] | HttpError> {
-    const findHandler = this.mapRoutes.get(name);
-    if(!findHandler) {
-      throw new HttpError("Handler not found.");
-    }
-    return findHandler.handler;
-  }
-
-  /**
-   * GetPath returns the path for the route.
-   *
-   * @param {string} name
-   * @returns {string | HttpError}
-   * @api public
-   */
-  public async GetPath(name: string): Promise<string | HttpError> {
-    const findPath = this.mapRoutes.get(name);
-    if(!findPath) {
-      throw new HttpError("Path not found.");
-    }
-    return findPath.path;
-  }
-
-  /**
-   * Inspect Router.
-   *
-   * @param {string} name
-   * @returns {string | HttpError}
-   * @api public
-   */
-  public async RouterInspector(name: string): Promise<string | HttpError> {
-    const routeInfo = this.mapRoutes.get(name);
-    if(!routeInfo) {
-      throw new HttpError("Router not found.");
-    }
-    return Deno.inspect(routeInfo);
   }
 
 }

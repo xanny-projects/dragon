@@ -264,6 +264,18 @@ export class HttpRouting {
   }
 
   /**
+   * Register new path value.
+   *
+   * @param {string} value
+   * @returns {Object}
+   * @api public
+   */
+  public Path(value: string): this {
+    this.path = value;
+    return this;
+  }
+
+  /**
    * HandlerFunc sets a handler function for the route.
    *
    * @param {HandlerCallable} handler

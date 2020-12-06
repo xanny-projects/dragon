@@ -237,4 +237,30 @@ export class HttpRouting {
     return this.middlewareGroups;
   }
 
+  /**
+   * Register a group of middleware.
+   *
+   * @param {string} name
+   * @param {Middleware} middleware
+   * @returns {Object}
+   * @api public
+   */
+  public WithMiddlewareGroups(name: string, middleware: Middleware): this {
+    this.middlewareGroups.push({
+      name,
+      handlers: [...this.middleware, middleware]
+    });
+    return this;
+  }
+
+  /**
+   * Check if a route with the given name exists.
+   *
+   * @returns {boolean}
+   * @api public
+   */
+  public HasName(): boolean {
+    return this.name !== "<anonymous>";
+  }
+
 }

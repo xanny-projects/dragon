@@ -176,4 +176,14 @@ export class HttpRouting {
     return this;
   }
 
+  /**
+   * Get an handler for the route.
+   *
+   * @returns {HandlerCallable}
+   * @api public
+   */
+  public GetHandler(): HandlerCallable {
+    return this.action;
+  }
+
 }

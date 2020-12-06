@@ -15,25 +15,10 @@
  */
 
 import { assert, DefaultServer, ServerTLS } from "../deps.ts";
+import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpRouting, Middleware } from "./httpRouting.ts";
-
-/**
- * Request methods to indicate the desired action to be performed.
- *
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods}
- * */
-export enum RequestMethod {
-  GET = 0,
-  POST,
-  PUT,
-  DELETE,
-  PATCH,
-  ALL,
-  OPTIONS,
-  HEAD,
-}
+import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
 
 // Handler sets a handler for the route.
 export interface HandlerCallableFun {
@@ -122,6 +107,24 @@ export class NewApplication {
    */
   public IsSecure(options: ListenOptions): options is ListenTlsOptions {
     return "secure" in options;
+  }
+
+  /**
+   * NewRoute registers an empty route.
+   *
+   * @returns {HttpRouting}
+   * @api public
+   */
+  public NewRoute(): HttpRouting {
+    const route = new HttpRouting("/", [RequestMethod.GET], (Request: HttpRequest, ResponseWriter: HttpResponse) => {
+      console.log("Hello");
+    });
+    const maxAllowedRoutes = this.options.maxRoutes;
+    if(typeof maxAllowedRoutes !== "undefined" && this.routes.length > maxAllowedRoutes) {
+      throw new HttpError(`Maximum allowed number of routes: ${maxAllowedRoutes}`);
+    }
+    this.routes.push(route);
+    return route;
   }
 
   /**

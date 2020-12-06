@@ -165,4 +165,15 @@ export class HttpRouting {
     return this;
   }
 
+  /**
+   * Set the fallback value.
+   *
+   * @returns {Object}
+   * @api public
+   */
+  public WithFallback():this {
+    this.isFallback = true;
+    return this;
+  }
+
 }

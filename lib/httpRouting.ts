@@ -153,4 +153,16 @@ export class HttpRouting {
     return this;
   }
 
+  /**
+   * Set a name to the given route.
+   *
+   * @param {string} name
+   * @returns {Object}
+   * @api public
+   */
+  public WithName(name: string): this {
+    this.name = name;
+    return this;
+  }
+
 }

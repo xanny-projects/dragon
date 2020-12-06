@@ -46,6 +46,10 @@ interface IParameterPayload {
   value: string | null;
 }
 
+export interface Middleware extends HandlerCallable {
+  Next: Function;
+}
+
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
   /**
@@ -82,6 +86,13 @@ export class HttpRouting {
    * @var {string}
    */
   public name: string = "<anonymous>";
+
+  /**
+   * All of the short-hand keys for middlewares.
+   *
+   * @var {Middleware[]}
+   */
+  public middlewares: Middleware[] = [];
 
   /**
    * The array of matched parameters.

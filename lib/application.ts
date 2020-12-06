@@ -61,6 +61,8 @@ export interface RoutingOptions {
   caseSensitive?: boolean;
   /** Configurable Handler to be used when no route matches. */
   notFoundHandler?: Middleware;
+  /** Maximum allowed routes */
+  maxRoutes?: number;
 }
 
 export interface ApplicationOptions extends RoutingOptions {

@@ -227,4 +227,14 @@ export class HttpRouting {
     return false;
   }
 
+  /**
+   * Get all of the defined middleware groups.
+   *
+   * @returns {MiddlewareGroups[]}
+   * @api public
+   */
+  public GetMiddlewareGroups(): MiddlewareGroups[] {
+    return this.middlewareGroups;
+  }
+
 }

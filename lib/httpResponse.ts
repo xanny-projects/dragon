@@ -88,6 +88,29 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
+   * Set Content-Type response header with `type`
+   * when it does not contain a charset.
+   *
+   * Examples:
+   *
+   *    WithContentType(".html")
+   *    WithContentType("html")
+   *    WithContentType("json")
+   *    WithContentType("application/json")
+   *
+   *
+   * @param {string} value
+   * @returns {Object}
+   * @api public
+   */
+  public WithContentType(value: string): this {
+    if(!this.HasHeader("Content-Type")) {
+      this.WithHeader("Content-Type", value);
+    }
+    return this;
+  }
+
+  /**
    * Perform redirection to `url`.
    *
    * Examples:

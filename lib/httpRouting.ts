@@ -34,10 +34,9 @@ export enum RequestMethod {
   HEAD = "HEAD",
 }
 
-// Handler sets a handler for the route.
-export interface HandlerCallable {
-  Request: HttpRequest;
-  ResponseWriter: HttpResponse;
+// Handler function.
+export interface HandlerFunc {
+  (Request: HttpRequest, ResponseWriter: HttpResponse): void;
 }
 
 // Parameter Payload.
@@ -47,8 +46,8 @@ interface IParameterPayload {
 }
 
 // Middleware interface is anything with Next function.
-export interface Middleware extends HandlerCallable {
-  Next: Function;
+export interface Middleware {
+  (Request: HttpRequest, ResponseWriter: HttpResponse, Next: Function): Function;
 }
 
 // Groups of middleware.
@@ -76,9 +75,9 @@ export class HttpRouting {
   /**
    * The route handler.
    *
-   * @var {HandlerCallable}
+   * @var {HandlerFunc}
    */
-  public action: HandlerCallable;
+  public action: HandlerFunc;
 
   /**
    * Indicates whether the route is a fallback route.
@@ -123,7 +122,7 @@ export class HttpRouting {
   * @param {HandlerCallable} action
   * @returns {void}
   */
-  constructor(path: string, methods: RequestMethod[], action: HandlerCallable) {
+  constructor(path: string, methods: RequestMethod[], action: HandlerFunc) {
     this.path = path;
     this.action = action;
     this.methods = methods;
@@ -207,7 +206,7 @@ export class HttpRouting {
    * @returns {HandlerCallable}
    * @api public
    */
-  public GetHandler(): HandlerCallable {
+  public GetHandler(): HandlerFunc {
     return this.action;
   }
 
@@ -272,18 +271,6 @@ export class HttpRouting {
    */
   public Path(value: string): this {
     this.path = value;
-    return this;
-  }
-
-  /**
-   * HandlerFunc sets a handler function for the route.
-   *
-   * @param {HandlerCallable} handler
-   * @returns {Object}
-   * @api public
-   */
-  public HandleFunc(handler: HandlerCallable): this {
-    this.action = handler;
     return this;
   }
 

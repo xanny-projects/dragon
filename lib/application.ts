@@ -18,7 +18,12 @@ import { assert, DefaultServer, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpRouting, Middleware, RequestMethod, HandlerFunc } from "./httpRouting.ts";
+import {
+  HandlerFunc,
+  HttpRouting,
+  Middleware,
+  RequestMethod,
+} from "./httpRouting.ts";
 
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
@@ -102,12 +107,21 @@ export class NewApplication {
    * @api public
    */
   public NewRoute(): HttpRouting {
-    const route = new HttpRouting("/", [RequestMethod.GET], (Request: HttpRequest, ResponseWriter: HttpResponse) => {
-      console.log("Hello");
-    });
+    const route = new HttpRouting(
+      "/",
+      [RequestMethod.GET],
+      (Request: HttpRequest, ResponseWriter: HttpResponse) => {
+        console.log("Hello");
+      },
+    );
     const maxAllowedRoutes = this.options.maxRoutes;
-    if(typeof maxAllowedRoutes !== "undefined" && this.routes.length > maxAllowedRoutes) {
-      throw new HttpError(`Maximum allowed number of routes: ${maxAllowedRoutes}`);
+    if (
+      typeof maxAllowedRoutes !== "undefined" &&
+      this.routes.length > maxAllowedRoutes
+    ) {
+      throw new HttpError(
+        `Maximum allowed number of routes: ${maxAllowedRoutes}`,
+      );
     }
     this.routes.push(route);
     return route;
@@ -124,6 +138,29 @@ export class NewApplication {
   }
 
   /**
+   * Start listening for given requests.
+   * If the options is typeof `ListenSimpleOptions` the listening will be over HTTP.
+   * If the options is typeof `ListenTlsOptions` the listening will be over HTTPS.
+   *
+   * @param {ListenOptions} options
+   * @returns {Object}
+   * @api public
+   */
+  public async ListenAndServe(options: ListenOptions): Promise<void | HttpError> {
+    if (this.routes.length === 0) {
+      throw new HttpError("Register at least one route.");
+    }
+    const server = this.IsSecure(options) ? ServerTLS(options) : DefaultServer(options);
+    try {
+      for await (const request of server) {
+        // resoleving incomming routes.
+      }
+    } catch (err) {
+      throw new HttpError(err.message || "Internal Server Error");
+    }
+  }
+
+  /**
    * Converts the input into a string that has the same format console.log().
    *
    * @returns {string}
@@ -132,15 +169,4 @@ export class NewApplication {
   public Inspect(value: unknown): string {
     return Deno.inspect(value);
   }
-
-  /**
-   * Return the response for the given route.
-   *
-   * @returns {void}
-   * @api private
-   */
-  private routesResolver(): void {
-
-  }
-
 }

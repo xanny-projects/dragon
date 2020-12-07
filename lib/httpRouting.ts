@@ -185,10 +185,23 @@ export class HttpRouting {
   }
 
   /**
+   * Register a new middlware.
+   *
+   * @param {Middleware} middleware
+   * @returns {Object}
+   * @api public
+   */
+  public WithMiddleware(middleware: Middleware): this {
+    this.middleware.push(middleware);
+    return this;
+  }
+
+  /**
    * Register a global middlware.
    *
    * Use Cases:
-   *   - If you want a middleware to run during every HTTP request to your application.
+   *
+   *   - If you want a middleware to run during every HTTP request to your application
    *
    * @static
    * @param {Middleware} middleware

@@ -341,7 +341,7 @@ export class HttpRouting {
   /**
    * HandleFunc registers a new route with a matcher for the URL path.
    *
-   * @param {HandlerFunc} handleCallable
+   * @param {HandlerFunc} handler
    * @returns {HttpRouting}
    * @api public
    */

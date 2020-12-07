@@ -245,6 +245,18 @@ export class HttpRouting {
   }
 
   /**
+   * Methods registers a new route with a matcher for HTTP methods.
+   *
+   * @param {RequestMethod[]} methods
+   * @returns {Object}
+   * @api public
+   */
+  public WithMethods(...methods: RequestMethod[]): this {
+    this.methods = methods;
+    return this;
+  }
+
+  /**
    * Set the fallback value.
    *
    * @returns {Object}

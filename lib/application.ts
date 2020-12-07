@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { assert, DefaultServer, ServerRequest, ServerTLS } from "../deps.ts";
+import { DefaultServer, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse, ServerResponse } from "./httpResponse.ts";
+import { HttpResponse } from "./httpResponse.ts";
 import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
 
 export interface RoutingOptions {

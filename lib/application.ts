@@ -20,20 +20,6 @@ import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
 
-// Handler sets a handler for the route.
-export interface HandlerCallableFun {
-  Request: HttpRequest;
-  ResponseWriter: HttpResponse,
-}
-
-// RouteMatch stores information about a matched route.
-export interface RouteMatch {
-  methods: string;
-  path: string;
-  handler: HandlerCallableFun;
-  params?: Map<String, String> | null | undefined;
-}
-
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
   maxParamLength?: number;

@@ -18,7 +18,7 @@ import { assert, DefaultServer, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
+import { HttpRouting, Middleware, RequestMethod, HandlerFunc } from "./httpRouting.ts";
 
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
@@ -131,6 +131,16 @@ export class NewApplication {
    */
   public Inspect(value: unknown): string {
     return Deno.inspect(value);
+  }
+
+  /**
+   * Return the response for the given route.
+   *
+   * @returns {void}
+   * @api private
+   */
+  private routesResolver(): void {
+
   }
 
 }

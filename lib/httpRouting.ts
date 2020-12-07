@@ -108,6 +108,13 @@ export class HttpRouting {
   public middlewareGroups: MiddlewareGroups[] = [];
 
   /**
+   * Register global middleware.
+   *
+   * @var {Middleware[]}
+   */
+  public static globalMiddleware: Middleware[] = [];
+
+  /**
    * The array of matched parameters.
    *
    * @var {string[]}
@@ -175,6 +182,18 @@ export class HttpRouting {
     }
     this.parameters.push({ name, value });
     return this;
+  }
+
+  /**
+   * Register a global middlware.
+   *
+   * @static
+   * @param {Middleware} middleware
+   * @returns {void}
+   * @api public
+   */
+  public static GlobalMiddleware(middleware: Middleware): void {
+    this.globalMiddleware.push(middleware);
   }
 
   /**

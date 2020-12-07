@@ -339,6 +339,23 @@ export class HttpRouting {
   }
 
   /**
+   * HandleFunc registers a new route with a matcher for the URL path.
+   *
+   * @param {HandlerFunc} handleCallable
+   * @returns {HttpRouting}
+   * @api public
+   */
+  public HandleFunc(handler: HandlerFunc): HttpRouting {
+    this.action = handler;
+    const newRoute = new HttpRouting(
+      "/default",
+      [RequestMethod.GET],
+      (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
+    );
+    return newRoute;
+  }
+
+  /**
    * Registers a new route with a matcher for URL query values
    *
    * @returns {Object}
@@ -348,5 +365,4 @@ export class HttpRouting {
     this.queries = new URLSearchParams(this.path);
     return this;
   }
-
 }

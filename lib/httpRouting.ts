@@ -126,6 +126,13 @@ export class HttpRouting {
   public static globalMiddleware: Middleware[] = [];
 
   /**
+   * Queries registers a new route.
+   *
+   * @var {URLSearchParams}
+   */
+  public queries?: URLSearchParams;
+
+  /**
    * The array of matched parameters.
    *
    * @var {string[]}
@@ -151,6 +158,8 @@ export class HttpRouting {
     ) {
       this.methods.push(RequestMethod.HEAD);
     }
+    // Register query values.
+    this.WithQueries();
   }
 
   /**
@@ -328,4 +337,16 @@ export class HttpRouting {
   public GetOriginalURL(): string {
     return this.originalUrl;
   }
+
+  /**
+   * Registers a new route with a matcher for URL query values
+   *
+   * @returns {Object}
+   * @api private
+   */
+  private WithQueries(): this {
+    this.queries = new URLSearchParams(this.path);
+    return this;
+  }
+
 }

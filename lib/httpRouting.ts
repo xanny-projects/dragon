@@ -47,7 +47,11 @@ interface IParameterPayload {
 
 // Middleware interface is anything with Next function.
 export interface Middleware {
-  (Request: HttpRequest, ResponseWriter: HttpResponse, Next: Function): Function;
+  (
+    Request: HttpRequest,
+    ResponseWriter: HttpResponse,
+    Next: Function,
+  ): Function;
 }
 
 // Groups of middleware.
@@ -64,6 +68,13 @@ export class HttpRouting {
    * @var {string}
    */
   public path: string;
+
+  /**
+   * The Original path for given request.
+   *
+   * @var {string}
+   */
+  public originalUrl!: string;
 
   /**
    * The HTTP methods the route responds to.
@@ -309,4 +320,12 @@ export class HttpRouting {
     return this;
   }
 
+  /**
+   * Return original url.
+   *
+   * @returns {string}
+   */
+  public GetOriginalURL(): string {
+    return this.originalUrl;
+  }
 }

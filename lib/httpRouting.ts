@@ -187,6 +187,9 @@ export class HttpRouting {
   /**
    * Register a global middlware.
    *
+   * Use Cases:
+   *   - If you want a middleware to run during every HTTP request to your application.
+   *
    * @static
    * @param {Middleware} middleware
    * @returns {void}

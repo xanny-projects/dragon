@@ -28,6 +28,24 @@ export enum RedirectOptions {
   Back,
 }
 
+/** Common Media types  */
+export enum MediaTypes {
+  MD = "text/markdown",
+  HTML = "text/html",
+  HTM = "text/html",
+  JSON = "application/json",
+  MAP = "application/json",
+  TXT = "text/plain",
+  TS = "text/typescript",
+  TSX = "text/tsx",
+  JS = "application/javascript",
+  JSX = "text/jsx",
+  GZIP = "application/gzip",
+  CSS = "text/css",
+  WASM = "application/wasm",
+  MJS = "application/javascript",
+}
+
 /**
  * Representation of an outgoing, server-side response.
  *

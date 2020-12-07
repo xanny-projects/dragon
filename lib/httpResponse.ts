@@ -25,7 +25,7 @@ export interface ServerResponse extends Response {
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
-  Back
+  Back,
 }
 
 /**
@@ -40,7 +40,6 @@ export enum RedirectOptions {
  *
  */
 export class HttpResponse extends HttpMessage {
-
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.
    * @param {ServerResponse} res
@@ -104,7 +103,7 @@ export class HttpResponse extends HttpMessage {
    * @api public
    */
   public WithContentType(value: string): this {
-    if(!this.HasHeader("Content-Type")) {
+    if (!this.HasHeader("Content-Type")) {
       this.WithHeader("Content-Type", value);
     }
     return this;
@@ -123,7 +122,7 @@ export class HttpResponse extends HttpMessage {
    * @api public
    */
   public WithLastModified(value: string | Date): this {
-    if(typeof value === "string") {
+    if (typeof value === "string") {
       value = new Date(value);
     }
     this.WithHeader("Last-Modified", value.toUTCString());
@@ -138,7 +137,31 @@ export class HttpResponse extends HttpMessage {
    */
   public GetLastModified() {
     const date = this.GetHeader("Last-Modified");
-    if(date) return new Date(date);
+    if (date) return new Date(date);
+  }
+
+  /**
+   * Render `Html` template.
+   *
+   * @param {string} string
+   * @param {unknown[]} values
+   * @returns {string}
+   * @api public
+   */
+  public Html(strings: string, ...values: unknown[]): string {
+    const l = strings.length - 1;
+    let html = "";
+
+    for (let i = 0; i < l; i++) {
+      let v = values[i];
+      if (v instanceof Array) {
+        v = v.join("");
+      }
+      const s = strings[i] + v;
+      html += s;
+    }
+    html += strings[l];
+    return html;
   }
 
   /**
@@ -154,14 +177,13 @@ export class HttpResponse extends HttpMessage {
    */
   public Redirect(url: string | RedirectOptions): void {
     // Location
-    if(url === RedirectOptions.Back) { url = this.GetHeader("Referrer") || "/"; }
+    if (url === RedirectOptions.Back) url = this.GetHeader("Referrer") || "/";
     const statusCode = this.GetStatusCode();
-    if(!statusCode || this.IsRedirectStatus(statusCode)) {
+    if (!statusCode || this.IsRedirectStatus(statusCode)) {
       this.WithStatus(HttpStatus.FOUND);
     }
     this.WithHeader("Location", url);
   }
-
 
   /**
    * Determines if a HTTP `Status` is a `RedirectStatus` (3XX).
@@ -178,7 +200,7 @@ export class HttpResponse extends HttpMessage {
       HttpStatus.SEEOTHER,
       HttpStatus.USEPROXY,
       HttpStatus.TEMPORARYREDIRECT,
-      HttpStatus.PERMANENTREDIRECT
+      HttpStatus.PERMANENTREDIRECT,
     ].includes(status);
   }
 
@@ -189,8 +211,10 @@ export class HttpResponse extends HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public WithBody(body?: string | Deno.Reader | Uint8Array | undefined): this | HttpError | void {
-    if(typeof body === "undefined") {
+  public WithBody(
+    body?: string | Deno.Reader | Uint8Array | undefined,
+  ): this | HttpError | void {
+    if (typeof body === "undefined") {
       this.WithStatus(HttpStatus.NOCONTENT);
       this.RemoveHeader("Content-Type");
       this.RemoveHeader("Content-Length");
@@ -211,8 +235,7 @@ export class HttpResponse extends HttpMessage {
     this.res.respond({
       body: this.res.body || "",
       headers: this.GetHeaders(),
-      status: this.GetStatusCode()
+      status: this.GetStatusCode(),
     });
   }
-
 }

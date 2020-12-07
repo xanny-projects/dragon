@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-import { assert, DefaultServer, ServerTLS } from "../deps.ts";
+import { assert, DefaultServer, ServerRequest, ServerTLS } from "../deps.ts";
 import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
-import {
-  HandlerFunc,
-  HttpRouting,
-  Middleware,
-  RequestMethod,
-} from "./httpRouting.ts";
+import { HttpResponse, ServerResponse } from "./httpResponse.ts";
+import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
 
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
@@ -146,14 +141,24 @@ export class NewApplication {
    * @returns {Object}
    * @api public
    */
-  public async ListenAndServe(options: ListenOptions): Promise<void | HttpError> {
+  public async ListenAndServe(
+    options: ListenOptions,
+  ): Promise<void | HttpError> {
     if (this.routes.length === 0) {
       throw new HttpError("Register at least one route.");
     }
-    const server = this.IsSecure(options) ? ServerTLS(options) : DefaultServer(options);
+    const server = this.IsSecure(options)
+      ? ServerTLS(options)
+      : DefaultServer(options);
     try {
       for await (const request of server) {
-        // resoleving incomming routes.
+        // Match attempts to match the given request against the router's registered routes.
+        this.routes.forEach((route: HttpRouting) => {
+          return route.action(
+            new HttpRequest(request),
+            new HttpResponse(request),
+          );
+        });
       }
     } catch (err) {
       throw new HttpError(err.message || "Internal Server Error");

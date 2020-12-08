@@ -68,8 +68,8 @@ export interface ListenTlsOptions extends ListenSimpleOptions {
 
 export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
-/* Initialize and Expose `NewApplication` class */
-export class NewApplication {
+/* Initialize and Expose `Application` class */
+export class Application {
   /**
    * Register list of routes.
    *

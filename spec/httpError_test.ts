@@ -25,3 +25,12 @@ Deno.test({
       HttpStatus.INTERNALSERVERERROR);
   }
 });
+
+Deno.test({
+  name: "should return a response",
+  fn(): void {
+    assertEquals(
+      new HttpError("Internal Server Error").GetMessage(),
+      "Internal Server Error");
+  }
+});

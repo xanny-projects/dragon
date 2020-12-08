@@ -44,7 +44,7 @@ function MockingServerRequest(
   host = "localhost",
   method = RequestMethod.GET,
   proto = "HTTP/1.1",
-  body = "Hello xanny",
+  body = "Hello Xanny",
   headerVal = {},
 ): ServerRequest {
   // init headers
@@ -52,6 +52,9 @@ function MockingServerRequest(
   headers.set("host", host);
   for (const [key, value] of Object.entries(headerVal)) {
     headers.set(key, value as string);
+  }
+  if (body.length && !headers.has("content-length")) {
+    headers.set("content-length", String(body.length));
   }
   return {
     headers,
@@ -99,5 +102,12 @@ Deno.test({
   name: "should return `Http` as protocol",
   fn(): void {
     assertEquals(httpRequest.GetProtocol(), "HTTP/1.1");
+  },
+});
+
+Deno.test({
+  name: "should return body of the message",
+  fn(): void {
+    assertEquals(httpRequest.GetBody(), "Hello Xanny");
   },
 });

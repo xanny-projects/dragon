@@ -40,7 +40,7 @@ export class HttpRequest extends HttpMessage {
    * For example, if the domain is "deno.land.example.com":
    * This defaults to `2`
    */
-  private defaultOffset: number = 2;
+  public defaultOffset: number = 2;
 
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
@@ -67,7 +67,9 @@ export class HttpRequest extends HttpMessage {
    * @api public
    */
   public Url(): string {
-    return this.req.url.replace(/\?.+/i, "");
+    const proto = this.Secure() ? "https" : "http";
+    const url = `${proto}://${this.HostName()}${this.req.url}`;
+    return url.replace(/\?.+/i, "");
   }
 
   /**
@@ -197,7 +199,7 @@ export class HttpRequest extends HttpMessage {
    * @api public
    */
   public Secure(): boolean {
-    return this.GetProtocol() === "https";
+    return /^https/i.test(this.GetProtocol());
   }
 
   /**

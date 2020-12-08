@@ -29,3 +29,11 @@ Deno.test({
     assertEquals(httpMessage.GetHeaders(), header);
   }
 });
+
+Deno.test({
+  name: "Retrieve specific header by the the given case-sensitive name",
+  fn(): void {
+    assertEquals(httpMessage.GetHeader("X-Powered-By"), "Deno");
+    assertEquals(httpMessage.GetHeader("Host"), null);
+  }
+});

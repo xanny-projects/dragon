@@ -74,15 +74,23 @@ Deno.test({
 });
 
 Deno.test({
-  name: "should return Http method",
+  name: "should return `Http` method",
   fn(): void {
     assertEquals(httpRequest.GetMethod(), RequestMethod.GET);
   },
 });
 
 Deno.test({
-  name: "should return url without query",
+  name: "should return `Url` without query",
   fn(): void {
     assertEquals(httpRequest.Url(), "/testing");
+  },
+});
+
+Deno.test({
+  name: "should return `Host` header",
+  fn(): void {
+    assertEquals(httpRequest.HasHeader("X-Forwarded-Host"), false);
+    assertEquals(httpRequest.HostName(), "localhost");
   },
 });

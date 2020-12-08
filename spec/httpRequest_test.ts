@@ -79,3 +79,10 @@ Deno.test({
     assertEquals(httpRequest.GetMethod(), RequestMethod.GET);
   },
 });
+
+Deno.test({
+  name: "should return url without query",
+  fn(): void {
+    assertEquals(httpRequest.Url(), "/testing");
+  },
+});

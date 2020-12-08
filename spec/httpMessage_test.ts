@@ -24,7 +24,7 @@ header.set("X-Powered-By", "Deno");
 const httpMessage = new HttpMessage(header);
 
 Deno.test({
-  name: "Retrieves all message header values",
+  name: "should retrieves all message header values",
   fn(): void {
     assert(httpMessage.GetHeaders() instanceof Headers);
     assertEquals(httpMessage.GetHeaders(), header);
@@ -32,7 +32,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "Retrieve specific header by the the given case-sensitive name",
+  name: "should retrieve specific header by the the given case-sensitive name",
   fn(): void {
     assertEquals(httpMessage.GetHeader("X-Powered-By"), "Deno");
     assertEquals(httpMessage.GetHeader("Host"), null);
@@ -40,7 +40,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "Checks if a header exists by the given case-sensitive name",
+  name: "should checks if a header exists by the given case-sensitive name",
   fn(): void {
     assertEquals(httpMessage.HasHeader("X-Powered-By"), true);
     assertEquals(httpMessage.HasHeader("Host"), false);
@@ -48,7 +48,7 @@ Deno.test({
 });
 
 Deno.test({
-  name: "Remove given header if exists",
+  name: "should remove given header if exists",
   fn(): void {
     assertEquals(httpMessage.RemoveHeader("X-Powered-By"), httpMessage);
     assertThrows(

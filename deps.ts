@@ -15,6 +15,15 @@
  */
 
 /** External dependencies that xanny depends upon */
-export { serve as DefaultServer , serveTLS as ServerTLS, ServerRequest , Response, } from "https://deno.land/std@0.77.0/http/server.ts";
-export { Cookies, getCookies } from "https://deno.land/std@0.77.0/http/cookie.ts";
+export { serve as DefaultServer , serveTLS as ServerTLS, ServerRequest } from "https://deno.land/std@0.77.0/http/server.ts";
+export { getCookies } from "https://deno.land/std@0.77.0/http/cookie.ts";
+export { assertEquals } from "https://deno.land/std@0.77.0/testing/asserts.ts";
 export { assert } from "https://deno.land/std@0.77.0/_util/assert.ts";
+
+/**
+ * Export Types.
+ *
+ * @see {@link https://github.com/microsoft/TypeScript/issues/28481}
+ */
+export type { Response } from "https://deno.land/std@0.77.0/http/server.ts";
+export type { Cookies } from "https://deno.land/std@0.77.0/http/cookie.ts";

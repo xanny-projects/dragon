@@ -60,3 +60,23 @@ Deno.test({
     );
   },
 });
+
+Deno.test({
+  name: "should add new header value",
+  fn(): void {
+    assertEquals(
+      httpMessage.WithHeader("Host", "https://github.com/xanny-projects/xanny"),
+      httpMessage,
+    );
+    assertThrows(
+      (): void => {
+        assertEquals(
+          httpMessage.WithHeader("Host", "https://www.google.com/"),
+          httpMessage,
+        );
+      },
+      HttpError,
+      "Header Host already exists",
+    );
+  },
+});

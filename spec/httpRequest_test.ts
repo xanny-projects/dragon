@@ -94,3 +94,10 @@ Deno.test({
     assertEquals(httpRequest.HostName(), "localhost");
   },
 });
+
+Deno.test({
+  name: "should return `Http` as protocol",
+  fn(): void {
+    assertEquals(httpRequest.GetProtocol(), "HTTP/1.1");
+  },
+});

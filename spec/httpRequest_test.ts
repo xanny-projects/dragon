@@ -20,12 +20,12 @@ import { RequestMethod } from "../lib/httpRouting.ts";
 import { HttpRequest } from "../lib/httpRequest.ts";
 
 interface ServerRequest {
-  url: string,
-  method: string,
+  url: string;
+  method: string;
   proto: string;
-  body:  string | Deno.Reader | Uint8Array,
+  body: string | Deno.Reader | Uint8Array;
   headers: Headers;
-  respond(): Promise<void>,
+  respond(): Promise<void>;
 }
 
 /**
@@ -45,7 +45,7 @@ function MockingServerRequest(
   method = RequestMethod.GET,
   proto = "HTTP/1.1",
   body = "Hello xanny",
-  headerVal = {}
+  headerVal = {},
 ): ServerRequest {
   // init headers
   const headers = new Headers();
@@ -62,3 +62,13 @@ function MockingServerRequest(
     async respond() {},
   };
 }
+
+// Simulate HttpRequest injection.
+const httpRequest = new HttpRequest(MockingServerRequest() as any);
+
+Deno.test({
+  name: "should return default offset",
+  fn(): void {
+    assertEquals(httpRequest.defaultOffset, 2);
+  },
+});

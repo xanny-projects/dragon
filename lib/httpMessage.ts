@@ -55,7 +55,7 @@ export class HttpMessage {
   }
 
   /**
-   * Checks if a header exists by the given case-sensitive name.
+   * Checks if a header exists by the given non case-sensitive name.
    *
    * @param {string} name
    * @returns {boolean}
@@ -88,8 +88,6 @@ export class HttpMessage {
    * @api public
    */
   public WithHeader(name: string, value: string): this {
-    // Header validation.
-    assert(name === null, "Header name must not be null");
     if (this.headers.has(name)) {
       throw new HttpError(`Header ${name} already exists`);
     }

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { assert , assertEquals } from "../deps.ts";
+import { assert, assertEquals, assertThrows } from "../deps.ts";
+import { HttpError } from "../lib/httpError.ts";
 import { HttpMessage } from "../lib/httpMessage.ts";
 
 // Simulate header injection.
@@ -27,7 +28,7 @@ Deno.test({
   fn(): void {
     assert(httpMessage.GetHeaders() instanceof Headers);
     assertEquals(httpMessage.GetHeaders(), header);
-  }
+  },
 });
 
 Deno.test({
@@ -35,7 +36,7 @@ Deno.test({
   fn(): void {
     assertEquals(httpMessage.GetHeader("X-Powered-By"), "Deno");
     assertEquals(httpMessage.GetHeader("Host"), null);
-  }
+  },
 });
 
 Deno.test({
@@ -43,5 +44,19 @@ Deno.test({
   fn(): void {
     assertEquals(httpMessage.HasHeader("X-Powered-By"), true);
     assertEquals(httpMessage.HasHeader("Host"), false);
-  }
+  },
+});
+
+Deno.test({
+  name: "Remove given header if exists",
+  fn(): void {
+    assertEquals(httpMessage.RemoveHeader("X-Powered-By"), httpMessage);
+    assertThrows(
+      (): void => {
+        assertEquals(httpMessage.RemoveHeader("Host"), httpMessage);
+      },
+      HttpError,
+      "Header Host does not exists",
+    );
+  },
 });

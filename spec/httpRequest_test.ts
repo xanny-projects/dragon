@@ -72,3 +72,10 @@ Deno.test({
     assertEquals(httpRequest.defaultOffset, 2);
   },
 });
+
+Deno.test({
+  name: "should return Http method",
+  fn(): void {
+    assertEquals(httpRequest.GetMethod(), RequestMethod.GET);
+  },
+});

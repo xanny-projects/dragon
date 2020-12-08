@@ -37,3 +37,11 @@ Deno.test({
     assertEquals(httpMessage.GetHeader("Host"), null);
   }
 });
+
+Deno.test({
+  name: "Checks if a header exists by the given case-sensitive name",
+  fn(): void {
+    assertEquals(httpMessage.HasHeader("X-Powered-By"), true);
+    assertEquals(httpMessage.HasHeader("Host"), false);
+  }
+});

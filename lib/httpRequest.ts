@@ -67,9 +67,19 @@ export class HttpRequest extends HttpMessage {
    * @api public
    */
   public Url(): string {
+    return this.UrlQuery().replace(/\?.+/i, "");
+  }
+
+  /**
+   * Get the URL (with query string) for the request.
+   *
+   * @returns {string}
+   * @api public
+   */
+  public UrlQuery(): string {
     const proto = this.Secure() ? "https" : "http";
     const url = `${proto}://${this.HostName()}${this.req.url}`;
-    return url.replace(/\?.+/i, "");
+    return url;
   }
 
   /**
@@ -170,7 +180,7 @@ export class HttpRequest extends HttpMessage {
    * @api public
    */
   public GetQueryParam(query: string): string | null {
-    return new URL(this.Url()).searchParams.get(query);
+    return new URL(this.UrlQuery()).searchParams.get(query);
   }
 
   /**
@@ -181,7 +191,7 @@ export class HttpRequest extends HttpMessage {
    */
   public GetQueryParams(): Array<QueryPayload> {
     const listQueries: QueryPayload[] = [];
-    const queries = new URL(this.Url()).searchParams;
+    const queries = new URL(this.UrlQuery()).searchParams;
     queries.forEach((value, key) => {
       listQueries.push({ value, key });
     });
@@ -227,5 +237,4 @@ export class HttpRequest extends HttpMessage {
     this.req.headers.set("Cookie", value);
     return this;
   }
-
 }

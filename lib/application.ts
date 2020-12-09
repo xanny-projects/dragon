@@ -23,13 +23,6 @@ import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
   maxParamLength?: number;
-  /** Allow unsage regex. This defaults to `false` */
-  allowUnsafeRegex?: boolean;
-  /** Ignore trailing slashes in routes. This option applies to all route registrations for the resulting server instance
-   * This defaults to `false`. */
-  ignoreTrailingSlash?: boolean;
-  /** Allow case sensitive. This default to `true` */
-  caseSensitive?: boolean;
   /** Configurable Handler to be used when no route matches. */
   notFoundHandler?: Middleware;
   /** Maximum allowed routes */
@@ -37,8 +30,6 @@ export interface RoutingOptions {
 }
 
 export interface ApplicationOptions extends RoutingOptions {
-  /** An initial set of key for signing cookies and sessions produced by the application. */
-  key?: { cookie: string; session: string };
   /** If set to `true`, proxy headers will be trusted when processing requests.
    * This defaults to `false`. */
   proxy?: boolean;

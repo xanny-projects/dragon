@@ -83,6 +83,16 @@ export class HttpRequest extends HttpMessage {
   }
 
   /**
+   * Get The Path the route responds to.
+   *
+   * @returns {string}
+   * @api public
+   */
+  public GetPath(): string {
+    return this.req.url;
+  }
+
+  /**
    * Check if the request was an `_XMLHttpRequest_`.
    *
    * @returns {boolean}

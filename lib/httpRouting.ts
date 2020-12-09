@@ -320,6 +320,17 @@ export class HttpRouting {
   }
 
   /**
+   * Check if a route with the given path exists.
+   *
+   * @param {string} path
+   * @returns {boolean}
+   * @api public
+   */
+  public HasPath(path: string): boolean {
+    return this.path === path;
+  }
+
+  /**
    * Check if a route with the given name exists.
    *
    * @returns {boolean}

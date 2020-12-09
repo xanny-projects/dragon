@@ -15,7 +15,7 @@
  */
 
 import { DefaultServer, ServerTLS } from "../deps.ts";
-import { HttpError } from "./httpError.ts";
+import { HttpError, HttpStatus } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
@@ -153,16 +153,45 @@ export class Application {
     try {
       for await (const request of server) {
         // Match attempts to match the given request against the router's registered routes.
-        this.routes.forEach((route: HttpRouting) => {
-          return route.action(
-            new HttpRequest(request),
-            new HttpResponse(request),
-          );
-        });
+        const req = new HttpRequest(request);
+        const res = new HttpResponse(request);
+        // If the match failure type (eg: not found) has a registered handler,
+        // the handler is assigned to the Handler.
+        if (
+          this.Match(req, res) === HttpStatus.NOTFOUND &&
+          this.options.notFoundHandler !== undefined
+        ) {
+          this.options.notFoundHandler(req, res);
+        }
       }
     } catch (err) {
       throw new HttpError(err.message || "Internal Server Error");
     }
+  }
+
+  /**
+   * Match attempts to match the given request against the router's registered routes.
+   * If the request matches a route of this router or one of its subrouters the Route
+   * execute handler.
+   *
+   * @param {HttpRequest} Request
+   * @param {HttpResponse} ResponseWriter
+   * @return {void | HttpStatus }
+   * @api public
+   */
+  public Match(
+    Request: HttpRequest,
+    ResponseWriter: HttpResponse,
+  ): HttpStatus | void {
+    for (const route of this.routes) {
+      if (
+        route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
+      ) {
+        // Excecute the handle function.
+        return route.action(Request, ResponseWriter);
+      }
+    }
+    return HttpStatus.NOTFOUND;
   }
 
   /**

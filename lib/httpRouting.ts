@@ -46,13 +46,7 @@ interface IParameterPayload {
 }
 
 // Middleware interface is anything with Next function.
-export interface Middleware {
-  (
-    Request: HttpRequest,
-    ResponseWriter: HttpResponse,
-    Next: Function,
-  ): Function;
-}
+export interface Middleware extends HandlerFunc {}
 
 // Groups of middleware.
 export interface MiddlewareGroups {
@@ -338,6 +332,17 @@ export class HttpRouting {
    */
   public HasName(): boolean {
     return this.name !== "<anonymous>";
+  }
+
+  /**
+   * Check if route has given method.
+   *
+   * @param {string} verb
+   * @returns {boolean}
+   * @api public
+   */
+  public HasMethod(verb: string): boolean {
+    return verb in RequestMethod;
   }
 
   /**

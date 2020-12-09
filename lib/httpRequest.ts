@@ -56,7 +56,7 @@ export class HttpRequest extends HttpMessage {
    * @return {string}
    * @api public
    */
-  public GetMethod(): string {
+  public  GetMethod(): string {
     return this.req.method;
   }
 

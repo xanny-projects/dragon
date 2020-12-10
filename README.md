@@ -16,7 +16,7 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for bu
 - Developer friendly, very expressive and help the developer in their daily use, without sacrificing performance and security.
 - Lightweight and modular design allows for a flexible framework.
 - Focus on high performance.
-- Middleware support, incoming HTTP request can be handled by a chain of middlewares and the final action
+- Middleware support, incoming HTTP request can be handled by a chain of middlewares and the final action.
 - Excellent and fluent documentation.
 
 ## Getting Started
@@ -36,12 +36,12 @@ r.WithMethods(RequestMethod.GET)
     .Path("/demo")
     .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       console.log("Hello Xanny Demo");
-    })
+    });
 
 app.ListenAndServe({ port: 8080 });    
 ```
 
-Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passing
+Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passingWe believe development must be an enjoyable and creative experience to be truly fulfilling
 (`HttpRequest`, `HttpResponse`) as parameters.
 
 ## Contributing
@@ -50,10 +50,17 @@ We appreciate your help 👋!
 
 We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed. [Join us!]()
 
+## Xanny Sponsors
+
+We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page]().
 
 ## Code of Conduct
 
 In order to ensure that the Xanny community is welcoming to all, please review and abide by the [Code of Conduct](/CODE_OF_CONDUCT).
+
+## Security Issues
+
+If you discover a security vulnerability in Xanny, please see [Security Policies and Procedures](/SECURITY).
 
 ## People 
 

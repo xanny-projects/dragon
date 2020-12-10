@@ -1,14 +1,17 @@
 # Xanny
 
+<p align="left">
+  
 ![GitHub issues](https://img.shields.io/github/issues/xanny-projects/xanny)
-
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/xanny)
 
-<img align="right" src="./logo.svg" height="150px">
+</p>
+
+<img align="right" src="https://avatars2.githubusercontent.com/u/75166135?s=150&v=4" height="150px">
 
 Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
-## Features
+### Features
 
 - Developer friendly, very expressive and help the developer in their daily use, without sacrificing performance and security.
 - Lightweight and modular design allows for a flexible framework.

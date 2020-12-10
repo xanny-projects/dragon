@@ -15,10 +15,11 @@
  */
 
 import { DefaultServer, ServerTLS } from "../deps.ts";
+import { HttpRouting, RequestMethod } from "./httpRouting.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpRouting, Middleware, RequestMethod } from "./httpRouting.ts";
+import { Middleware, MiddlewareResolver } from "./middleware.ts";
 
 export interface RoutingOptions {
   /** A custom length for parameters * This defaults to `100 characters`. */
@@ -29,7 +30,7 @@ export interface RoutingOptions {
   maxRoutes?: number;
 }
 
-export interface ApplicationOptions extends RoutingOptions {
+export interface ApplicationOptions {
   /** If set to `true`, proxy headers will be trusted when processing requests.
    * This defaults to `false`. */
   proxy?: boolean;
@@ -59,16 +60,24 @@ export interface ListenTlsOptions extends ListenSimpleOptions {
 
 export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
 
+/**
+ * Register list of routes.
+ *
+ * @var {Routes}
+ * @api public 
+ */
+export const RegistredRoutes: HttpRouting[] = [];
+
+/**
+ * Routing Options.
+ * 
+ * @var {RouteOptions}
+ * @api public
+ */
+export var RouteOptions: RoutingOptions = {};
+
 /* Initialize and Expose `Application` class */
 export class Application {
-  /**
-   * Register list of routes.
-   *
-   * @var {routes}
-   * @internal
-   */
-  private readonly routes: HttpRouting[] = [];
-
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
@@ -89,10 +98,14 @@ export class Application {
   /**
    * NewRoute registers an empty route.
    *
+   * @param {RoutingOptions} options
    * @returns {HttpRouting}
    * @api public
    */
-  public NewRoute(): HttpRouting {
+  public NewRoute(options?: RoutingOptions): HttpRouting {
+    if(typeof options !== "undefined") {
+      RouteOptions = options;
+    }
     const route = new HttpRouting(
       "/",
       [RequestMethod.GET],
@@ -100,16 +113,7 @@ export class Application {
         console.log("Hello");
       },
     );
-    const maxAllowedRoutes = this.options.maxRoutes;
-    if (
-      typeof maxAllowedRoutes !== "undefined" &&
-      this.routes.length > maxAllowedRoutes
-    ) {
-      throw new HttpError(
-        `Maximum allowed number of routes: ${maxAllowedRoutes}`,
-      );
-    }
-    this.routes.push(route);
+    RegistredRoutes.push(route);
     return route;
   }
 
@@ -135,7 +139,7 @@ export class Application {
   public async ListenAndServe(
     options: ListenOptions,
   ): Promise<void | HttpError> {
-    if (this.routes.length === 0) {
+    if (RegistredRoutes.length === 0) {
       throw new HttpError("Register at least one route.");
     }
     const server = this.IsSecure(options)
@@ -149,10 +153,10 @@ export class Application {
         // If the match failure type (eg: not found) has a registered handler,
         // the handler is assigned to the Handler.
         if (
-          this.Match(req, res) === HttpStatus.NOTFOUND &&
-          this.options.notFoundHandler !== undefined
+          await this.Match(req, res) === HttpStatus.NOTFOUND &&
+          RouteOptions.notFoundHandler !== undefined
         ) {
-          this.options.notFoundHandler(req, res);
+          RouteOptions.notFoundHandler(req, res);
         }
       }
     } catch (err) {
@@ -170,14 +174,19 @@ export class Application {
    * @return {void | HttpStatus }
    * @api public
    */
-  public Match(
+  public async Match(
     Request: HttpRequest,
     ResponseWriter: HttpResponse,
-  ): HttpStatus | void {
-    for (const route of this.routes) {
+  ): Promise<HttpStatus | void> {
+    for (const route of RegistredRoutes) {
       if (
         route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
       ) {
+        // Resolve the registred middlewares. The order is very important.
+        const middleware = new MiddlewareResolver(Request, ResponseWriter);
+        await middleware.ResolveGlobalMiddlewares()
+        await middleware.ResolveMiddlewareGroups(route.middlewareGroups);
+        await middleware.ResolveMiddlewares(route.middleware);
         // Excecute the handle function.
         return route.action(Request, ResponseWriter);
       }

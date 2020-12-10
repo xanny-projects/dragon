@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-export { Application } from "./application.ts";
 export type {
   ApplicationOptions,
   ListenOptions,
   RoutingOptions,
 } from "./application.ts";
+export type { HandlerFunc } from "./httpRouting.ts";
+export type { Middleware, MiddlewareGroups } from "./middleware.ts";
+
+export { Application } from "./application.ts";
 export { RequestMethod } from "./httpRouting.ts";
 export { HttpRequest } from "./httpRequest.ts";
 export { HttpResponse, MediaTypes } from "./httpResponse.ts";

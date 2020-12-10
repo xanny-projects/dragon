@@ -12,8 +12,34 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for bu
 
 - Developer friendly, very expressive and help the developer in their daily use, without sacrificing performance and security.
 - Lightweight and modular design allows for a flexible framework.
+- Focus on high performance.
 - Middleware support, incoming HTTP request can be handled by a chain of middlewares and the final action
 - Excellent and fluent documentation.
+
+## Getting Started
+
+Let's start registering a couple of URL paths and handlers:
+
+```ts
+const app = new Application({ maxRoutes:2 });
+
+const r = app.NewRoute();
+
+r.WithMethods(RequestMethod.GET)
+    .Path("/hello")
+    .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+      console.log("Hello Xanny");
+    })
+    .Path("/demo")
+    .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+      console.log("Hello Xanny Demo");
+    })
+
+app.ListenAndServe({ port: 8080 });    
+```
+
+Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passing
+(`HttpRequest`, `HttpResponse`) as parameters.
 
 ## Contributing
 
@@ -25,6 +51,13 @@ We encourage you to contribute to Xanny! Please check out the  [guidelines](/CON
 ## Code of Conduct
 
 In order to ensure that the Xanny community is welcoming to all, please review and abide by the [Code of Conduct](/CODE_OF_CONDUCT).
+
+## People 
+
+- The original author of Xanny is [Yasser A.Idrissi
+](https://github.com/getspooky).
+
+- [List of all contributors](https://github.com/xanny-projects/xanny/graphs/contributors)
 
 ## License
 

@@ -17,6 +17,7 @@
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HttpError } from "./httpError.ts";
+import { RegistredRoutes } from "./application.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -380,6 +381,7 @@ export class HttpRouting {
       [RequestMethod.GET],
       (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
+    RegistredRoutes.push(newRoute);  
     return newRoute;
   }
 

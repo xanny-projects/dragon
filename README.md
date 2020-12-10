@@ -24,9 +24,9 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-const app = new Application({ maxRoutes:2 });
+const app = new Application();
 
-const r = app.NewRoute();
+const r = app.NewRoute({ maxRoutes:2 });
 
 r.WithMethods(RequestMethod.GET)
     .Path("/hello")
@@ -48,7 +48,7 @@ Here we register two routes mapping URL path to handler. if an incoming request 
 
 We appreciate your help 👋!
 
-We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed. [Join us!]()
+We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed. 
 
 ## Sponsors
 

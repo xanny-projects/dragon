@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import { RegistredRoutes, RouteOptions } from "./application.ts";
+import { Middleware, MiddlewareGroups } from "./middleware.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HttpError } from "./httpError.ts";
-import { RegistredRoutes } from "./application.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -44,15 +45,6 @@ export interface HandlerFunc {
 interface IParameterPayload {
   name: string;
   value: string | null;
-}
-
-// Middleware interface is anything with Next function.
-export interface Middleware extends HandlerFunc {}
-
-// Groups of middleware.
-export interface MiddlewareGroups {
-  name: string;
-  handlers: Middleware[];
 }
 
 /* Initialize and Expose `HttpRouting` class */
@@ -288,6 +280,7 @@ export class HttpRouting {
     return false;
   }
 
+
   /**
    * Get all of the defined middleware groups.
    *
@@ -302,14 +295,14 @@ export class HttpRouting {
    * Register a group of middleware.
    *
    * @param {string} name
-   * @param {Middleware} middleware
+   * @param {Middleware[]} middlewares
    * @returns {Object}
    * @api public
    */
-  public WithMiddlewareGroups(name: string, middleware: Middleware): this {
+  public WithMiddlewareGroups(name: string, middlewares: Middleware[]): this {
     this.middlewareGroups.push({
       name,
-      handlers: [...this.middleware, middleware],
+      handlers: [...this.middleware, ...middlewares],
     });
     return this;
   }
@@ -375,6 +368,15 @@ export class HttpRouting {
    * @api public
    */
   public HandleFunc(handler: HandlerFunc): HttpRouting {
+    const maxAllowedRoutes = RouteOptions.maxRoutes;
+    if (
+      typeof maxAllowedRoutes !== "undefined" &&
+      RegistredRoutes.length > maxAllowedRoutes
+    ) {
+      throw new HttpError(
+        `Maximum allowed number of routes: ${maxAllowedRoutes}`,
+      );
+    }
     this.action = handler;
     const newRoute = new HttpRouting(
       "/default",

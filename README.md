@@ -50,7 +50,7 @@ We appreciate your help 👋!
 
 We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed. [Join us!]()
 
-## Xanny Sponsors
+## Sponsors
 
 We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page]().
 

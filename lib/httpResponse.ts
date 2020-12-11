@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Response } from "../deps.ts";
+import { Response, encode } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
-import { HttpError, HttpStatus } from "./httpError.ts";
+import { HttpStatus } from "./httpError.ts";
 
 /** Return respond using Response class instead of ServerRequest. */
 export interface ServerResponse extends Response {
@@ -58,6 +58,12 @@ export enum MediaTypes {
  *
  */
 export class HttpResponse extends HttpMessage {
+  /**
+   * Send the content of the response.
+   * @var
+   */
+  private body?: Uint8Array | Deno.Reader | string;
+
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.
    * @param {ServerResponse} res
@@ -128,6 +134,16 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
+   * Return Content-Type response header with.
+   *
+   * @returns {string | null}
+   * @api public
+   */
+  public GetContentType(): string | null {
+    return this.GetHeader("Content-Type");
+  }
+
+  /**
    * Set the Last-Modified date using a string or a Date.
    *
    * Example :
@@ -161,12 +177,16 @@ export class HttpResponse extends HttpMessage {
   /**
    * Render `Html` template.
    *
-   * @param {string} string
+   * Example:
+   *
+   *    Html`<b>Hello Xanny</b>`
+   *
+   * @param {TemplateStringsArray} string
    * @param {unknown[]} values
    * @returns {string}
    * @api public
    */
-  public Html(strings: string, ...values: unknown[]): string {
+  public Html(strings: TemplateStringsArray, ...values: unknown[]): this {
     const l = strings.length - 1;
     let html = "";
 
@@ -179,28 +199,23 @@ export class HttpResponse extends HttpMessage {
       html += s;
     }
     html += strings[l];
-    return html;
+    // encode html.
+    this.body = encode(html);
+    return this;
   }
 
   /**
-   * Perform redirection to `url`.
+   * Return `JSON` responses.
    *
-   * Examples:
-   *
-   *    Redirect("/")
-   *    Redirect(RedirectOptions.Back)
-   *
-   * @param {string} url
-   * @api public
+   * @param {Record<string, any>} value
+   * @returns {this}
    */
-  public Redirect(url: string | RedirectOptions): void {
-    // Location
-    if (url === RedirectOptions.Back) url = this.GetHeader("Referrer") || "/";
-    const statusCode = this.GetStatusCode();
-    if (!statusCode || this.IsRedirectStatus(statusCode)) {
-      this.WithStatus(HttpStatus.FOUND);
-    }
-    this.WithHeader("Location", url);
+  public Json(value: Record<string, any>): this {
+    this.WithContentType(MediaTypes.JSON);
+    this.body = encode(
+      typeof value === "object" ? JSON.stringify(value) : value,
+    );
+    return this;
   }
 
   /**
@@ -231,27 +246,26 @@ export class HttpResponse extends HttpMessage {
    */
   public WithBody(
     body?: string | Deno.Reader | Uint8Array | undefined,
-  ): this | HttpError | void {
+  ): this {
     if (typeof body === "undefined") {
       this.WithStatus(HttpStatus.NOCONTENT);
       this.RemoveHeader("Content-Type");
       this.RemoveHeader("Content-Length");
       this.RemoveHeader("Transfer-Encoding");
-      return;
     }
-    this.res.body = body;
+    this.body = body || "";
     return this;
   }
 
   /**
-   * Send a response.
+   * Return a response.
    *
    * @returns {void}
    * @api public
    */
-  public Send(): void {
+  public Return(): void {
     this.res.respond({
-      body: this.res.body || "",
+      body: this.body,
       headers: this.GetHeaders(),
       status: this.GetStatusCode(),
     });

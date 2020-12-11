@@ -1,0 +1,12 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "description": "benchmarks expressjs, fastify , koa",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "fastify": "^3.9.1"
+  }
+}

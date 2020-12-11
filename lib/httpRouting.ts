@@ -78,13 +78,6 @@ export class HttpRouting {
   public action: HandlerFunc;
 
   /**
-   * Indicates whether the route is a fallback route.
-   *
-   * @var {boolean}
-   */
-  public isFallback: boolean = false;
-
-  /**
    * Unique route name.
    *
    * @var {string}
@@ -244,17 +237,6 @@ export class HttpRouting {
   }
 
   /**
-   * Set the fallback value.
-   *
-   * @returns {Object}
-   * @api public
-   */
-  public WithFallback(): this {
-    this.isFallback = true;
-    return this;
-  }
-
-  /**
    * Get an handler for the route.
    *
    * @returns {HandlerCallable}
@@ -383,7 +365,7 @@ export class HttpRouting {
       [RequestMethod.GET],
       (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
-    RegistredRoutes.push(newRoute);  
+    RegistredRoutes.push(newRoute);
     return newRoute;
   }
 

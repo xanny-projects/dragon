@@ -1,7 +1,7 @@
 # Xanny
 
 <p align="left">
-  
+
 ![GitHub issues](https://img.shields.io/github/issues/xanny-projects/xanny)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/xanny)
 
@@ -38,17 +38,21 @@ r.WithMethods(RequestMethod.GET)
       console.log("Hello Xanny Demo");
     });
 
-app.ListenAndServe({ port: 8080 });    
+app.ListenAndServe({ port: 8080 });
 ```
 
 Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passingWe believe development must be an enjoyable and creative experience to be truly fulfilling
 (`HttpRequest`, `HttpResponse`) as parameters.
 
+## Documentation
+
+Get started with `Xanny`, learn the fundamentals and explore advanced topics on our [documentation website]().
+
 ## Contributing
 
 We appreciate your help 👋!
 
-We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed. 
+We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed.
 
 ## Sponsors
 
@@ -62,10 +66,13 @@ In order to ensure that the Xanny community is welcoming to all, please review a
 
 If you discover a security vulnerability in Xanny, please see [Security Policies and Procedures](/SECURITY).
 
-## People 
+## Changelog
 
-- The original author of Xanny is [Yasser A.Idrissi
-](https://github.com/getspooky).
+Detailed changes for each release are documented in the [release notes](/CHANGELOG).
+
+## People
+
+- The original author of Xanny is [Yasser A.Idrissi](https://github.com/getspooky).
 
 - [List of all contributors](https://github.com/xanny-projects/xanny/graphs/contributors)
 

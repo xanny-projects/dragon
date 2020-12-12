@@ -2,4 +2,4 @@
 
 const fastify = require('fastify')();
 fastify.get('/', async (req, reply) => reply.send('Hello world'));
-fastify.listen(3000);
+fastify.listen(8080);

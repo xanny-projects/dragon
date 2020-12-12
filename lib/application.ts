@@ -64,13 +64,13 @@ export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
  * Register list of routes.
  *
  * @var {Routes}
- * @api public 
+ * @api public
  */
 export const RegistredRoutes: HttpRouting[] = [];
 
 /**
  * Routing Options.
- * 
+ *
  * @var {RouteOptions}
  * @api public
  */
@@ -78,6 +78,7 @@ export var RouteOptions: RoutingOptions = {};
 
 /* Initialize and Expose `Application` class */
 export class Application {
+
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
@@ -103,7 +104,7 @@ export class Application {
    * @api public
    */
   public NewRoute(options?: RoutingOptions): HttpRouting {
-    if(typeof options !== "undefined") {
+    if (typeof options !== "undefined") {
       RouteOptions = options;
     }
     const route = new HttpRouting(
@@ -161,6 +162,9 @@ export class Application {
       }
     } catch (err) {
       throw new HttpError(err.message || "Internal Server Error");
+    } finally {
+      // kill server.
+      server.close();
     }
   }
 
@@ -184,7 +188,7 @@ export class Application {
       ) {
         // Resolve the registred middlewares. The order is very important.
         const middleware = new MiddlewareResolver(Request, ResponseWriter);
-        await middleware.ResolveGlobalMiddlewares()
+        await middleware.ResolveGlobalMiddlewares();
         await middleware.ResolveMiddlewareGroups(route.middlewareGroups);
         await middleware.ResolveMiddlewares(route.middleware);
         // Excecute the handle function.

@@ -15,7 +15,8 @@
  */
 
 import { assert, Cookies, getCookies, ServerRequest } from "../deps.ts";
-import { HttpMessage } from "./httpMessage.ts";
+import { Header, HttpMessage } from "./httpMessage.ts";
+import { BodyParser } from "./bodyParser.ts";
 
 /** Query Payload */
 interface QueryPayload {
@@ -166,11 +167,32 @@ export class HttpRequest extends HttpMessage {
   /**
    * Gets the body of the message.
    *
+   * @returns {unknown}
+   * @api public
+   */
+  public async GetBody(): Promise<unknown> {
+    const parser = await BodyParser(this.req.body, this.GetContentType());
+    return parser;
+  }
+
+  /**
+   * Get the body of the message without parsing.
+   *
    * @returns {Deno.Reader}
    * @api public
    */
-  public GetBody(): Deno.Reader {
+  public GetBodyWithoutParser(): Deno.Reader {
     return this.req.body;
+  }
+
+  /**
+   * Get Content type.
+   *
+   * @returns {string}
+   * @api public
+   */
+  public GetContentType(): string | null {
+    return this.GetHeader(Header.ContentType);
   }
 
   /**

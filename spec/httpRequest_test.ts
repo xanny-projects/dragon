@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assertThrows, assertEquals, assertNotEquals } from "../deps.ts";
+import { assertThrows, assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
 import { RequestMethod } from "../lib/httpRouting.ts";
 import { HttpRequest } from "../lib/httpRequest.ts";
 import { DenoStdInternalError } from "https://deno.land/std@0.77.0/_util/assert.ts";
@@ -85,7 +85,7 @@ Deno.test({
 Deno.test({
   name: "should return `Url` without query",
   fn(): void {
-    assertEquals(httpRequest.Url(), "/testing");
+    assertMatch(httpRequest.Url(), /testing/);
   },
 });
 
@@ -105,9 +105,9 @@ Deno.test({
 });
 
 Deno.test({
-  name: "should return body of the message",
+  name: "should return `Body` of the message without parser",
   fn(): void {
-    assertEquals(httpRequest.GetBody(), "Hello Xanny");
+    assertEquals(httpRequest.GetBodyWithoutParser(), "Hello Xanny");
   },
 });
 

@@ -28,8 +28,9 @@ import { MediaTypes } from "./httpResponse.ts";
  */
 export async function BodyParser(
   body: Deno.Reader,
-  contentType: string | MediaTypes,
+  contentType: string | MediaTypes | null,
 ): Promise<unknown> {
+  if (contentType === null) contentType = MediaTypes.JSON;
   var data: Record<string, unknown> = {};
   switch (true) {
     case contentType.includes(MediaTypes.JSON):

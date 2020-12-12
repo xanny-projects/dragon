@@ -78,7 +78,6 @@ export var RouteOptions: RoutingOptions = {};
 
 /* Initialize and Expose `Application` class */
 export class Application {
-
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
@@ -110,7 +109,7 @@ export class Application {
     const route = new HttpRouting(
       "/",
       [RequestMethod.GET],
-      (Request: HttpRequest, ResponseWriter: HttpResponse) => {
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {
         console.log("Hello");
       },
     );
@@ -149,7 +148,7 @@ export class Application {
     try {
       for await (const request of server) {
         // Match attempts to match the given request against the router's registered routes.
-        const req = new HttpRequest(request);
+        const req = await new HttpRequest(request);
         const res = new HttpResponse(request);
         // If the match failure type (eg: not found) has a registered handler,
         // the handler is assigned to the Handler.
@@ -186,13 +185,16 @@ export class Application {
       if (
         route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
       ) {
-        // Resolve the registred middlewares. The order is very important.
         const middleware = new MiddlewareResolver(Request, ResponseWriter);
-        await middleware.ResolveGlobalMiddlewares();
-        await middleware.ResolveMiddlewareGroups(route.middlewareGroups);
-        await middleware.ResolveMiddlewares(route.middleware);
-        // Excecute the handle function.
-        return route.action(Request, ResponseWriter);
+        // Resolve the registred middlewares. The order is very important.
+        Promise.all([
+          middleware.ResolveGlobalMiddlewares(),
+          middleware.ResolveMiddlewareGroups(route.middlewareGroups),
+          middleware.ResolveMiddlewares(route.middleware),
+        ]).then(() => {
+          // Excecute the handle function.
+          route.action(Request, ResponseWriter);
+        });
       }
     }
     return HttpStatus.NOTFOUND;

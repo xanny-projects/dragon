@@ -44,6 +44,8 @@ export enum MediaTypes {
   CSS = "text/css",
   WASM = "application/wasm",
   MJS = "application/javascript",
+  FORM = "application/x-www-form-urlencoded",
+  MULTIPARTFORM = "multipart/form-data"
 }
 
 /**

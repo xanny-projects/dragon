@@ -46,7 +46,20 @@ Here we register two routes mapping URL path to handler. if an incoming request 
 
 ## Documentation
 
-Get started with `Xanny`, learn the fundamentals and explore advanced topics on our [documentation website]().
+Get started with Xanny, learn the fundamentals and explore advanced topics on our [documentation website]().
+
+## Benchmarks
+
+**Machine**: 7,6 GiB, Intel® Core™ i5-3210M CPU @ 2.50GHz × 4 , Intel® Ivybridge Mobile, 320,1 GB.
+
+**method**: `autocannon -c 100 -d 40 -p 10 localhost:8080` , taking the second average
+
+| Framework     | Version       | Router? | Results                                    |
+| ------------- |:-------------:| :------:| ------------------------------------------:|
+| Express       | 4.17.1        | ✓       | 166k requests in 40.08s, 39.5 MB read      |
+| Fastify       | 3.9.1         | ✓       | 1081k requests in 40.07s ,189 MB read      |
+| Oak           | 4.0.0         | ✓       | 243k requests in 40.12s, 27 MB read        |
+| **Xanny**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
 
 ## Contributing
 

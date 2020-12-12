@@ -38,7 +38,7 @@ export enum RequestMethod {
 
 // Handler function.
 export interface HandlerFunc {
-  (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any>;
+  (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<unknown>;
 }
 
 // Parameter Payload.

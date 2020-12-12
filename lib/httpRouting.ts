@@ -38,7 +38,7 @@ export enum RequestMethod {
 
 // Handler function.
 export interface HandlerFunc {
-  (Request: HttpRequest, ResponseWriter: HttpResponse): void;
+  (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any>;
 }
 
 // Parameter Payload.
@@ -242,8 +242,8 @@ export class HttpRouting {
    * @returns {HandlerCallable}
    * @api public
    */
-  public GetHandler(): HandlerFunc {
-    return this.action;
+  public async GetHandler(): Promise<HandlerFunc> {
+    return await this.action;
   }
 
   /**
@@ -318,7 +318,7 @@ export class HttpRouting {
    * @api public
    */
   public HasMethod(verb: string): boolean {
-    return verb in RequestMethod;
+    return this.methods.includes(verb as RequestMethod);
   }
 
   /**
@@ -363,7 +363,7 @@ export class HttpRouting {
     const newRoute = new HttpRouting(
       "/default",
       [RequestMethod.GET],
-      (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
     RegistredRoutes.push(newRoute);
     return newRoute;

@@ -31,7 +31,7 @@ export interface MiddlewareGroups {
 export class MiddlewareResolver {
   /**
    * Construct a new, instance of the {@code MiddlewareResolver} object.
-   * 
+   *
    * @param {HttpRequest} request
    * @param {HttpResponse} response
    * @returns {void}
@@ -43,9 +43,9 @@ export class MiddlewareResolver {
 
   /**
    * Resolve middleware groups.
-   * 
+   *
    * @param {MiddlewareGroups[]} middlewareGroups
-   * @returns {void} 
+   * @returns {void}
    * @api public
    */
   public async ResolveMiddlewareGroups(
@@ -60,7 +60,7 @@ export class MiddlewareResolver {
 
   /**
    * Resolve simple middlewares.
-   * 
+   *
    * @param {Middleware[]} middlewares
    * @returns {void}
    * @api public
@@ -75,7 +75,7 @@ export class MiddlewareResolver {
 
   /**
    * Resolve global middlewares.
-   * 
+   *
    * @returns {void}
    * @api public
    */

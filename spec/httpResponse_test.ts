@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { assertStrictEquals } from "https://deno.land/std@0.77.0/testing/asserts.ts";
 import {
   assertEquals,
   assertMatch,

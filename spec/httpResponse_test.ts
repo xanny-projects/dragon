@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-import { assertThrows, assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
-import { HttpResponse, MediaTypes, ServerResponse } from "../lib/httpResponse.ts";
+import { assertStrictEquals } from "https://deno.land/std@0.77.0/testing/asserts.ts";
+import {
+  assertEquals,
+  assertMatch,
+  assertNotEquals,
+  assertThrows,
+} from "../deps.ts";
+import {
+  HttpResponse,
+  MediaTypes,
+  ServerResponse,
+} from "../lib/httpResponse.ts";
 
 /**
  * Mocking request server.
@@ -30,14 +40,14 @@ function MockingServerRequest(
   status = 200,
   headers = new Headers(),
   body = "Hello Xanny",
-  trailers?: () => Promise<Headers> | Headers
+  trailers?: () => Promise<Headers> | Headers,
 ): ServerResponse {
   return {
     status,
     headers,
     body,
-    respond:() => Promise.resolve()
-  }
+    respond: () => Promise.resolve(),
+  };
 }
 
 // Simulate HttpResponse injection.
@@ -77,13 +87,87 @@ Deno.test({
 Deno.test({
   name: "should render `HTML` template",
   fn(): void {
-    const setTemplate = httpResponse.Html`<h1>Xanny Render Testing!</h1>`
+    const setTemplate = httpResponse.Html`<h1>Xanny Render Testing!</h1>`;
     assertNotEquals(setTemplate.body, null);
-    assertEquals(setTemplate.body, new Uint8Array([
-      60, 104,  49,  62,  88,  97, 110, 110,
-      121,  32,  82, 101, 110, 100, 101, 114,
-      32,  84, 101, 115, 116, 105, 110, 103,
-      33,  60,  47, 104,  49,  62
-    ]));
+    assertEquals(
+      setTemplate.body,
+      new Uint8Array([
+        60,
+        104,
+        49,
+        62,
+        88,
+        97,
+        110,
+        110,
+        121,
+        32,
+        82,
+        101,
+        110,
+        100,
+        101,
+        114,
+        32,
+        84,
+        101,
+        115,
+        116,
+        105,
+        110,
+        103,
+        33,
+        60,
+        47,
+        104,
+        49,
+        62,
+      ]),
+    );
   },
+});
+
+Deno.test({
+  name: "should render `Json`",
+  fn(): void {
+    const setJson = httpResponse.Json({
+      project: "Xanny",
+    });
+    assertEquals(typeof setJson.body, "object");
+    assertEquals(
+      setJson.body,
+      new Uint8Array([
+        123,
+        34,
+        112,
+        114,
+        111,
+        106,
+        101,
+        99,
+        116,
+        34,
+        58,
+        34,
+        88,
+        97,
+        110,
+        110,
+        121,
+        34,
+        125,
+      ]),
+    );
+  },
+});
+
+Deno.test({
+  name: "should if a HTTP `Status` is a `RedirectStatus` ",
+  fn(): void {
+    assertEquals(httpResponse.IsRedirectStatus(301), true);
+    assertEquals(httpResponse.IsRedirectStatus(302), true);
+    assertNotEquals(httpResponse.IsRedirectStatus(400), true);
+    assertNotEquals(httpResponse.IsRedirectStatus(200), true);
+    assertNotEquals(httpResponse.IsRedirectStatus(500), true);
+  }
 });

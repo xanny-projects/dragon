@@ -16,9 +16,7 @@
 
 import {
   assertEquals,
-  assertMatch,
   assertNotEquals,
-  assertThrows,
 } from "../deps.ts";
 import {
   HttpResponse,

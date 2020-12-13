@@ -64,7 +64,7 @@ export class HttpResponse extends HttpMessage {
    * Send the content of the response.
    * @var
    */
-  private body?: Uint8Array | Deno.Reader | string;
+  public body?: Uint8Array | Deno.Reader | string;
 
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.

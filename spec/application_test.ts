@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-import { assertEquals, assertNotEquals } from "../deps.ts";
+import { assertEquals, assertThrows } from "../deps.ts";
 import { Application, RegistredRoutes } from "../lib/application.ts";
+import { HttpError } from "../lib/httpError.ts";
+import { HttpRequest } from "../lib/httpRequest.ts";
+import { HttpResponse } from "../lib/httpResponse.ts";
 
 // Simulate Application  injection.
 const application = new Application();
@@ -29,5 +32,21 @@ Deno.test({
     assertEquals(RegistredRoutes[0].HasPath("/"), true);
   },
 });
+
+Deno.test({
+  name: "should throw error if the maxRoutes > currentRoute",
+  fn(): void {
+    assertThrows((): void => {
+      const r = application.NewRoute({ maxRoutes:0 });
+      r.Path("/graphql")
+      .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {});
+    },
+    HttpError,
+    "Maximum allowed number of routes: 0"
+    );
+  },
+});
+
+
 
 

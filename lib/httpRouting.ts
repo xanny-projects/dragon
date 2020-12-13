@@ -284,7 +284,7 @@ export class HttpRouting {
   public WithMiddlewareGroups(name: string, middlewares: Middleware[]): this {
     this.middlewareGroups.push({
       name,
-      handlers: [...this.middleware, ...middlewares],
+      handlers: [...middlewares],
     });
     return this;
   }

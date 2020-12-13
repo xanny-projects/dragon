@@ -232,7 +232,7 @@ export class HttpRouting {
    * @api public
    */
   public WithMethods(...methods: RequestMethod[]): this {
-    this.methods = methods;
+    this.methods = [...this.methods,...methods];
     return this;
   }
 

@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import {
-  assertEquals,
-  assertMatch,
-  assertNotEquals,
-  assertThrows,
-} from "../deps.ts";
+import { assertEquals, assertNotEquals } from "../deps.ts";
 import { HttpRouting, RequestMethod } from "../lib/httpRouting.ts";
+import { HttpRequest } from "../lib/httpRequest.ts";
+import { HttpResponse } from "../lib/httpResponse.ts";
 
 // Simulate HttpRouting injection.
 const httpRouting = new HttpRouting(
@@ -55,5 +52,44 @@ Deno.test({
     assertEquals(httpRouting.HasMethod(RequestMethod.POST), true);
     assertEquals(httpRouting.HasMethod(RequestMethod.HEAD), true);
     assertNotEquals(httpRouting.HasMethod(RequestMethod.PUT), true);
+  },
+});
+
+Deno.test({
+  name: "should check if a route with the given name exists",
+  fn(): void {
+    assertEquals(httpRouting.HasName(), false);
+    httpRouting.WithName("root:path");
+    assertEquals(httpRouting.HasName(), true);
+  },
+});
+
+Deno.test({
+  name: "should check if a route with the given path exists",
+  fn(): void {
+    assertEquals(httpRouting.HasPath("/"), true);
+    assertEquals(httpRouting.HasPath("/testing"), false);
+  },
+});
+
+Deno.test({
+  name: "should register new middleware",
+  fn(): void {
+    const middleware = async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve();
+    httpRouting.WithMiddleware(middleware);
+    assertEquals(httpRouting.middleware.length, 1);
+  },
+});
+
+Deno.test({
+  name: "should register a group of middleware",
+  fn(): void {
+    httpRouting.WithMiddlewareGroups("testing", [
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve(),
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve()
+    ]);
+    assertEquals(Array.isArray(httpRouting.middleware), true);
+    assertEquals(httpRouting.middlewareGroups.length, 1);
+    assertEquals(httpRouting.middlewareGroups[0].handlers.length, 2);
   },
 });

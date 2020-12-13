@@ -65,3 +65,25 @@ Deno.test({
     assertEquals(setContentType.GetContentType(), MediaTypes.HTML);
   },
 });
+
+Deno.test({
+  name: "should set the Last-Modified date using a string or a Date",
+  fn(): void {
+    const setContentType = httpResponse.WithLastModified("10/02/2020");
+    assertEquals(setContentType.GetLastModified(), new Date("10/02/2020"));
+  },
+});
+
+Deno.test({
+  name: "should render `HTML` template",
+  fn(): void {
+    const setTemplate = httpResponse.Html`<h1>Xanny Render Testing!</h1>`
+    assertNotEquals(setTemplate.body, null);
+    assertEquals(setTemplate.body, new Uint8Array([
+      60, 104,  49,  62,  88,  97, 110, 110,
+      121,  32,  82, 101, 110, 100, 101, 114,
+      32,  84, 101, 115, 116, 105, 110, 103,
+      33,  60,  47, 104,  49,  62
+    ]));
+  },
+});

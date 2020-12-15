@@ -106,13 +106,6 @@ export class HttpRouting {
   public static globalMiddleware: Middleware[] = [];
 
   /**
-   * Queries registers a new route.
-   *
-   * @var {URLSearchParams}
-   */
-  public queries?: URLSearchParams;
-
-  /**
    * The array of matched parameters.
    *
    * @var {string[]}
@@ -131,8 +124,6 @@ export class HttpRouting {
     this.path = path;
     this.action = action;
     this.methods = methods;
-    // Register query values.
-    this.WithQueries();
   }
 
   /**
@@ -296,7 +287,7 @@ export class HttpRouting {
    * @api public
    */
   public HasPath(path: string): boolean {
-    return this.path === path;
+    return this.path === path.replace(/\?.+/i, "");
   }
 
   /**
@@ -329,7 +320,6 @@ export class HttpRouting {
    */
   public Path(value: string): this {
     this.path = value;
-    this.WithQueries();
     return this;
   }
 
@@ -369,14 +359,4 @@ export class HttpRouting {
     return newRoute;
   }
 
-  /**
-   * Registers a new route with a matcher for URL query values
-   *
-   * @returns {Object}
-   * @api private
-   */
-  private WithQueries(): this {
-    this.queries = new URLSearchParams(this.path);
-    return this;
-  }
 }

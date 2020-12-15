@@ -30,8 +30,8 @@ export async function BodyParser(
   body: Deno.Reader,
   contentType: string | MediaTypes | null,
 ): Promise<unknown> {
-  if (contentType === null) contentType = MediaTypes.JSON;
   var data: Record<string, unknown> = {};
+  if (contentType === null) return data;
   switch (true) {
     case contentType.includes(MediaTypes.JSON):
       data = JSON.parse(

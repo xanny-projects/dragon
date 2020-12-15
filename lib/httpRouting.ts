@@ -131,13 +131,6 @@ export class HttpRouting {
     this.path = path;
     this.action = action;
     this.methods = methods;
-    // Push "HEAD" if the method is GET.
-    if (
-      methods.includes(RequestMethod.GET) &&
-      !methods.includes(RequestMethod.HEAD)
-    ) {
-      this.methods.push(RequestMethod.HEAD);
-    }
     // Register query values.
     this.WithQueries();
   }
@@ -232,7 +225,14 @@ export class HttpRouting {
    * @api public
    */
   public WithMethods(...methods: RequestMethod[]): this {
-    this.methods = [...this.methods,...methods];
+    // Push "HEAD" if the method is GET.
+    if (
+      methods.includes(RequestMethod.GET) &&
+      !methods.includes(RequestMethod.HEAD)
+    ) {
+      methods.push(RequestMethod.HEAD);
+    }
+    this.methods = [...this.methods, ...methods];
     return this;
   }
 
@@ -261,7 +261,6 @@ export class HttpRouting {
     }
     return false;
   }
-
 
   /**
    * Get all of the defined middleware groups.

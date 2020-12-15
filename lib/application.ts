@@ -108,10 +108,8 @@ export class Application {
     }
     const route = new HttpRouting(
       "/",
-      [RequestMethod.GET],
-      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {
-        console.log("Hello");
-      },
+      [],
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
     RegistredRoutes.push(route);
     return route;
@@ -185,6 +183,8 @@ export class Application {
       if (
         route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
       ) {
+        console.log(route.methods);
+        console.log(Request.GetMethod());
         const middleware = new MiddlewareResolver(Request, ResponseWriter);
         // Resolve the registred middlewares. The order is very important.
         Promise.all([

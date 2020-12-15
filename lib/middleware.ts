@@ -18,10 +18,16 @@ import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HandlerFunc, HttpRouting } from "./httpRouting.ts";
 
-// Middleware interface is anything with Next function.
-export interface Middleware extends HandlerFunc {}
+// When a request is received by Xanny, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
+// So if an error occurs you must use return `MiddlewareState.Cancel`.
+// If not use Next to handle the next middleware.
+export enum MiddlewareState {
+  Next,
+  Cancel,
+} // Middleware interface is anything with Next function.
 
-// Groups of middleware.
+export interface Middleware extends HandlerFunc {} // Groups of middleware.
+
 export interface MiddlewareGroups {
   name: string;
   handlers: Middleware[];
@@ -68,7 +74,13 @@ export class MiddlewareResolver {
   public async ResolveMiddlewares(middlewares: Middleware[]): Promise<void> {
     if (middlewares.length > 0) {
       for (const middleware of middlewares) {
-        await middleware(this.request, this.response);
+        const currentMiddleware = await middleware(this.request, this.response);
+        if (
+          currentMiddleware === MiddlewareState.Cancel ||
+          currentMiddleware !== MiddlewareState.Next
+        ) {
+          break;
+        }
       }
     }
   }

@@ -329,6 +329,7 @@ export class HttpRouting {
    */
   public Path(value: string): this {
     this.path = value;
+    this.WithQueries();
     return this;
   }
 

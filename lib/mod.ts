@@ -25,5 +25,6 @@ export type { Middleware, MiddlewareGroups } from "./middleware.ts";
 export { Application } from "./application.ts";
 export { RequestMethod } from "./httpRouting.ts";
 export { HttpRequest } from "./httpRequest.ts";
+export { MiddlewareState } from "./middleware.ts";
 export { HttpResponse, MediaTypes } from "./httpResponse.ts";
 export { HttpError, HttpStatus } from "./httpError.ts";

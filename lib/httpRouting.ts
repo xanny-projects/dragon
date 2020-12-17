@@ -31,7 +31,6 @@ export enum RequestMethod {
   PUT = "PUT",
   DELETE = "DELETE",
   PATCH = "PATCH",
-  ALL = "ALL",
   OPTIONS = "OPTIONS",
   HEAD = "HEAD",
 }

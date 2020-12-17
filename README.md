@@ -59,6 +59,85 @@ Get started with Xanny, learn the fundamentals and explore advanced topics.
 * [Middlewares](#middlewares)
 * [Full Example](#full-example)
 
+### Installation
+
+Assuming you’ve already installed **Deno**, create a directory to hold your application, and make that your working directory.
+
+```sh
+$ mkdir xanny-app
+$ cd xanny-app
+```
+
+### Routing
+
+Routing is made from the word route. It is used to determine the specific behavior of an application. It specifies how an application responds to a client request to a particular route, URI or path and a specific HTTP request method (`GET`, `POST`, etc.). It can handle different types of HTTP requests.
+
+#### 1- Basic Routing
+
+Xanny provides a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+  .Path("/hello")
+  .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+    ResponseWriter.WithBody("Hello Xanny").Return();
+  });
+```
+
+#### 2- Available Router Methods
+
+The router allows you to register routes that respond to any HTTP verb:
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET);
+  r.WithMethods(RequestMethod.POST);
+  r.WithMethods(RequestMethod.PUT);
+  r.WithMethods(RequestMethod.DELETE);
+  r.WithMethods(RequestMethod.PATCH);
+```
+
+Sometimes you may need to register a route that responds to multiple HTTP verbs.
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET, RequestMethod.POST);
+```
+
+#### 3- Route Parameters
+
+Sometimes you will need to capture segments of the URI within your route.
+For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+   .Path(/user\/(?<id>[0-9]{1,})/u)
+   .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+       const userID = await Request.GetParams();
+       ResponseWriter.WithBody(`User with id ${userID}`).Return();
+    });
+```
+
+You may define as many route parameters as required by your route.
+
+> 🚨 Xanny uses regex named group in order to match parameters.
+
+#### 4- Named Routes
+
+Named routes allow to get handler. You may specify a `WithName` for a route by chaining the name method onto the route definition:
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+   .Path("/user/profile")
+   .WithName("profile")
+   .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+       //
+    });
+```
+
 ## Benchmarks
 
 **Machine**: 7,6 GiB, Intel® Core™ i5-3210M CPU @ 2.50GHz × 4 , Intel® Ivybridge Mobile, 320,1 GB.

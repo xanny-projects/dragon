@@ -183,6 +183,11 @@ export class Application {
       if (
         route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
       ) {
+        if (typeof route.path !== "string") {
+          // Set a parameter to the given value.
+          const r = route.path.exec(Request.GetPath());
+          Request.parameters = r?.groups;
+        }
         const middleware = new MiddlewareResolver(Request, ResponseWriter);
         // Resolve the registred middlewares. The order is very important.
         Promise.all([

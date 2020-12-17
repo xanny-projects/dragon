@@ -31,11 +31,11 @@ const r = app.NewRoute({ maxRoutes:2 });
 r.WithMethods(RequestMethod.GET)
     .Path("/hello")
     .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      console.log("Hello Xanny");
+      ResponseWriter.WithBody("Hello Xanny").Return();
     })
     .Path("/demo")
     .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      console.log("Hello Xanny Demo");
+      ResponseWriter.WithBody("Hello Xanny Demo").Return();
     });
 
 app.ListenAndServe({ port: 8080 });
@@ -46,7 +46,18 @@ Here we register two routes mapping URL path to handler. if an incoming request 
 
 ## Documentation
 
-Get started with Xanny, learn the fundamentals and explore advanced topics on our [documentation website]().
+Get started with Xanny, learn the fundamentals and explore advanced topics.
+
+### Table of content
+
+* [Installation](#install)
+* [Configuration](#configuration)
+* [Routing](#routing)
+* [Requests](#requests)
+* [Responses](#responses)
+* [Cookies](#cookies)
+* [Middlewares](#middlewares)
+* [Full Example](#full-example)
 
 ## Benchmarks
 
@@ -60,6 +71,10 @@ Get started with Xanny, learn the fundamentals and explore advanced topics on ou
 | Fastify       | 3.9.1         | ✓       | 1081k requests in 40.07s ,189 MB read      |
 | Oak           | 4.0.0         | ✓       | 243k requests in 40.12s, 27 MB read        |
 | **Xanny**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
+
+Benchmarks taken using [https://github.com/fastify/benchmarks](https://github.com/fastify/benchmarks). This is a synthetic, `hello world` benchmark that aims to evaluate the framework overhead. The overhead that each framework has on your application depends on your application, you should **always** benchmark if performance matters to you.
+
+
 
 ## Contributing
 

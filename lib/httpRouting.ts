@@ -54,7 +54,7 @@ export class HttpRouting {
    *
    * @var {string}
    */
-  public path: string;
+  public path: string | RegExp;
 
   /**
    * The Original path for given request.
@@ -290,6 +290,7 @@ export class HttpRouting {
     return this.path === path.replace(/\?.+/i, "");
   }
 
+
   /**
    * Check if a route with the given name exists.
    *
@@ -312,13 +313,19 @@ export class HttpRouting {
   }
 
   /**
-   * Register new path value.
+   * Register new path value. Use regex named group is you need to register params.
+   *
+   * Example:
+   *
+   *    Path("/xaany");
+   *    Path(/xanny/);
+   *    Path(/xanny\/(?<id>[0-9]+)/u);
    *
    * @param {string} value
    * @returns {Object}
    * @api public
    */
-  public Path(value: string): this {
+  public Path(value: string | RegExp): this {
     this.path = value;
     return this;
   }

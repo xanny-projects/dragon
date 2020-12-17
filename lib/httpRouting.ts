@@ -41,12 +41,6 @@ export interface HandlerFunc {
   (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<unknown>;
 }
 
-// Parameter Payload.
-interface IParameterPayload {
-  name: string;
-  value: string | null;
-}
-
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
   /**
@@ -106,13 +100,6 @@ export class HttpRouting {
   public static globalMiddleware: Middleware[] = [];
 
   /**
-   * The array of matched parameters.
-   *
-   * @var {string[]}
-   */
-  public parameters: IParameterPayload[] = [];
-
-  /**
   * Construct a new, instance of the {@code Routing} object.
   *
   * @param {string} path
@@ -124,48 +111,6 @@ export class HttpRouting {
     this.path = path;
     this.action = action;
     this.methods = methods;
-  }
-
-  /**
-   * Determine if the route has parameters.
-   *
-   * @returns {boolean}
-   * @api public
-   */
-  public HasParameters(): boolean {
-    return this.parameters.length === 0;
-  }
-
-  /**
-   * Determine a given parameter exists from the route.
-   *
-   * @param {string} key
-   * @returns {boolean}
-   * @api public
-   */
-  public HasParameter(key: string): boolean {
-    for (var parameter of this.parameters) {
-      if (parameter.name === key) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Set a parameter to the given value.
-   *
-   * @param {string} name
-   * @param {string | null } value
-   * @returns {Object | HttpError}
-   * @api public
-   */
-  public WithParameter(name: string, value: string | null): this | HttpError {
-    if (this.HasParameter(name)) {
-      throw new HttpError(`Parameter ${name} already exists`);
-    }
-    this.parameters.push({ name, value });
-    return this;
   }
 
   /**
@@ -287,9 +232,10 @@ export class HttpRouting {
    * @api public
    */
   public HasPath(path: string): boolean {
-    return this.path === path.replace(/\?.+/i, "");
+    // remove query if exists.
+    const cleanPath = path.replace(/\?.+/i, "");
+    return this.path === cleanPath || new RegExp(this.path).test(cleanPath);
   }
-
 
   /**
    * Check if a route with the given name exists.
@@ -365,5 +311,4 @@ export class HttpRouting {
     RegistredRoutes.push(newRoute);
     return newRoute;
   }
-
 }

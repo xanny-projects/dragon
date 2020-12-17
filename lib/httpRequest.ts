@@ -24,6 +24,9 @@ interface QueryPayload {
   value: string;
 }
 
+/** Parameter Payload */
+export type ParameterPayload = { [key: string]: string };
+
 /**
  * Representation of an outgoing, client-side request.
  *
@@ -42,6 +45,13 @@ export class HttpRequest extends HttpMessage {
    * This defaults to `2`
    */
   public defaultOffset: number = 2;
+
+  /**
+   * The array of matched parameters.
+   *
+   * @var {string[]}
+   */
+  public parameters?: ParameterPayload = {};
 
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
@@ -228,6 +238,16 @@ export class HttpRequest extends HttpMessage {
       listQueries.push({ value, key });
     });
     return listQueries;
+  }
+
+  /**
+   * Retrieve parameters from the route.
+   *
+   * @returns {ParameterPayload}
+   * @api public
+   */
+  public GetParams(): ParameterPayload {
+    return this.parameters || {};
   }
 
   /**

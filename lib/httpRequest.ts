@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, Cookies, getCookies, ServerRequest } from "../deps.ts";
+import { Cookies, getCookies, ServerRequest } from "../deps.ts";
 import { Header, HttpMessage } from "./httpMessage.ts";
 import { BodyParser } from "./bodyParser.ts";
 
@@ -274,19 +274,4 @@ export class HttpRequest extends HttpMessage {
     return getCookies(this.req);
   }
 
-  /**
-   * Return an instance with the specified cookies.
-   *
-   * For example:
-   *
-   *   WithCookie("full=of; tasty=chocolate")
-   *
-   * @returns {string}
-   * @api public
-   */
-  public WithCookie(value: string): this {
-    assert(typeof value === "string", "Cookie must be string");
-    this.req.headers.set("Cookie", value);
-    return this;
-  }
 }

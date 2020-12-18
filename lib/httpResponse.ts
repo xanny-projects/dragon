@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Response, encode } from "../deps.ts";
+import { assert, Response, encode } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
 import { HttpStatus } from "./httpError.ts";
 
@@ -256,6 +256,22 @@ export class HttpResponse extends HttpMessage {
       this.RemoveHeader("Transfer-Encoding");
     }
     this.body = body || "";
+    return this;
+  }
+
+  /**
+   * Return an instance with the specified cookies.
+   *
+   * For example:
+   *
+   *   WithCookie("full=of; tasty=chocolate")
+   *
+   * @returns {string}
+   * @api public
+   */
+  public WithCookie(value: string): this {
+    assert(typeof value === "string", "Cookie must be string");
+    this.res.headers?.set("Cookie", value);
     return this;
   }
 

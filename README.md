@@ -54,8 +54,8 @@ Get started with Xanny, learn the fundamentals and explore advanced topics.
 * [Configuration](#configuration)
 * [Routing](#routing)
 * [Requests](#requests)
+* [Headers](#Request-Headers-&-Attaching-Headers-To-Responses)
 * [Responses](#responses)
-* [Headers](#headers)
 * [Cookies](#cookies)
 * [Middlewares](#middlewares)
 * [Full Example](#full-example)
@@ -139,7 +139,7 @@ const r = app.NewRoute();
     });
 ```
 
-#### Request Object
+#### 5- Request Object
 
 The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
 
@@ -168,6 +168,62 @@ The following table specifies some of the properties associated with request obj
 | 20            | GetParams        | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                       |
 | 22            | Secure           | Verify if the request is secure `HTTPS`.                        |
 
+#### 6- Request Headers & Attaching Headers To Responses
+
+The Headers interface allows you to perform various actions on HTTP request and response headers. These actions include retrieving, setting, adding to, and removing headers from the list of the request's headers.
+
+You may retrieve a request header from the `HttpRequest` and `HttpResponse` instance using the `GetHeader`
+or `GetHeaders` method. If the header is not present on the request, null will be returned.
+
+```ts
+const HandlerFun = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  // Retrieves a message header value by the name.
+  const v1 = Request.GetHeader('X-Header-Name');
+  // Retrieves all message header values.
+  const v2 = Request.GetHeaders();
+}
+```
+
+The `HasHeader` method may be used to determine if the request contains a given header:
+
+```ts
+if (Request.HasHeader('X-Header-Name')) {
+    //
+}
+```
+
+The `RemoveHeader` method is used to remove given header if exists :
+
+```ts
+Request.RemoveHeader('X-Header-Name');
+```
+
+The `WithHeader` method is used to add a series of headers to the response before sending it back to the user.
+
+```ts
+Request.WithHeader('X-Header-One', 'Header Value')
+       .WithHeader('X-Header-One', 'Header Value')
+       .Return();
+```
+
+> 💬 Keep in mind that most response methods are chainable, allowing for the fluent construction of response instances.
+
+#### 7- Response Object
+
+All routes should return a response to be sent back to the user's browser. Xanny provides several different ways to return responses.
+
+Let's see some methods of response object.
+
+| Index         | Methods           | Description                                                    |
+|:-------------:| :-----------------| :--------------------------------------------------------------|
+| 1             | GetStatusCode     | Set the response status code. The status code is a 3-digit integer result code of the server's attempt.|
+| 2             | WithStatus        | Set an instance with the specified status code. |
+| 3             | WithContentLength | Set Content-Length field to `n`. |
+| 4             | WithLastModified  | Set the Last-Modified date using a `string` or a `Date`. |
+| 5             | Html              | Renders a view and sends the rendered HTML string to the client. |
+| 6             | Json              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
+| 7             | IsRedirectStatus | Determines if a HTTP `Status` is a `RedirectStatus` (3XX). |
+| 8             | WithBody         | Set the response body. |
 
 ## Benchmarks
 

@@ -265,7 +265,7 @@ export class HttpRequest extends HttpMessage {
   }
 
   /**
-   * Retrieves cookies sent by the client to the server.
+   * Retrieves cookies sent by the request.
    *
    * @returns {Cookies}
    * @api public

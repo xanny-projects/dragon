@@ -28,7 +28,7 @@ Deno.test({
   fn(): void {
     application.NewRoute({ maxRoutes:1 });
     assertEquals(RegistredRoutes.length, 1);
-    assertEquals(RegistredRoutes[0].HasMethod("GET"), true);
+    assertEquals(RegistredRoutes[0].HasMethod("GET"), false);
     assertEquals(RegistredRoutes[0].HasPath("/"), true);
   },
 });

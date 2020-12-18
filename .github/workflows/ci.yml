@@ -1,0 +1,28 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: download deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.6.0
+      - name: check format
+        if: matrix.os == 'ubuntu-latest'
+        run: deno fmt --check
+      - name: check linting
+        if: matrix.os == 'ubuntu-latest'
+        run: deno lint --unstable
+      - name: run tests
+        run: deno test ./spec --allow-read --allow-write
+      - name: run tests unstable
+        run: deno test ./spec --allow-read --allow-write --unstable

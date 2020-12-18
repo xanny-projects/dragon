@@ -265,6 +265,39 @@ const r = app.NewRoute();
 
 > 💬 To pass the request deeper into the application, you must call the `MiddlewareState.Next`
 
+### Full Examples
+
+Here's a complete, runnable example of a small xanny based server:
+
+```ts
+import {
+  Application,
+  HttpRequest,
+  HttpResponse,
+  RequestMethod,
+  MiddlewareState
+} from "./lib/mod.ts";
+
+async function main(args: string[]): Promise<void> {
+  const app = new Application();
+  const r = app.NewRoute({ maxRoutes:1 });
+  r.WithMethods(RequestMethod.GET)
+   .Path("/xanny")
+   .WithName("")
+   .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+      //
+   });
+
+ app.ListenAndServe({ port: args.port });
+
+}
+
+main(Deno.args).then(() => {
+  console.log("Serveur listining");
+});
+
+```
+
 ## Benchmarks
 
 **Machine**: 7,6 GiB, Intel® Core™ i5-3210M CPU @ 2.50GHz × 4 , Intel® Ivybridge Mobile, 320,1 GB.

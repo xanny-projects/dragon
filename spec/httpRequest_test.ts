@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { assertThrows, assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
+import { assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
 import { RequestMethod } from "../lib/httpRouting.ts";
 import { HttpRequest } from "../lib/httpRequest.ts";
-import { DenoStdInternalError } from "https://deno.land/std@0.77.0/_util/assert.ts";
 
 interface ServerRequest {
   url: string;
@@ -116,20 +115,5 @@ Deno.test({
   name: "should return content length header",
   fn(): void {
     assertNotEquals(httpRequest.ContentLength(), null);
-  },
-});
-
-Deno.test({
-  name: "should set cookie value",
-  fn(): void {
-    httpRequest.WithCookie("Max-Age=2592000");
-    assertNotEquals(httpRequest.HasHeader("Cookie"), "Max-Age=2592000");
-    assertThrows(
-      (): void => {
-        httpRequest.WithCookie(null as any);
-      },
-      DenoStdInternalError,
-      "Cookie must be string",
-    );
   },
 });

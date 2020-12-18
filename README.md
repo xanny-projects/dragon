@@ -55,6 +55,7 @@ Get started with Xanny, learn the fundamentals and explore advanced topics.
 * [Routing](#routing)
 * [Requests](#requests)
 * [Responses](#responses)
+* [Headers](#headers)
 * [Cookies](#cookies)
 * [Middlewares](#middlewares)
 * [Full Example](#full-example)
@@ -138,6 +139,36 @@ const r = app.NewRoute();
     });
 ```
 
+#### Request Object
+
+The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
+
+The following table specifies some of the properties associated with request object.
+
+| Index         | Methods           | Description                                                    |
+|:-------------:| :-----------------| :--------------------------------------------------------------|
+| 1             | GetMethod         | Returns the HTTP verb for the request.                         |
+| 2             | Url               | Returns the full URL for incoming request.                     |
+| 4             | UrlQuery          | Returns the full URL for incoming request.                     |
+| 5             | UrlQuery          | Returns the full URL for incoming request (with query string). |
+| 6             | GetPath           | Returns the request's path information                         |
+| 7             | IsXHR             | Check if the request was an `_XMLHttpRequest_`.                |
+| 8             | HostName          | Returns the `Host` header field to a hostname.                 |
+| 9             | IsIpv4            | Value must be valid IPv4.                                      |
+| 10            | IsIpv6            | Value must be valid IPv6.                                      |
+| 11            | ContentLength     | Indicates the size of the entity-body, in bytes, sent to the recipient.                                       |
+| 12            | GetBody           | It contains key-value pairs of data submitted in the request body                                        |
+| 13            | GetBodyWithoutParser   | Get the body of the message without parsing.              |
+| 14            | GetContentType   | Returns the media type of the resource.                         |
+| 15            | GetContentType   | Returns the media type of the resource.                         |
+| 16            | GetProtocol      | Returns `http` or `https` when requested with TLS.              |
+| 17            | GetQueryParams   | Returns an array of object containing a property for each query string parameter in the route.   |
+| 18            | GetQueryParam    | Returns specific query param.                                   |
+| 19            | Secure           | Verify if the request is secure `HTTPS`.                        |
+| 20            | GetParams        | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                       |
+| 22            | Secure           | Verify if the request is secure `HTTPS`.                        |
+
+
 ## Benchmarks
 
 **Machine**: 7,6 GiB, Intel® Core™ i5-3210M CPU @ 2.50GHz × 4 , Intel® Ivybridge Mobile, 320,1 GB.
@@ -151,9 +182,7 @@ const r = app.NewRoute();
 | Oak           | 4.0.0         | ✓       | 243k requests in 40.12s, 27 MB read        |
 | **Xanny**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
 
-Benchmarks taken using [https://github.com/fastify/benchmarks](https://github.com/fastify/benchmarks). This is a synthetic, `hello world` benchmark that aims to evaluate the framework overhead. The overhead that each framework has on your application depends on your application, you should **always** benchmark if performance matters to you.
-
-
+This is a synthetic, `hello world` benchmark that aims to evaluate the framework overhead. The overhead that each framework has on your application depends on your application, you should **always** benchmark if performance matters to you.
 
 ## Contributing
 

@@ -233,7 +233,9 @@ export class HttpRouting {
   public HasPath(path: string): boolean {
     // remove query if exists.
     const cleanPath = path.replace(/\?.+/i, "");
-    return this.path === cleanPath || new RegExp(this.path).test(cleanPath);
+    return typeof this.path === "string"
+      ? this.path === cleanPath
+      : new RegExp(this.path).test(cleanPath);
   }
 
   /**

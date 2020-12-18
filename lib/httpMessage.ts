@@ -129,7 +129,7 @@ export class HttpMessage {
   }
 
   /**
-   * Return an instance with the provided value replacing the specified header.
+   * Add a series of headers to the response before sending it back to the user.
    *
    * @param {string} name
    * @param {string} value

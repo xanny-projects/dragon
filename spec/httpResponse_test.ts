@@ -17,6 +17,8 @@
 import {
   assertEquals,
   assertNotEquals,
+  assertThrows,
+  DenoStdInternalError
 } from "../deps.ts";
 import {
   HttpResponse,
@@ -167,4 +169,20 @@ Deno.test({
     assertNotEquals(httpResponse.IsRedirectStatus(200), true);
     assertNotEquals(httpResponse.IsRedirectStatus(500), true);
   }
+});
+
+
+Deno.test({
+  name: "should set cookie value",
+  fn(): void {
+    httpResponse.WithCookie("Max-Age=2592000");
+    assertNotEquals(httpResponse.HasHeader("Cookie"), "Max-Age=2592000");
+    assertThrows(
+      (): void => {
+        httpResponse.WithCookie(null as any);
+      },
+      DenoStdInternalError,
+      "Cookie must be string",
+    );
+  },
 });

@@ -53,12 +53,12 @@ Get started with Xanny, learn the fundamentals and explore advanced topics.
 * [Installation](#install)
 * [Configuration](#configuration)
 * [Routing](#routing)
-* [Requests](#requests)
+* [Requests](#Request-Object)
 * [Headers](#Request-Headers-&-Attaching-Headers-To-Responses)
-* [Responses](#responses)
-* [Cookies](#cookies)
-* [Middlewares](#middlewares)
-* [Full Example](#full-example)
+* [Responses](#Response-Object)
+* [Cookies](#Cookies)
+* [Middlewares](#Middlewares)
+* [Full Example](#Full-Example)
 
 ### Installation
 
@@ -224,6 +224,46 @@ Let's see some methods of response object.
 | 6             | Json              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
 | 7             | IsRedirectStatus | Determines if a HTTP `Status` is a `RedirectStatus` (3XX). |
 | 8             | WithBody         | Set the response body. |
+
+### Cookies
+
+Cookies are small piece of information i.e. sent from a website and stored in user's web browser when user browses that website. Every time the user loads that website back, the browser sends that stored data back to website or server, to recognize user.
+
+Let's define a new route in your xanny app like set a new cookie:
+
+```ts
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+   .Path("/demo")
+   .HandleFunc(async function (Request: HttpRequest, ResponseWriter:  HttpResponse): Promise<any> {
+       ResponseWriter.WithCookie("id=a3fWa; Max-Age=2592000").Return();
+    });
+```
+
+### Middlewares
+
+Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. Middleware functions are always invoked in the order in which they are added.
+
+Middleware is commonly used to perform tasks like body parsing for URL-encoded or JSON requests, cookie parsing for basic cookie handling.
+
+If you want to record every time you a get a request then you can use a middleware.
+
+```ts
+const middleware = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  console.log(Request.GetMethod());
+  return MiddlewareState.Next;
+}
+
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+  .Path("/middleware/example")
+  .WithMiddleware(middleware)
+  .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+    //
+  });
+```
+
+> 💬 To pass the request deeper into the application, you must call the `MiddlewareState.Next`
 
 ## Benchmarks
 

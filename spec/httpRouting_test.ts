@@ -22,9 +22,11 @@ import { HttpResponse } from "../lib/httpResponse.ts";
 // Simulate HttpRouting injection.
 const httpRouting = new HttpRouting(
   "/",
-  [RequestMethod.GET],
+  [],
   async () => Promise.resolve(),
 );
+
+httpRouting.WithMethods(RequestMethod.GET);
 
 Deno.test({
   name: "should push `HEAD` if the method is GET",

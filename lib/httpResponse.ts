@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, Response, encode } from "../deps.ts";
+import { assert, encode, Response } from "../deps.ts";
 import { HttpMessage } from "./httpMessage.ts";
 import { HttpStatus } from "./httpError.ts";
 
@@ -45,7 +45,7 @@ export enum MediaTypes {
   WASM = "application/wasm",
   MJS = "application/javascript",
   FORM = "application/x-www-form-urlencoded",
-  MULTIPARTFORM = "multipart/form-data"
+  MULTIPARTFORM = "multipart/form-data",
 }
 
 /**

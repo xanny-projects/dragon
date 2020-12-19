@@ -22,8 +22,9 @@ Deno.test({
   fn(): void {
     assertEquals(
       new HttpError("Internal Server Error").GetStatus(),
-      HttpStatus.INTERNALSERVERERROR);
-  }
+      HttpStatus.INTERNALSERVERERROR,
+    );
+  },
 });
 
 Deno.test({
@@ -31,6 +32,7 @@ Deno.test({
   fn(): void {
     assertEquals(
       new HttpError("Internal Server Error").GetMessage(),
-      "Internal Server Error");
-  }
+      "Internal Server Error",
+    );
+  },
 });

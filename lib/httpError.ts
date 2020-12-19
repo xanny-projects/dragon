@@ -164,28 +164,30 @@ export class HttpError extends Error {
    *
    * Best practice is to use the `HttpStatus` enum.
    */
-   constructor(public readonly message:string, public readonly status:number = HttpStatus.INTERNALSERVERERROR) {
-     super();
-   }
+  constructor(
+    public readonly message: string,
+    public readonly status: number = HttpStatus.INTERNALSERVERERROR,
+  ) {
+    super();
+  }
 
-   /**
+  /**
     * Return error message.
     *
     * @returns {string}
     * @api public
     */
-   public GetMessage():string {
+  public GetMessage(): string {
     return this.message;
-   }
+  }
 
-   /**
+  /**
     * Return error status.
     *
     * @returns {number}
     * @api public
     */
-   public GetStatus(): number {
-     return this.status;
-   }
-
+  public GetStatus(): number {
+    return this.status;
+  }
 }

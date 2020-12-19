@@ -63,7 +63,7 @@ export enum Header {
   ContentSecurityPolicy = "Content-Security-Policy",
   ContentSecurityPolicyReportOnly = "Content-Security-Policy-Report-Only",
   XCSRFToken = "X-CSRF-Token",
-  ReferrerPolicy = "Referrer-Policy"
+  ReferrerPolicy = "Referrer-Policy",
 }
 
 /**
@@ -74,7 +74,6 @@ export enum Header {
  * @see {@link http://www.ietf.org/rfc/rfc7231.txt}
  */
 export class HttpMessage {
-
   /**
    * Construct a new, empty instance of the {@code HttpMessage} object.
    * @param {Headers} headers
@@ -121,7 +120,7 @@ export class HttpMessage {
    * @api public
    */
   public RemoveHeader(name: string): this | HttpError {
-    if(!this.headers.has(name)) {
+    if (!this.headers.has(name)) {
       throw new HttpError(`Header ${name} does not exists`);
     }
     this.headers.delete(name);
@@ -143,5 +142,4 @@ export class HttpMessage {
     this.headers.set(name, value);
     return this;
   }
-
 }

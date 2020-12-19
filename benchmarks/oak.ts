@@ -11,5 +11,5 @@ router.get("/", ({ response }: { response: any }) => {
 });
 app.use(router.routes());
 
-console.log('running on port ', port);
+console.log("running on port ", port);
 await app.listen({ port });

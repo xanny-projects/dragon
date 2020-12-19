@@ -18,7 +18,7 @@ import {
   assertEquals,
   assertNotEquals,
   assertThrows,
-  DenoStdInternalError
+  DenoStdInternalError,
 } from "../deps.ts";
 import {
   HttpResponse,
@@ -168,9 +168,8 @@ Deno.test({
     assertNotEquals(httpResponse.IsRedirectStatus(400), true);
     assertNotEquals(httpResponse.IsRedirectStatus(200), true);
     assertNotEquals(httpResponse.IsRedirectStatus(500), true);
-  }
+  },
 });
-
 
 Deno.test({
   name: "should set cookie value",

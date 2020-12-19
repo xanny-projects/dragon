@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-const fastify = require('fastify')();
-fastify.get('/', async (req, reply) => reply.send('Hello world'));
+const fastify = require("fastify")();
+fastify.get("/", async (req, reply) => reply.send("Hello world"));
 fastify.listen(8080);

@@ -26,7 +26,7 @@ const application = new Application();
 Deno.test({
   name: "should init route with default `/` path",
   fn(): void {
-    application.NewRoute({ maxRoutes:1 });
+    application.NewRoute({ maxRoutes: 1 });
     assertEquals(RegistredRoutes.length, 1);
     assertEquals(RegistredRoutes[0].HasMethod("GET"), false);
     assertEquals(RegistredRoutes[0].HasPath("/"), true);
@@ -36,17 +36,19 @@ Deno.test({
 Deno.test({
   name: "should throw error if the maxRoutes > currentRoute",
   fn(): void {
-    assertThrows((): void => {
-      const r = application.NewRoute({ maxRoutes:0 });
-      r.Path("/graphql")
-      .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {});
-    },
-    HttpError,
-    "Maximum allowed number of routes: 0"
+    assertThrows(
+      (): void => {
+        const r = application.NewRoute({ maxRoutes: 0 });
+        r.Path("/graphql")
+          .HandleFunc(
+            async function (
+              Request: HttpRequest,
+              ResponseWriter: HttpResponse,
+            ): Promise<any> {},
+          );
+      },
+      HttpError,
+      "Maximum allowed number of routes: 0",
     );
   },
 });
-
-
-
-

@@ -23,7 +23,7 @@ Deno.test({
     const r = new StringReader('{"name":"Xanny"}');
     const parser = await BodyParser(r, "application/json");
     assertEquals(typeof parser, "object");
-    assertEquals(parser, {"name":"Xanny"});
+    assertEquals(parser, { "name": "Xanny" });
   },
 });
 

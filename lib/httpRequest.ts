@@ -273,5 +273,4 @@ export class HttpRequest extends HttpMessage {
   public GetCookie(): Cookies {
     return getCookies(this.req);
   }
-
 }

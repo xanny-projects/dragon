@@ -77,7 +77,10 @@ Deno.test({
 Deno.test({
   name: "should register new middleware",
   fn(): void {
-    const middleware = async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve();
+    const middleware = async (
+      Request: HttpRequest,
+      ResponseWriter: HttpResponse,
+    ) => Promise.resolve();
     httpRouting.WithMiddleware(middleware);
     assertEquals(httpRouting.middleware.length, 1);
   },
@@ -87,8 +90,10 @@ Deno.test({
   name: "should register a group of middleware",
   fn(): void {
     httpRouting.WithMiddlewareGroups("testing", [
-      async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve(),
-      async (Request: HttpRequest, ResponseWriter: HttpResponse) => Promise.resolve()
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) =>
+        Promise.resolve(),
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) =>
+        Promise.resolve(),
     ]);
     assertEquals(Array.isArray(httpRouting.middleware), true);
     assertEquals(httpRouting.middlewareGroups.length, 1);

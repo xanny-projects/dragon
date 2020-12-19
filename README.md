@@ -143,30 +143,30 @@ const r = app.NewRoute();
 
 The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
 
-The following table specifies some of the properties associated with request object.
+The following table specifies some of the methods associated with request object.
 
-| Index         | Methods           | Description                                                    |
-|:-------------:| :-----------------| :--------------------------------------------------------------|
-| 1             | GetMethod         | Returns the HTTP verb for the request.                         |
-| 2             | Url               | Returns the full URL for incoming request.                     |
-| 4             | UrlQuery          | Returns the full URL for incoming request.                     |
-| 5             | UrlQuery          | Returns the full URL for incoming request (with query string). |
-| 6             | GetPath           | Returns the request's path information                         |
-| 7             | IsXHR             | Check if the request was an `_XMLHttpRequest_`.                |
-| 8             | HostName          | Returns the `Host` header field to a hostname.                 |
-| 9             | IsIpv4            | Value must be valid IPv4.                                      |
-| 10            | IsIpv6            | Value must be valid IPv6.                                      |
-| 11            | ContentLength     | Indicates the size of the entity-body, in bytes, sent to the recipient.                                       |
-| 12            | GetBody           | It contains key-value pairs of data submitted in the request body                                        |
-| 13            | GetBodyWithoutParser   | Get the body of the message without parsing.              |
-| 14            | GetContentType   | Returns the media type of the resource.                         |
-| 15            | GetContentType   | Returns the media type of the resource.                         |
-| 16            | GetProtocol      | Returns `http` or `https` when requested with TLS.              |
-| 17            | GetQueryParams   | Returns an array of object containing a property for each query string parameter in the route.   |
-| 18            | GetQueryParam    | Returns specific query param.                                   |
-| 19            | Secure           | Verify if the request is secure `HTTPS`.                        |
-| 20            | GetParams        | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                       |
-| 22            | Secure           | Verify if the request is secure `HTTPS`.                        |
+| Index         | Methods                       | Description                                                    |
+|:-------------:| :-----------------------------| :--------------------------------------------------------------|
+| 1             | *GetMethod*                   | Returns the HTTP verb for the request.                         |
+| 2             | *Url*                         | Returns the full URL for incoming request.                     |
+| 4             | *UrlQuery*                    | Returns the full URL for incoming request.                     |
+| 5             | *UrlQuery*                    | Returns the full URL for incoming request (with query string). |
+| 6             | *GetPath*                     | Returns the request's path information                         |
+| 7             | *IsXHR*                       | Check if the request was an `_XMLHttpRequest_`.                |
+| 8             | *HostName*                    | Returns the `Host` header field to a hostname.                 |
+| 9             | *IsIpv4*                      | Value must be valid IPv4.                                      |
+| 10            | *IsIpv6*                      | Value must be valid IPv6.                                      |
+| 11            | *ContentLength*               | Indicates the size of the entity-body, in bytes, sent to the recipient.                                      |
+| 12            | *GetBody*                     | It contains key-value pairs of data submitted in the request body                                            |
+| 13            | *GetBodyWithoutParser*        | Get the body of the message without parsing.                    |
+| 14            | *GetContentType*              | Returns the media type of the resource.                         |
+| 15            | *GetContentType*              | Returns the media type of the resource.                         |
+| 16            | *GetProtocol*                 | Returns `http` or `https` when requested with TLS.              |
+| 17            | *GetQueryParams*              | Returns an array of object containing a property for each query string parameter in the route.   |
+| 18            | *GetQueryParam*               | Returns specific query param.                                   |
+| 19            | *Secure*                      | Verify if the request is secure `HTTPS`.                        |
+| 20            | *GetParams*                   | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                     |
+| 22            | *Secure*           | Verify if the request is secure `HTTPS`.                        |
 
 #### 6- Request Headers & Attaching Headers To Responses
 
@@ -214,16 +214,16 @@ All routes should return a response to be sent back to the user's browser. Xanny
 
 Let's see some methods of response object.
 
-| Index         | Methods           | Description                                                    |
-|:-------------:| :-----------------| :--------------------------------------------------------------|
-| 1             | GetStatusCode     | Set the response status code. The status code is a 3-digit integer result code of the server's attempt.|
-| 2             | WithStatus        | Set an instance with the specified status code. |
-| 3             | WithContentLength | Set Content-Length field to `n`. |
-| 4             | WithLastModified  | Set the Last-Modified date using a `string` or a `Date`. |
-| 5             | Html              | Renders a view and sends the rendered HTML string to the client. |
-| 6             | Json              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
-| 7             | IsRedirectStatus | Determines if a HTTP `Status` is a `RedirectStatus` (3XX). |
-| 8             | WithBody         | Set the response body. |
+| Index         | Methods              | Description                                                    |
+|:-------------:| :-----------------| :-----------------------------------------------------------------|
+| 1             | *GetStatusCode*     | Set the response status code. The status code is a 3-digit integer result code of the server's attempt.|
+| 2             | *WithStatus*        | Set an instance with the specified status code.                 |
+| 3             | *WithContentLength* | Set Content-Length field to `n`.                                |
+| 4             | *WithLastModified*  | Set the Last-Modified date using a `string` or a `Date`.        |
+| 5             | *Html*              | Renders a view and sends the rendered HTML string to the client.|
+| 6             | *Json*              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
+| 7             | *IsRedirectStatus* | Determines if a HTTP `Status` is a `RedirectStatus` (3XX).       |
+| 8             | *WithBody*         | Set the response body. |
 
 ### Cookies
 
@@ -274,8 +274,7 @@ import {
   Application,
   HttpRequest,
   HttpResponse,
-  RequestMethod,
-  MiddlewareState
+  RequestMethod
 } from "./lib/mod.ts";
 
 async function main(args: string[]): Promise<void> {

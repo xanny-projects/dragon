@@ -15,7 +15,7 @@
  */
 
 import { DefaultServer, ServerTLS } from "../deps.ts";
-import { HttpRouting, RequestMethod } from "./httpRouting.ts";
+import { HttpRouting } from "./httpRouting.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";

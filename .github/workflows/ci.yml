@@ -19,9 +19,6 @@ jobs:
       - name: check format
         if: matrix.os == 'ubuntu-latest'
         run: deno fmt --check
-      - name: check linting
-        if: matrix.os == 'ubuntu-latest'
-        run: deno lint --unstable
       - name: run tests
         run: deno test ./spec --allow-read --allow-write
       - name: run tests unstable

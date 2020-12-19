@@ -143,7 +143,7 @@ const r = app.NewRoute();
   r.WithMethods(RequestMethod.GET)
    .Path(/user\/(?<id>[0-9]{1,})/u)
    .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
-       const userID = await Request.GetParams();
+       const { id:userID } = await Request.GetParams();
        ResponseWriter.WithBody(`User with id ${userID}`).Return();
     });
 ```
@@ -166,7 +166,7 @@ const r = app.NewRoute();
     });
 ```
 
-#### 5- Request Object
+### Request Object
 
 The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
 
@@ -195,7 +195,7 @@ The following table specifies some of the methods associated with request object
 | 20            | *GetParams*                   | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                     |
 | 22            | *Secure*           | Verify if the request is secure `HTTPS`.                        |
 
-#### 6- Request Headers & Attaching Headers To Responses
+### Request Headers & Attaching Headers To Responses
 
 The Headers interface allows you to perform various actions on HTTP request and response headers. These actions include retrieving, setting, adding to, and removing headers from the list of the request's headers.
 
@@ -235,7 +235,7 @@ Request.WithHeader('X-Header-One', 'Header Value')
 
 > 💬 Keep in mind that most response methods are chainable, allowing for the fluent construction of response instances.
 
-#### 7- Response Object
+### Response Object
 
 All routes should return a response to be sent back to the user's browser. Xanny provides several different ways to return responses.
 
@@ -273,7 +273,9 @@ Middleware provide a convenient mechanism for inspecting and filtering HTTP requ
 
 Middleware is commonly used to perform tasks like body parsing for URL-encoded or JSON requests, cookie parsing for basic cookie handling.
 
-If you want to record every time you a get a request then you can use a middleware.
+#### 1- Assigning Middleware To Routes
+
+If you would like to assign middleware to specific routes, you shoud use `WithMiddleware` methods:
 
 ```ts
 const middleware = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
@@ -290,7 +292,53 @@ const r = app.NewRoute();
   });
 ```
 
-> 💬 To pass the request deeper into the application, you must call the `MiddlewareState.Next`
+> 💬 To pass the request deeper into the application, you must call the `MiddlewareState.Next` on the other hand  you can use `MiddlewareState.Cancel` to terminate the middleware.
+
+#### 2- Middleware Groups
+
+Sometimes you may want to group several middleware under a single key to make them easier to assign to routes.
+You may accomplish this using the `WithMiddlewareGroups`:
+
+```ts
+
+const StartSession = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  //
+  return MiddlewareState.Next;
+}
+
+const VerifyCsrfToken = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  //
+  return MiddlewareState.Next;
+}
+
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+  .Path("/grouped/middlewares/example")
+  .WithMiddlewareGroups("web", [StartSession,VerifyCsrfToken])
+  .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+    //
+  });
+```
+
+#### 3- Global Middleware
+
+If you want a middleware to run during every HTTP request to your application, you should use `GlobalMiddleware` methods:
+
+```ts
+
+const middleware = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  //
+  return MiddlewareState.Next;
+}
+
+const r = app.NewRoute();
+  r.WithMethods(RequestMethod.GET)
+  .Path("/global/middlewares/example")
+  .GlobalMiddleware(middleware)
+  .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+    //
+  });
+```
 
 ### Full Examples
 

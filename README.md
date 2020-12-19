@@ -2,6 +2,7 @@
 
 <p align="left">
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xanny-projects/xanny/ci)
 ![GitHub issues](https://img.shields.io/github/issues/xanny-projects/xanny)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/xanny)
 
@@ -69,6 +70,24 @@ $ mkdir xanny-app
 $ cd xanny-app
 ```
 
+Creates an Xanny application. The `Application` class exported from xanny module and sets up the application with various options.
+
+```ts
+const app = new Application();
+```
+
+The following table describes the properties of the optional options object.
+
+| Index         | Property            | Type       | Default            |
+|:-------------:| :-------------------| :----------| :------------------|
+| 1             | *proxy*             | Boolean    | false              |
+| 2             | *proxyIpHeader*     | string     | X-Forwarded-For    |
+| 3             | *hostname*          | string     | 0.0.0.0            |
+| 4             | *port*              | number     | 4200               |
+| 5             | *certFile*          | string     | null               |
+| 6             | *keyFile*           | string     | null               |
+| 7             | *secure*            | boolean    | true               |
+
 ### Routing
 
 Routing is made from the word route. It is used to determine the specific behavior of an application. It specifies how an application responds to a client request to a particular route, URI or path and a specific HTTP request method (`GET`, `POST`, etc.). It can handle different types of HTTP requests.
@@ -85,6 +104,14 @@ const r = app.NewRoute();
     ResponseWriter.WithBody("Hello Xanny").Return();
   });
 ```
+
+The optional options parameter specifies the behavior of the router.
+
+| Index         | Description                   | Type       | Default            |
+|:-------------:| :-----------------------------| :----------| :------------------|
+| 1             | *maxParamLength*              | number     | false              |
+| 2             | *notFoundHandler*             | Function   | undefined          |
+| 3             | *maxRoutes*                   | number     | undefined          |
 
 #### 2- Available Router Methods
 

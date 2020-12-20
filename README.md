@@ -25,17 +25,19 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@v1.0.0/lib/mod.ts";
+
 const app = new Application();
 
 const r = app.NewRoute({ maxRoutes:2 });
 
 r.WithMethods(RequestMethod.GET)
     .Path("/hello")
-    .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+    .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.WithBody("Hello Xanny").Return();
     })
     .Path("/demo")
-    .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+    .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.WithBody("Hello Xanny Demo").Return();
     });
 

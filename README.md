@@ -362,7 +362,7 @@ async function main(args: string[]): Promise<void> {
       //
    });
 
- app.ListenAndServe({ port: args.port });
+ app.ListenAndServe({ port: 4200 });
 
 }
 
@@ -395,7 +395,7 @@ We encourage you to contribute to Xanny! Please check out the  [guidelines](/CON
 
 ## Sponsors
 
-We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page]().
+We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page](opencollective.com/xanny-projects).
 
 ## Code of Conduct
 

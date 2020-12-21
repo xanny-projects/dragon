@@ -10,7 +10,7 @@
 
 <img align="right" src="https://avatars2.githubusercontent.com/u/75166135?s=150&v=4" height="150px">
 
-Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for building **Deno** servers. If you need performance and good productivity, you will love it.
+Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
 ### Features
 

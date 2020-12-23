@@ -76,9 +76,9 @@ export enum Header {
 export class HttpMessage {
   /**
    * Construct a new, empty instance of the {@code HttpMessage} object.
-   * @param {Headers} headers
+   * @param {Headers} _headers
    */
-  constructor(private readonly headers: Headers) {}
+  constructor(private readonly _headers: Headers) {}
 
   /**
    * Retrieves all message header values.
@@ -86,8 +86,8 @@ export class HttpMessage {
    * @returns {Headers}
    * @api public
    */
-  public GetHeaders(): Headers {
-    return this.headers;
+  public headers(): Headers {
+    return this._headers;
   }
 
   /**
@@ -98,8 +98,8 @@ export class HttpMessage {
    * @returns {string | null}
    * @api public
    */
-  public GetHeader(name: string): string | null {
-    return this.headers.get(name);
+  public header(name: string): string | null {
+    return this._headers.get(name);
   }
 
   /**
@@ -108,22 +108,22 @@ export class HttpMessage {
    * @param {string} name
    * @returns {boolean}
    */
-  public HasHeader(name: string): boolean {
-    return this.headers.has(name);
+  public hasHeader(name: string): boolean {
+    return this._headers.has(name);
   }
 
   /**
-   * Remove given header if exists.
+   * Delete given header if exists.
    *
    * @param {string} name
    * @returns {Object}
    * @api public
    */
-  public RemoveHeader(name: string): this | HttpError {
-    if (!this.headers.has(name)) {
+  public delHeader(name: string): this | HttpError {
+    if (!this._headers.has(name)) {
       throw new HttpError(`Header ${name} does not exists`);
     }
-    this.headers.delete(name);
+    this._headers.delete(name);
     return this;
   }
 
@@ -135,11 +135,11 @@ export class HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public WithHeader(name: string, value: string): this {
-    if (this.headers.has(name)) {
+  public withHeader(name: string, value: string): this {
+    if (this._headers.has(name)) {
       throw new HttpError(`Header ${name} already exists`);
     }
-    this.headers.set(name, value);
+    this._headers.set(name, value);
     return this;
   }
 }

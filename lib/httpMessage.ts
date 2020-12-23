@@ -67,6 +67,21 @@ export enum Header {
 }
 
 /**
+ * Request methods to indicate the desired action to be performed.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods}
+ * */
+export enum RequestMethod {
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  OPTIONS = "OPTIONS",
+  HEAD = "HEAD",
+}
+
+/**
  * HTTP messages consist of requests from a client to a server and responses.
  * from a server to a client. This interface defines the methods common to each.
  *

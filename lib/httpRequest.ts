@@ -15,17 +15,9 @@
  */
 
 import { Cookies, getCookies, ServerRequest } from "../deps.ts";
+import { ParameterPayload, QueryPayload } from "./types.d.ts";
 import { Header, HttpMessage } from "./httpMessage.ts";
 import { BodyParser } from "./bodyParser.ts";
-
-/** Query Payload */
-interface QueryPayload {
-  key: string;
-  value: string;
-}
-
-/** Parameter Payload */
-export type ParameterPayload = { [key: string]: string };
 
 /**
  * Representation of an outgoing, client-side request.
@@ -44,14 +36,14 @@ export class HttpRequest extends HttpMessage {
    * For example, if the domain is "deno.land.example.com":
    * This defaults to `2`
    */
-  public defaultOffset: number = 2;
+  private _defaultOffset: number = 2;
 
   /**
    * The array of matched parameters.
    *
    * @var {string[]}
    */
-  public parameters?: ParameterPayload = {};
+  private _parameters?: ParameterPayload = {};
 
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
@@ -67,7 +59,7 @@ export class HttpRequest extends HttpMessage {
    * @return {string}
    * @api public
    */
-  public GetMethod(): string {
+  public method(): string {
     return this.req.method;
   }
 
@@ -77,8 +69,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public Url(): string {
-    return this.UrlQuery().replace(/\?.+/i, "");
+  public url(): string {
+    return this.urlQuery().replace(/\?.+/i, "");
   }
 
   /**
@@ -87,9 +79,9 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public UrlQuery(): string {
-    const proto = this.Secure() ? "https" : "http";
-    const url = `${proto}://${this.HostName()}${this.req.url}`;
+  public urlQuery(): string {
+    const proto = this.secure() ? "https" : "http";
+    const url = `${proto}://${this.hostName()}${this.req.url}`;
     return url;
   }
 
@@ -99,7 +91,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public GetPath(): string {
+  public path(): string {
     return this.req.url;
   }
 
@@ -109,8 +101,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {boolean}
    * @api public
    */
-  public IsXHR(): boolean {
-    const val = this.GetHeader("X-Requested-With") || "";
+  public isXHR(): boolean {
+    const val = this.header("X-Requested-With") || "";
     return val.toLowerCase() === "xmlhttprequest";
   }
 
@@ -120,8 +112,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public HostName(): string {
-    return this.GetHeader("X-Forwarded-Host") || this.GetHeader("Host") ||
+  public hostName(): string {
+    return this.header("X-Forwarded-Host") || this.header("Host") ||
       "0.0.0.0";
   }
 
@@ -131,9 +123,9 @@ export class HttpRequest extends HttpMessage {
    * @returns {boolean}
    * @api public
    */
-  public IsIpv4(): boolean {
+  public isIpv4(): boolean {
     return /^(?:(?:^|\.)(?:2(?:5[0-5]|[0-4]\d)|1?\d?\d)){4}$/.test(
-      this.HostName(),
+      this.hostName(),
     );
   }
 
@@ -143,9 +135,9 @@ export class HttpRequest extends HttpMessage {
    * @returns {boolean}
    * @api public
    */
-  public IsIpv6(): boolean {
+  public isIpv6(): boolean {
     return /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/
-      .test(this.HostName());
+      .test(this.hostName());
   }
 
   /**
@@ -157,9 +149,9 @@ export class HttpRequest extends HttpMessage {
    * @returns {string[] | null}
    * @api public
    */
-  public SubDomains(): string[] | null {
-    if (this.IsIpv4() || this.IsIpv6()) {
-      return this.HostName().split(".").splice(0, this.defaultOffset);
+  public subDomains(): string[] | null {
+    if (this.isIpv4() || this.isIpv6()) {
+      return this.hostName().split(".").splice(0, this._defaultOffset);
     }
     return null;
   }
@@ -170,7 +162,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {number | null}
    * @api public
    */
-  public ContentLength(): number | null {
+  public contentLength(): number | null {
     return this.req.contentLength;
   }
 
@@ -180,8 +172,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {unknown}
    * @api public
    */
-  public async GetBody(): Promise<unknown> {
-    const parser = await BodyParser(this.req.body, this.GetContentType());
+  public async body(): Promise<unknown> {
+    const parser = await BodyParser(this.req.body, this.contentType());
     return parser;
   }
 
@@ -191,7 +183,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {Deno.Reader}
    * @api public
    */
-  public GetBodyWithoutParser(): Deno.Reader {
+  public bodyWithoutParser(): Deno.Reader {
     return this.req.body;
   }
 
@@ -201,8 +193,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public GetContentType(): string | null {
-    return this.GetHeader(Header.ContentType);
+  public contentType(): string | null {
+    return this.header(Header.ContentType);
   }
 
   /**
@@ -211,7 +203,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public GetProtocol(): string {
+  public protocol(): string {
     return this.req.proto;
   }
 
@@ -221,8 +213,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {string[]}
    * @api public
    */
-  public GetQueryParam(query: string): string | null {
-    return new URL(this.UrlQuery()).searchParams.get(query);
+  public queryParam(query: string): string | null {
+    return new URL(this.urlQuery()).searchParams.get(query);
   }
 
   /**
@@ -231,9 +223,9 @@ export class HttpRequest extends HttpMessage {
    * @returns {QueryPayload[]}
    * @api public
    */
-  public GetQueryParams(): Array<QueryPayload> {
+  public queryParams(): Array<QueryPayload> {
     const listQueries: QueryPayload[] = [];
-    const queries = new URL(this.UrlQuery()).searchParams;
+    const queries = new URL(this.urlQuery()).searchParams;
     queries.forEach((value, key) => {
       listQueries.push({ value, key });
     });
@@ -246,8 +238,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {ParameterPayload}
    * @api public
    */
-  public GetParams(): ParameterPayload {
-    return this.parameters || {};
+  public params(): ParameterPayload {
+    return this._parameters || {};
   }
 
   /**
@@ -260,8 +252,8 @@ export class HttpRequest extends HttpMessage {
    * @returns {boolean}
    * @api public
    */
-  public Secure(): boolean {
-    return /^https/i.test(this.GetProtocol());
+  public secure(): boolean {
+    return /^https/i.test(this.protocol());
   }
 
   /**
@@ -270,7 +262,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {Cookies}
    * @api public
    */
-  public GetCookie(): Cookies {
+  public cookie(): Cookies {
     return getCookies(this.req);
   }
 }

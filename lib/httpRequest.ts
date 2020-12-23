@@ -45,6 +45,10 @@ export class HttpRequest extends HttpMessage {
    */
   private _parameters?: ParameterPayload = {};
 
+  public set parameters(params:ParameterPayload | undefined) {
+    this._parameters = params;
+  }
+
   /**
    * Construct a new, empty instance of the {@code HttpRequest} object.
    * @param {ServerRequest} req

@@ -44,6 +44,10 @@ export class HttpRouting {
    */
   private _path: string | RegExp;
 
+  public get path():string | RegExp {
+    return this._path;
+  }
+
   /**
    * The Original path for given request.
    *
@@ -64,6 +68,10 @@ export class HttpRouting {
    * @var {HandlerFunc}
    */
   private _action: HandlerFunc;
+
+  public set action(handle: HandlerFunc) {
+    this._action = handle;
+  }
 
   /**
    * Unique route name.
@@ -117,6 +125,16 @@ export class HttpRouting {
   public withMiddleware(middleware: Middleware): this {
     this._middleware.push(middleware);
     return this;
+  }
+
+  /**
+   * Return registred middlewares.
+   *
+   * @returns {Middleware[]}
+   * @api public
+   */
+  public middlewares(): Middleware[]  {
+    return this._middleware;
   }
 
   /**
@@ -278,7 +296,7 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public path(value: string | RegExp): this {
+  public withPath(value: string | RegExp): this {
     this._path = value;
     return this;
   }

@@ -85,7 +85,7 @@ export class MiddlewareResolver {
    * @returns {void}
    * @api public
    */
-  public async ResolveGlobalMiddlewares(): Promise<void> {
+  public async resolveGlobalMiddlewares(): Promise<void> {
     await this.resolveMiddlewares(HttpRouting.globalMiddlewares());
   }
 }

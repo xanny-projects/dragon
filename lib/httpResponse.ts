@@ -42,6 +42,10 @@ export class HttpResponse extends HttpMessage {
    */
   private _body?: Uint8Array | Deno.Reader | string;
 
+  public get body(): Uint8Array | Deno.Reader | string | undefined {
+    return this._body;
+  }
+
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.
    * @param {ServerResponse} res

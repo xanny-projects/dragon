@@ -26,10 +26,10 @@ const application = new Application();
 Deno.test({
   name: "should init route with default `/` path",
   fn(): void {
-    application.NewRoute({ maxRoutes: 1 });
+    application.routes({ maxRoutes: 1 });
     assertEquals(RegistredRoutes.length, 1);
-    assertEquals(RegistredRoutes[0].HasMethod("GET"), false);
-    assertEquals(RegistredRoutes[0].HasPath("/"), true);
+    assertEquals(RegistredRoutes[0].hasMethod("GET"), false);
+    assertEquals(RegistredRoutes[0].hasPath("/"), true);
   },
 });
 
@@ -38,9 +38,9 @@ Deno.test({
   fn(): void {
     assertThrows(
       (): void => {
-        const r = application.NewRoute({ maxRoutes: 0 });
-        r.Path("/graphql")
-          .HandleFunc(
+        const r = application.routes({ maxRoutes: 0 });
+        r.withPath("/graphql")
+          .handleFunc(
             async function (
               Request: HttpRequest,
               ResponseWriter: HttpResponse,

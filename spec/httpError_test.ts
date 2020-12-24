@@ -21,8 +21,8 @@ Deno.test({
   name: "should return a status code",
   fn(): void {
     assertEquals(
-      new HttpError("Internal Server Error").GetStatus(),
-      HttpStatus.INTERNALSERVERERROR,
+      new HttpError("Internal Server Error").statusCode(),
+      500,
     );
   },
 });
@@ -31,7 +31,7 @@ Deno.test({
   name: "should return a response",
   fn(): void {
     assertEquals(
-      new HttpError("Internal Server Error").GetMessage(),
+      new HttpError("Internal Server Error").message,
       "Internal Server Error",
     );
   },

@@ -196,6 +196,16 @@ export class HttpRouting {
   }
 
   /**
+   * Returns registred methods.
+   *
+   * @returns {RequestMethod[]}
+   * @api public
+   */
+  public methods(): RequestMethod[] {
+    return this._methods;
+  }
+
+  /**
    * Get an handler for the route.
    *
    * @returns {HandlerCallable}

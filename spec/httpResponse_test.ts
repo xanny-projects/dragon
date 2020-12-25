@@ -22,7 +22,7 @@ import {
 } from "../deps.ts";
 import { HttpResponse } from "../lib/httpResponse.ts";
 import { MediaTypes } from "../lib/httpMessage.ts";
-import { ServerResponse, } from "../lib/types.d.ts";
+import { ServerResponse } from "../lib/types.d.ts";
 
 /**
  * Mocking request server.

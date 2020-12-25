@@ -190,5 +190,4 @@ export class HttpError extends Error {
   public statusCode(): number {
     return this.status;
   }
-
 }

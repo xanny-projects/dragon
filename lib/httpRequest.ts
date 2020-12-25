@@ -45,7 +45,7 @@ export class HttpRequest extends HttpMessage {
    */
   private _parameters?: ParameterPayload = {};
 
-  public set parameters(params:ParameterPayload | undefined) {
+  public set parameters(params: ParameterPayload | undefined) {
     this._parameters = params;
   }
 

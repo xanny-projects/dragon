@@ -31,7 +31,10 @@ httpRouting.withMethods(RequestMethod.GET);
 Deno.test({
   name: "should push `HEAD` if the method is GET",
   fn(): void {
-    assertEquals(httpRouting.methods(), [RequestMethod.GET, RequestMethod.HEAD]);
+    assertEquals(
+      httpRouting.methods(),
+      [RequestMethod.GET, RequestMethod.HEAD],
+    );
   },
 });
 

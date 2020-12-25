@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-import { RegistredRoutes, RouteOptions } from "./application.ts";
-import { Middleware, MiddlewareGroups } from "./middleware.ts";
+import {
+  HandlerFunc,
+  Middleware,
+  MiddlewareGroups,
+  RoutingOptions,
+} from "./types.d.ts";
+import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpError } from "./httpError.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -35,10 +39,21 @@ export enum RequestMethod {
   HEAD = "HEAD",
 }
 
-// Handler function.
-export interface HandlerFunc {
-  (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<unknown>;
-}
+/**
+ * Register list of routes.
+ *
+ * @var {HttpRouting}
+ * @api public
+ */
+export const RegistredRoutes: HttpRouting[] = [];
+
+/**
+ * Routing Options.
+ *
+ * @var {RouteOptions}
+ * @api public
+ */
+export let RouteOptions: RoutingOptions = {};
 
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
@@ -47,28 +62,36 @@ export class HttpRouting {
    *
    * @var {string}
    */
-  public path: string | RegExp;
+  private _path: string | RegExp;
+
+  public get path(): string | RegExp {
+    return this._path;
+  }
 
   /**
    * The Original path for given request.
    *
    * @var {string}
    */
-  public originalUrl!: string;
+  private _originalUrl!: string;
 
   /**
    * The HTTP methods the route responds to.
    *
    * @var {Array<RequestMethod>}
    */
-  public methods: RequestMethod[];
+  private _methods: RequestMethod[];
 
   /**
    * The route handler.
    *
    * @var {HandlerFunc}
    */
-  public action: HandlerFunc;
+  private _action: HandlerFunc;
+
+  public get action(): HandlerFunc {
+    return this._action;
+  }
 
   /**
    * Unique route name.
@@ -82,34 +105,38 @@ export class HttpRouting {
    *
    * @var {Middleware[]}
    */
-  public middleware: Middleware[] = [];
+  private _middleware: Middleware[] = [];
 
   /**
    * All of the middleware groups.
    *
    * @var {MiddlewareGroups[]}
    */
-  public middlewareGroups: MiddlewareGroups[] = [];
+  private _middlewareGroups: MiddlewareGroups[] = [];
 
   /**
    * Register global middleware.
    *
    * @var {Middleware[]}
    */
-  public static globalMiddleware: Middleware[] = [];
+  private static _globalMiddleware: Middleware[] = [];
 
   /**
   * Construct a new, instance of the {@code Routing} object.
   *
-  * @param {string} path
+  * @param {string | RegExp} path
   * @param {RequestMethod[]} methods
   * @param {HandlerCallable} action
   * @returns {void}
   */
-  constructor(path: string, methods: RequestMethod[], action: HandlerFunc) {
-    this.path = path;
-    this.action = action;
-    this.methods = methods;
+  constructor(
+    path: string | RegExp,
+    methods: RequestMethod[],
+    action: HandlerFunc,
+  ) {
+    this._path = path;
+    this._action = action;
+    this._methods = methods;
   }
 
   /**
@@ -119,9 +146,19 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public WithMiddleware(middleware: Middleware): this {
-    this.middleware.push(middleware);
+  public withMiddleware(middleware: Middleware): this {
+    this._middleware.push(middleware);
     return this;
+  }
+
+  /**
+   * Return registred middlewares.
+   *
+   * @returns {Middleware[]}
+   * @api public
+   */
+  public middlewares(): Middleware[] {
+    return this._middleware;
   }
 
   /**
@@ -136,8 +173,19 @@ export class HttpRouting {
    * @returns {void}
    * @api public
    */
-  public static GlobalMiddleware(middleware: Middleware): void {
-    this.globalMiddleware.push(middleware);
+  public static withGlobalMiddleware(middleware: Middleware): void {
+    this._globalMiddleware.push(middleware);
+  }
+
+  /**
+   * Return registred global middlwares.
+   *
+   * @static
+   * @returns {Middleware[]}
+   * @api public
+   */
+  public static globalMiddlewares(): Middleware[] {
+    return this._globalMiddleware;
   }
 
   /**
@@ -147,7 +195,7 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public WithName(name: string): this {
+  public withName(name: string): this {
     this.name = name;
     return this;
   }
@@ -159,7 +207,7 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public WithMethods(...methods: RequestMethod[]): this {
+  public withMethods(...methods: RequestMethod[]): this {
     // Push "HEAD" if the method is GET.
     if (
       methods.includes(RequestMethod.GET) &&
@@ -167,8 +215,18 @@ export class HttpRouting {
     ) {
       methods.push(RequestMethod.HEAD);
     }
-    this.methods = [...this.methods, ...methods];
+    this._methods = [...this._methods, ...methods];
     return this;
+  }
+
+  /**
+   * Returns registred methods.
+   *
+   * @returns {RequestMethod[]}
+   * @api public
+   */
+  public methods(): RequestMethod[] {
+    return this._methods;
   }
 
   /**
@@ -177,8 +235,8 @@ export class HttpRouting {
    * @returns {HandlerCallable}
    * @api public
    */
-  public async GetHandler(): Promise<HandlerFunc> {
-    return await this.action;
+  public async handler(): Promise<HandlerFunc> {
+    return await this._action;
   }
 
   /**
@@ -188,8 +246,8 @@ export class HttpRouting {
    * @returns {boolean}
    * @api public
    */
-  public HasMiddlewareGroups(name: string): boolean {
-    for (var middleware of this.middlewareGroups) {
+  public hasMiddlewareGroups(name: string): boolean {
+    for (var middleware of this._middlewareGroups) {
       if (middleware.name === name) {
         return true;
       }
@@ -203,8 +261,8 @@ export class HttpRouting {
    * @returns {MiddlewareGroups[]}
    * @api public
    */
-  public GetMiddlewareGroups(): MiddlewareGroups[] {
-    return this.middlewareGroups;
+  public middlewareGroups(): MiddlewareGroups[] {
+    return this._middlewareGroups;
   }
 
   /**
@@ -215,8 +273,8 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public WithMiddlewareGroups(name: string, middlewares: Middleware[]): this {
-    this.middlewareGroups.push({
+  public withMiddlewareGroups(name: string, middlewares: Middleware[]): this {
+    this._middlewareGroups.push({
       name,
       handlers: [...middlewares],
     });
@@ -230,12 +288,12 @@ export class HttpRouting {
    * @returns {boolean}
    * @api public
    */
-  public HasPath(path: string): boolean {
+  public hasPath(path: string): boolean {
     // remove query if exists.
     const cleanPath = path.replace(/\?.+/i, "");
     return typeof this.path === "string"
-      ? this.path === cleanPath
-      : new RegExp(this.path).test(cleanPath);
+      ? this._path === cleanPath
+      : new RegExp(this._path).test(cleanPath);
   }
 
   /**
@@ -244,7 +302,7 @@ export class HttpRouting {
    * @returns {boolean}
    * @api public
    */
-  public HasName(): boolean {
+  public hasName(): boolean {
     return this.name !== "<anonymous>";
   }
 
@@ -255,8 +313,8 @@ export class HttpRouting {
    * @returns {boolean}
    * @api public
    */
-  public HasMethod(verb: string): boolean {
-    return this.methods.includes(verb as RequestMethod);
+  public hasMethod(verb: string): boolean {
+    return this._methods.includes(verb as RequestMethod);
   }
 
   /**
@@ -272,28 +330,7 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public Path(value: string | RegExp): this {
-    this.path = value;
-    return this;
-  }
-
-  /**
-   * Return original url.
-   *
-   * @returns {string}
-   */
-  public GetOriginalURL(): string {
-    return this.originalUrl;
-  }
-
-  /**
-   * HandleFunc registers a new route with a matcher for the URL path.
-   *
-   * @param {HandlerFunc} handler
-   * @returns {HttpRouting}
-   * @api public
-   */
-  public HandleFunc(handler: HandlerFunc): HttpRouting {
+  public Path(value: string | RegExp): HttpRouting {
     const maxAllowedRoutes = RouteOptions.maxRoutes;
     if (
       typeof maxAllowedRoutes !== "undefined" &&
@@ -303,13 +340,33 @@ export class HttpRouting {
         `Maximum allowed number of routes: ${maxAllowedRoutes}`,
       );
     }
-    this.action = handler;
-    const newRoute = new HttpRouting(
-      "/default",
-      [RequestMethod.GET],
+    const route = new HttpRouting(
+      value,
+      [],
       async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
-    RegistredRoutes.push(newRoute);
-    return newRoute;
+    return route;
+  }
+
+  /**
+   * Return original url.
+   *
+   * @returns {string}
+   */
+  public originalURL(): string {
+    return this._originalUrl;
+  }
+
+  /**
+   * HandleFunc registers a new route with a matcher for the URL path.
+   *
+   * @param {HandlerFunc} handler
+   * @returns {HttpRouting}
+   * @api public
+   */
+  public handleFunc(handler: HandlerFunc): HttpRouting {
+    this._action = handler;
+    RegistredRoutes.push(this);
+    return this;
   }
 }

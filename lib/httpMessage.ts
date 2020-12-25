@@ -66,6 +66,41 @@ export enum Header {
   ReferrerPolicy = "Referrer-Policy",
 }
 
+/** Common Media types  */
+export enum MediaTypes {
+  MD = "text/markdown",
+  HTML = "text/html",
+  HTM = "text/html",
+  JSON = "application/json",
+  MAP = "application/json",
+  TXT = "text/plain",
+  TS = "text/typescript",
+  TSX = "text/tsx",
+  JS = "application/javascript",
+  JSX = "text/jsx",
+  GZIP = "application/gzip",
+  CSS = "text/css",
+  WASM = "application/wasm",
+  MJS = "application/javascript",
+  FORM = "application/x-www-form-urlencoded",
+  MULTIPARTFORM = "multipart/form-data",
+}
+
+/**
+ * Request methods to indicate the desired action to be performed.
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods}
+ * */
+export enum RequestMethod {
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  OPTIONS = "OPTIONS",
+  HEAD = "HEAD",
+}
+
 /**
  * HTTP messages consist of requests from a client to a server and responses.
  * from a server to a client. This interface defines the methods common to each.
@@ -76,9 +111,9 @@ export enum Header {
 export class HttpMessage {
   /**
    * Construct a new, empty instance of the {@code HttpMessage} object.
-   * @param {Headers} headers
+   * @param {Headers} _headers
    */
-  constructor(private readonly headers: Headers) {}
+  constructor(private readonly _headers: Headers) {}
 
   /**
    * Retrieves all message header values.
@@ -86,8 +121,8 @@ export class HttpMessage {
    * @returns {Headers}
    * @api public
    */
-  public GetHeaders(): Headers {
-    return this.headers;
+  public headers(): Headers {
+    return this._headers;
   }
 
   /**
@@ -98,8 +133,8 @@ export class HttpMessage {
    * @returns {string | null}
    * @api public
    */
-  public GetHeader(name: string): string | null {
-    return this.headers.get(name);
+  public header(name: string): string | null {
+    return this._headers.get(name);
   }
 
   /**
@@ -108,22 +143,22 @@ export class HttpMessage {
    * @param {string} name
    * @returns {boolean}
    */
-  public HasHeader(name: string): boolean {
-    return this.headers.has(name);
+  public hasHeader(name: string): boolean {
+    return this._headers.has(name);
   }
 
   /**
-   * Remove given header if exists.
+   * Delete given header if exists.
    *
    * @param {string} name
    * @returns {Object}
    * @api public
    */
-  public RemoveHeader(name: string): this | HttpError {
-    if (!this.headers.has(name)) {
+  public delHeader(name: string): this | HttpError {
+    if (!this._headers.has(name)) {
       throw new HttpError(`Header ${name} does not exists`);
     }
-    this.headers.delete(name);
+    this._headers.delete(name);
     return this;
   }
 
@@ -135,11 +170,11 @@ export class HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public WithHeader(name: string, value: string): this {
-    if (this.headers.has(name)) {
+  public withHeader(name: string, value: string): this {
+    if (this._headers.has(name)) {
       throw new HttpError(`Header ${name} already exists`);
     }
-    this.headers.set(name, value);
+    this._headers.set(name, value);
     return this;
   }
 }

@@ -26,34 +26,34 @@ const httpMessage = new HttpMessage(header);
 Deno.test({
   name: "should retrieves all message header values",
   fn(): void {
-    assert(httpMessage.GetHeaders() instanceof Headers);
-    assertEquals(httpMessage.GetHeaders(), header);
+    assert(httpMessage.headers() instanceof Headers);
+    assertEquals(httpMessage.headers(), header);
   },
 });
 
 Deno.test({
   name: "should retrieve specific header by the the given case-sensitive name",
   fn(): void {
-    assertEquals(httpMessage.GetHeader("X-Powered-By"), "Deno");
-    assertEquals(httpMessage.GetHeader("Host"), null);
+    assertEquals(httpMessage.header("X-Powered-By"), "Deno");
+    assertEquals(httpMessage.header("Host"), null);
   },
 });
 
 Deno.test({
   name: "should checks if a header exists by the given case-sensitive name",
   fn(): void {
-    assertEquals(httpMessage.HasHeader("X-Powered-By"), true);
-    assertEquals(httpMessage.HasHeader("Host"), false);
+    assertEquals(httpMessage.header("X-Powered-By"), "Deno");
+    assertEquals(httpMessage.header("Host"), null);
   },
 });
 
 Deno.test({
   name: "should remove given header if exists",
   fn(): void {
-    assertEquals(httpMessage.RemoveHeader("X-Powered-By"), httpMessage);
+    assertEquals(httpMessage.delHeader("X-Powered-By"), httpMessage);
     assertThrows(
       (): void => {
-        assertEquals(httpMessage.RemoveHeader("Host"), httpMessage);
+        assertEquals(httpMessage.delHeader("Host"), httpMessage);
       },
       HttpError,
       "Header Host does not exists",
@@ -65,13 +65,13 @@ Deno.test({
   name: "should add new header value",
   fn(): void {
     assertEquals(
-      httpMessage.WithHeader("Host", "https://github.com/xanny-projects/xanny"),
+      httpMessage.withHeader("Host", "https://github.com/xanny-projects/xanny"),
       httpMessage,
     );
     assertThrows(
       (): void => {
         assertEquals(
-          httpMessage.WithHeader("Host", "https://www.google.com/"),
+          httpMessage.withHeader("Host", "https://www.google.com/"),
           httpMessage,
         );
       },

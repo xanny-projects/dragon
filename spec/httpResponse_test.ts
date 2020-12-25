@@ -20,11 +20,9 @@ import {
   assertThrows,
   DenoStdInternalError,
 } from "../deps.ts";
-import {
-  HttpResponse,
-  MediaTypes,
-  ServerResponse,
-} from "../lib/httpResponse.ts";
+import { HttpResponse } from "../lib/httpResponse.ts";
+import { MediaTypes } from "../lib/httpMessage.ts";
+import { ServerResponse } from "../lib/types.d.ts";
 
 /**
  * Mocking request server.
@@ -55,38 +53,38 @@ const httpResponse = new HttpResponse(MockingServerRequest() as any);
 Deno.test({
   name: "should return status code",
   fn(): void {
-    assertEquals(httpResponse.GetStatusCode(), 200);
+    assertEquals(httpResponse.statusCode(), 200);
   },
 });
 
 Deno.test({
   name: "should set status code",
   fn(): void {
-    const setStatusCode = httpResponse.WithStatus(300);
-    assertEquals(setStatusCode.GetStatusCode(), 300);
+    const setStatusCode = httpResponse.withStatus(300);
+    assertEquals(setStatusCode.statusCode(), 300);
   },
 });
 
 Deno.test({
   name: "should set Content-Type",
   fn(): void {
-    const setContentType = httpResponse.WithContentType(MediaTypes.HTML);
-    assertEquals(setContentType.GetContentType(), MediaTypes.HTML);
+    const setContentType = httpResponse.withContentType(MediaTypes.HTML);
+    assertEquals(setContentType.contentType(), MediaTypes.HTML);
   },
 });
 
 Deno.test({
   name: "should set the Last-Modified date using a string or a Date",
   fn(): void {
-    const setContentType = httpResponse.WithLastModified("10/02/2020");
-    assertEquals(setContentType.GetLastModified(), new Date("10/02/2020"));
+    const setContentType = httpResponse.withLastModified("10/02/2020");
+    assertEquals(setContentType.lastModified(), new Date("10/02/2020"));
   },
 });
 
 Deno.test({
   name: "should render `HTML` template",
   fn(): void {
-    const setTemplate = httpResponse.Html`<h1>Xanny Render Testing!</h1>`;
+    const setTemplate = httpResponse.html`<h1>Xanny Render Testing!</h1>`;
     assertNotEquals(setTemplate.body, null);
     assertEquals(
       setTemplate.body,
@@ -129,7 +127,7 @@ Deno.test({
 Deno.test({
   name: "should render `Json`",
   fn(): void {
-    const setJson = httpResponse.Json({
+    const setJson = httpResponse.json({
       project: "Xanny",
     });
     assertEquals(typeof setJson.body, "object");
@@ -163,22 +161,22 @@ Deno.test({
 Deno.test({
   name: "should if a HTTP `Status` is a `RedirectStatus` ",
   fn(): void {
-    assertEquals(httpResponse.IsRedirectStatus(301), true);
-    assertEquals(httpResponse.IsRedirectStatus(302), true);
-    assertNotEquals(httpResponse.IsRedirectStatus(400), true);
-    assertNotEquals(httpResponse.IsRedirectStatus(200), true);
-    assertNotEquals(httpResponse.IsRedirectStatus(500), true);
+    assertEquals(httpResponse.isRedirectStatus(301), true);
+    assertEquals(httpResponse.isRedirectStatus(302), true);
+    assertNotEquals(httpResponse.isRedirectStatus(400), true);
+    assertNotEquals(httpResponse.isRedirectStatus(200), true);
+    assertNotEquals(httpResponse.isRedirectStatus(500), true);
   },
 });
 
 Deno.test({
   name: "should set cookie value",
   fn(): void {
-    httpResponse.WithCookie("Max-Age=2592000");
-    assertNotEquals(httpResponse.HasHeader("Cookie"), "Max-Age=2592000");
+    httpResponse.withCookie("Max-Age=2592000");
+    assertNotEquals(httpResponse.hasHeader("Cookie"), "Max-Age=2592000");
     assertThrows(
       (): void => {
-        httpResponse.WithCookie(null as any);
+        httpResponse.withCookie(null as any);
       },
       DenoStdInternalError,
       "Cookie must be string",

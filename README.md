@@ -10,7 +10,7 @@
 
 <img align="right" src="https://avatars2.githubusercontent.com/u/75166135?s=150&v=4" height="150px">
 
-Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for building **Deno** servers. If you need performance and good productivity, you will love it.
+Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
 ### Features
 
@@ -25,6 +25,8 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** marcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@v1.0.0/lib/mod.ts";
+
 const app = new Application();
 
 const r = app.routes({ maxRoutes:2 });
@@ -362,7 +364,7 @@ async function main(args: string[]): Promise<void> {
       //
    });
 
- app.listenAndServe({ port: 8080 });
+app.listenAndServe({ port: 8080 });
 
 }
 
@@ -395,7 +397,7 @@ We encourage you to contribute to Xanny! Please check out the  [guidelines](/CON
 
 ## Sponsors
 
-We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page](https://opencollective.com/xanny-projects).
+We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page](opencollective.com/xanny-projects).
 
 ## Code of Conduct
 

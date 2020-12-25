@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import { RegistredRoutes, RouteOptions } from "./application.ts";
-import { HandlerFunc, Middleware, MiddlewareGroups } from "./types.d.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpError } from "./httpError.ts";
+import {
+  HandlerFunc,
+  Middleware,
+  MiddlewareGroups,
+  RoutingOptions,
+} from "./types.d.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -35,6 +38,22 @@ export enum RequestMethod {
   HEAD = "HEAD",
 }
 
+/**
+ * Register list of routes.
+ *
+ * @var {HttpRouting}
+ * @api public
+ */
+export const RegistredRoutes: HttpRouting[] = [];
+
+/**
+ * Routing Options.
+ *
+ * @var {RouteOptions}
+ * @api public
+ */
+export let RouteOptions: RoutingOptions = {};
+
 /* Initialize and Expose `HttpRouting` class */
 export class HttpRouting {
   /**
@@ -44,7 +63,7 @@ export class HttpRouting {
    */
   private _path: string | RegExp;
 
-  public get path():string | RegExp {
+  public get path(): string | RegExp {
     return this._path;
   }
 
@@ -69,8 +88,8 @@ export class HttpRouting {
    */
   private _action: HandlerFunc;
 
-  public set action(handle: HandlerFunc) {
-    this._action = handle;
+  public get action(): HandlerFunc {
+    return this._action;
   }
 
   /**
@@ -104,12 +123,16 @@ export class HttpRouting {
   /**
   * Construct a new, instance of the {@code Routing} object.
   *
-  * @param {string} path
+  * @param {string | RegExp} path
   * @param {RequestMethod[]} methods
   * @param {HandlerCallable} action
   * @returns {void}
   */
-  constructor(path: string, methods: RequestMethod[], action: HandlerFunc) {
+  constructor(
+    path: string | RegExp,
+    methods: RequestMethod[],
+    action: HandlerFunc,
+  ) {
     this._path = path;
     this._action = action;
     this._methods = methods;
@@ -133,7 +156,7 @@ export class HttpRouting {
    * @returns {Middleware[]}
    * @api public
    */
-  public middlewares(): Middleware[]  {
+  public middlewares(): Middleware[] {
     return this._middleware;
   }
 
@@ -306,9 +329,13 @@ export class HttpRouting {
    * @returns {Object}
    * @api public
    */
-  public withPath(value: string | RegExp): this {
-    this._path = value;
-    return this;
+  public Path(value: string | RegExp): HttpRouting {
+    const route = new HttpRouting(
+      value,
+      [],
+      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
+    );
+    return route;
   }
 
   /**
@@ -328,22 +355,8 @@ export class HttpRouting {
    * @api public
    */
   public handleFunc(handler: HandlerFunc): HttpRouting {
-    const maxAllowedRoutes = RouteOptions.maxRoutes;
-    if (
-      typeof maxAllowedRoutes !== "undefined" &&
-      RegistredRoutes.length > maxAllowedRoutes
-    ) {
-      throw new HttpError(
-        `Maximum allowed number of routes: ${maxAllowedRoutes}`,
-      );
-    }
     this._action = handler;
-    const newRoute = new HttpRouting(
-      "/default",
-      [RequestMethod.GET],
-      async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
-    );
-    RegistredRoutes.push(newRoute);
-    return newRoute;
+    RegistredRoutes.push(this);
+    return this;
   }
 }

@@ -21,27 +21,19 @@ import {
   ListenTlsOptions,
   RoutingOptions,
 } from "./types.d.ts";
-import { HttpRouting } from "./httpRouting.ts";
+import { HttpRouting, RegistredRoutes } from "./httpRouting.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { MiddlewareResolver } from "./middleware.ts";
 
 /**
- * Register list of routes.
- *
- * @var {Routes}
- * @api public
- */
-export const RegistredRoutes: HttpRouting[] = [];
-
-/**
  * Routing Options.
  *
  * @var {RouteOptions}
- * @api public
+ * @api private
  */
-export var RouteOptions: RoutingOptions = {};
+var RouteOptions: RoutingOptions = {};
 
 /* Initialize and Expose `Application` class */
 export class Application {
@@ -78,7 +70,6 @@ export class Application {
       [],
       async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
-    RegistredRoutes.push(route);
     return route;
   }
 
@@ -113,7 +104,7 @@ export class Application {
     try {
       for await (const request of server) {
         // Match attempts to match the given request against the router's registered routes.
-        const req = await new HttpRequest(request);
+        const req = new HttpRequest(request);
         const res = new HttpResponse(request);
         // If the match failure type (eg: not found) has a registered handler,
         // the handler is assigned to the Handler.

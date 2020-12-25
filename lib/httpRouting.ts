@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
 import {
   HandlerFunc,
   Middleware,
   MiddlewareGroups,
   RoutingOptions,
 } from "./types.d.ts";
+import { HttpError } from "./httpError.ts";
+import { HttpRequest } from "./httpRequest.ts";
+import { HttpResponse } from "./httpResponse.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -330,6 +331,15 @@ export class HttpRouting {
    * @api public
    */
   public Path(value: string | RegExp): HttpRouting {
+    const maxAllowedRoutes = RouteOptions.maxRoutes;
+    if (
+      typeof maxAllowedRoutes !== "undefined" &&
+      RegistredRoutes.length > maxAllowedRoutes
+    ) {
+      throw new HttpError(
+        `Maximum allowed number of routes: ${maxAllowedRoutes}`,
+      );
+    }
     const route = new HttpRouting(
       value,
       [],

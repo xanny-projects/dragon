@@ -261,7 +261,7 @@ export class HttpResponse extends HttpMessage {
    * @returns {void}
    * @api public
    */
-  public Return(): void {
+  public send(): void {
     this.res.respond({
       body: this._body,
       headers: this.headers(),

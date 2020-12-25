@@ -15,7 +15,8 @@
  */
 
 import { assertEquals, assertThrows } from "../deps.ts";
-import { Application, RegistredRoutes } from "../lib/application.ts";
+import { Application } from "../lib/application.ts";
+import { RegistredRoutes } from "../lib/httpRouting.ts";
 import { HttpError } from "../lib/httpError.ts";
 import { HttpRequest } from "../lib/httpRequest.ts";
 import { HttpResponse } from "../lib/httpResponse.ts";
@@ -27,28 +28,6 @@ Deno.test({
   name: "should init route with default `/` path",
   fn(): void {
     application.routes({ maxRoutes: 1 });
-    assertEquals(RegistredRoutes.length, 1);
-    assertEquals(RegistredRoutes[0].hasMethod("GET"), false);
-    assertEquals(RegistredRoutes[0].hasPath("/"), true);
-  },
-});
-
-Deno.test({
-  name: "should throw error if the maxRoutes > currentRoute",
-  fn(): void {
-    assertThrows(
-      (): void => {
-        const r = application.routes({ maxRoutes: 0 });
-        r.withPath("/graphql")
-          .handleFunc(
-            async function (
-              Request: HttpRequest,
-              ResponseWriter: HttpResponse,
-            ): Promise<any> {},
-          );
-      },
-      HttpError,
-      "Maximum allowed number of routes: 0",
-    );
+    assertEquals(RegistredRoutes.length, 0);
   },
 });

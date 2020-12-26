@@ -33,12 +33,12 @@ const r = app.routes({ maxRoutes:2 });
 
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
- .handleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+ .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.withBody("Hello Xanny").send();
   });
 
 r.Path("/demo")
- .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+ .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
     ResponseWriter.withBody("Hello Xanny Demo").send();
   });
 
@@ -102,7 +102,7 @@ Xanny provides a very simple and expressive method of defining routes and behavi
 const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
-  .handleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
     ResponseWriter.withBody("Hello Xanny").send();
   });
 ```

@@ -25,7 +25,7 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@v1.0.0/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@0.4-beta/lib/mod.ts";
 
 const app = new Application();
 

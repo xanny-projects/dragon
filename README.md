@@ -25,7 +25,7 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@v1.0.0/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@0.4-beta/lib/mod.ts";
 
 const app = new Application();
 
@@ -33,12 +33,12 @@ const r = app.routes({ maxRoutes:2 });
 
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
- .handleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+ .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.withBody("Hello Xanny").send();
   });
 
 r.Path("/demo")
- .HandleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+ .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
     ResponseWriter.withBody("Hello Xanny Demo").send();
   });
 
@@ -102,7 +102,7 @@ Xanny provides a very simple and expressive method of defining routes and behavi
 const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
-  .handleFunc(function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
     ResponseWriter.withBody("Hello Xanny").send();
   });
 ```

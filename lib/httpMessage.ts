@@ -171,9 +171,6 @@ export class HttpMessage {
    * @api public
    */
   public withHeader(name: string, value: string): this {
-    if (this._headers.has(name)) {
-      throw new HttpError(`Header ${name} already exists`);
-    }
     this._headers.set(name, value);
     return this;
   }

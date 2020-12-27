@@ -17,3 +17,10 @@
 - New `HttpRouting`, `HttpResponse`, `HttpError` methods.
 - Rename `newRoute` method to `routes`.
 - Move Interfaces and types to `types.d.ts`.
+
+## v0.6-beta 🍄
+
+- Fix: Not throw error if header already exists.
+- Add `hello-world` example.
+- Add `route-middleware` example .
+- Imporve documentation.

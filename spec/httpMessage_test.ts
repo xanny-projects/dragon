@@ -68,15 +68,5 @@ Deno.test({
       httpMessage.withHeader("Host", "https://github.com/xanny-projects/xanny"),
       httpMessage,
     );
-    assertThrows(
-      (): void => {
-        assertEquals(
-          httpMessage.withHeader("Host", "https://www.google.com/"),
-          httpMessage,
-        );
-      },
-      HttpError,
-      "Header Host already exists",
-    );
   },
 });

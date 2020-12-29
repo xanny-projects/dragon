@@ -24,3 +24,8 @@
 - Add `hello-world` example.
 - Add `route-middleware` example .
 - Imporve documentation.
+
+## v1.0 🧬
+
+- Add `abort` method.
+- Add `Fallback Routes` documentation section.

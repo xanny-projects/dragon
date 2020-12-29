@@ -126,7 +126,7 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
-   * Rise an HTTP error from the server. 
+   * Rise an HTTP error from the server.
    * Optionally, you may provide the response text.
    *
    * @param {number | HttpStatus} status
@@ -134,7 +134,7 @@ export class HttpResponse extends HttpMessage {
    * @return {HttpError}
    * @api public
    */
-  public abort(status:number | HttpStatus, message?:string): HttpError {
+  public abort(status: number | HttpStatus, message?: string): HttpError {
     throw new HttpError(message || "Something went wrong", status);
   }
 

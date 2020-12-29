@@ -168,6 +168,22 @@ const r = app.routes();
   });
 ```
 
+#### 5- Fallback Routes
+
+Using `notFoundHandler` option. you may define a route that will be executed when no other route matches the incoming request:
+
+```ts
+
+const fallback = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
+  ResponseWriter.html(`🤦 Page Not Found`).send();
+  return MiddlewareState.Cancel;
+}
+
+const r = app.routes({
+  notFoundHandler: fallback
+});
+```
+
 ### Request Object
 
 The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.

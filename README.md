@@ -268,7 +268,8 @@ Let's see some methods of response object.
 | 5             | *html*              | Renders a view and sends the rendered HTML string to the client.|
 | 6             | *json*              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
 | 7             | *isRedirectStatus* | Determines if a HTTP `Status` is a `RedirectStatus` (3XX).       |
-| 8             | *withBody*         | Set the response body. |
+| 8             | *abort*            | Rise an HTTP error from the server. |
+| 9             | *withBody*         | Set the response body. |
 
 ### Cookies
 

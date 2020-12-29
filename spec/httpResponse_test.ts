@@ -21,6 +21,7 @@ import {
   DenoStdInternalError,
 } from "../deps.ts";
 import { HttpResponse } from "../lib/httpResponse.ts";
+import { HttpError } from "../lib/httpError.ts";
 import { MediaTypes } from "../lib/httpMessage.ts";
 import { ServerResponse } from "../lib/types.d.ts";
 
@@ -166,6 +167,19 @@ Deno.test({
     assertNotEquals(httpResponse.isRedirectStatus(400), true);
     assertNotEquals(httpResponse.isRedirectStatus(200), true);
     assertNotEquals(httpResponse.isRedirectStatus(500), true);
+  },
+});
+
+Deno.test({
+  name: "should throw an HTTP error",
+  fn(): void {
+    assertThrows(
+      (): void => {
+        httpResponse.abort(403);
+      },
+      HttpError,
+      "Something went wrong",
+    );
   },
 });
 

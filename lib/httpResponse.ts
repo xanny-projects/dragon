@@ -17,7 +17,7 @@
 import { assert, encode } from "../deps.ts";
 import { ServerResponse } from "./types.d.ts";
 import { HttpMessage, MediaTypes } from "./httpMessage.ts";
-import { HttpStatus } from "./httpError.ts";
+import { HttpError, HttpStatus } from "./httpError.ts";
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
@@ -123,6 +123,19 @@ export class HttpResponse extends HttpMessage {
    */
   public contentType(): string | null {
     return this.header("Content-Type");
+  }
+
+  /**
+   * Rise an HTTP error from the server.
+   * Optionally, you may provide the response text.
+   *
+   * @param {number | HttpStatus} status
+   * @param {string} message
+   * @return {HttpError}
+   * @api public
+   */
+  public abort(status: number | HttpStatus, message?: string): HttpError {
+    throw new HttpError(message || "Something went wrong", status);
   }
 
   /**

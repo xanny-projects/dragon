@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export const VERSION = "0.6-beta";
+export const VERSION = "1.0";

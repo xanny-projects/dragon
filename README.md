@@ -302,7 +302,7 @@ const middleware = async function(Request: HttpRequest, ResponseWriter: HttpResp
   return MiddlewareState.Next;
 }
 
-const r = app.NewRoute();
+const r = app.routes();
   r.Path("/middleware/example")
   .withMethods(RequestMethod.GET)
   .withMiddleware(middleware)
@@ -316,7 +316,7 @@ const r = app.NewRoute();
 #### 2- Middleware Groups
 
 Sometimes you may want to group several middleware under a single key to make them easier to assign to routes.
-You may accomplish this using the `WithMiddlewareGroups`:
+You may accomplish this using the `withMiddlewareGroups`:
 
 ```ts
 
@@ -341,7 +341,7 @@ const r = app.routes();
 
 #### 3- Global Middleware
 
-If you want a middleware to run during every HTTP request to your application, you should use `GlobalMiddleware` methods:
+If you want a middleware to run during every HTTP request to your application, you should use `globalMiddleware` methods:
 
 ```ts
 

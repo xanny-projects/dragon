@@ -10,8 +10,9 @@ async function main(args: string[]): Promise<void> {
 
   const r = app.routes({ maxRoutes: 1 });
 
-  r.Path("/").withMethods(RequestMethod.GET).handleFunc(
+  r.Path("/").withMethods(RequestMethod.PUT).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+      console.log("Hello world");
       ResponseWriter.withBody("Hello Xanny").send();
     },
   );
@@ -19,4 +20,6 @@ async function main(args: string[]): Promise<void> {
   app.listenAndServe({ port: 8080 });
 }
 
-main(Deno.args).then((r) => console.log("🦕 Xanny listining..."));
+await main(Deno.args);
+
+console.log("🦕 Xanny listining...");

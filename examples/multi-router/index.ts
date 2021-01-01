@@ -2,21 +2,9 @@ import {
   Application,
   HttpRequest,
   HttpResponse,
-  MiddlewareState,
   RequestMethod,
 } from "../../lib/mod.ts";
-
-// Cache Control Attack
-async function Cache(
-  Request: HttpRequest,
-  ResponseWriter: HttpResponse,
-): Promise<MiddlewareState> {
-  ResponseWriter.withHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0, s-maxage=0",
-  );
-  return MiddlewareState.Next;
-}
+import { Api_v1 } from "./controllers/api_v1.ts";
 
 async function main(args: string[]): Promise<void> {
   const app = new Application();
@@ -25,9 +13,12 @@ async function main(args: string[]): Promise<void> {
 
   r.Path("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Xanny").send();
+      ResponseWriter.withBody("Hello from root route.").send();
     },
-  ).withMiddleware(Cache);
+  );
+
+  // register controllers.
+  Api_v1(r);
 
   app.listenAndServe({ port: 8080 });
 }

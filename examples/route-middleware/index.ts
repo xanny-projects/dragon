@@ -32,4 +32,6 @@ async function main(args: string[]): Promise<void> {
   app.listenAndServe({ port: 8080 });
 }
 
-main(Deno.args).then((r) => console.log("🦕 Xanny listining..."));
+await main(Deno.args);
+
+console.log("🦕 Xanny listining...");

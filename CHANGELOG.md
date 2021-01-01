@@ -29,3 +29,9 @@
 
 - Add `abort` method.
 - Add `Fallback Routes` documentation section.
+
+## v1.0.1 💨
+
+- Export `HtppRouting` class.
+- Add `multi-router` example.
+- Refactor `params` and `route-middleware` example.

@@ -177,7 +177,7 @@ export class HttpError extends Error {
     * @returns {string}
     * @api public
     */
-  public GetMessage(): string {
+  public msg(): string {
     return this.message;
   }
 
@@ -187,7 +187,7 @@ export class HttpError extends Error {
     * @returns {number}
     * @api public
     */
-  public GetStatus(): number {
+  public statusCode(): number {
     return this.status;
   }
 }

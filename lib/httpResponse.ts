@@ -14,38 +14,14 @@
  * limitations under the License.
  */
 
-import { assert, encode, Response } from "../deps.ts";
-import { HttpMessage } from "./httpMessage.ts";
-import { HttpStatus } from "./httpError.ts";
-
-/** Return respond using Response class instead of ServerRequest. */
-export interface ServerResponse extends Response {
-  respond(r: Response): Promise<void>;
-}
+import { assert, encode } from "../deps.ts";
+import { ServerResponse } from "./types.d.ts";
+import { HttpMessage, MediaTypes } from "./httpMessage.ts";
+import { HttpError, HttpStatus } from "./httpError.ts";
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
   Back,
-}
-
-/** Common Media types  */
-export enum MediaTypes {
-  MD = "text/markdown",
-  HTML = "text/html",
-  HTM = "text/html",
-  JSON = "application/json",
-  MAP = "application/json",
-  TXT = "text/plain",
-  TS = "text/typescript",
-  TSX = "text/tsx",
-  JS = "application/javascript",
-  JSX = "text/jsx",
-  GZIP = "application/gzip",
-  CSS = "text/css",
-  WASM = "application/wasm",
-  MJS = "application/javascript",
-  FORM = "application/x-www-form-urlencoded",
-  MULTIPARTFORM = "multipart/form-data",
 }
 
 /**
@@ -64,7 +40,11 @@ export class HttpResponse extends HttpMessage {
    * Send the content of the response.
    * @var
    */
-  public body?: Uint8Array | Deno.Reader | string;
+  private _body?: Uint8Array | Deno.Reader | string;
+
+  public get body(): Uint8Array | Deno.Reader | string | undefined {
+    return this._body;
+  }
 
   /**
    * Construct a new, empty instance of the {@code HttpResponse} object.
@@ -82,7 +62,7 @@ export class HttpResponse extends HttpMessage {
    * @returns {number}
    * @api public
    */
-  public GetStatusCode(): number {
+  public statusCode(): number {
     return this.res.status || HttpStatus.OK;
   }
 
@@ -95,7 +75,7 @@ export class HttpResponse extends HttpMessage {
    * @see {@link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml}
    * @api public
    */
-  public WithStatus(statusCode: number | HttpStatus): this {
+  public withStatus(statusCode: number | HttpStatus): this {
     this.res.status = statusCode;
     return this;
   }
@@ -107,8 +87,8 @@ export class HttpResponse extends HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public WithContentLength(n: number): this {
-    this.WithHeader("Content-Length", n.toString());
+  public withContentLength(n: number): this {
+    this.withHeader("Content-Length", n.toString());
     return this;
   }
 
@@ -118,19 +98,19 @@ export class HttpResponse extends HttpMessage {
    *
    * Examples:
    *
-   *    WithContentType(".html")
-   *    WithContentType("html")
-   *    WithContentType("json")
-   *    WithContentType("application/json")
+   *    withContentType(".html")
+   *    withContentType("html")
+   *    withContentType("json")
+   *    withContentType("application/json")
    *
    *
    * @param {string} value
    * @returns {Object}
    * @api public
    */
-  public WithContentType(value: string): this {
-    if (!this.HasHeader("Content-Type")) {
-      this.WithHeader("Content-Type", value);
+  public withContentType(value: string): this {
+    if (!this.hasHeader("Content-Type")) {
+      this.withHeader("Content-Type", value);
     }
     return this;
   }
@@ -141,8 +121,21 @@ export class HttpResponse extends HttpMessage {
    * @returns {string | null}
    * @api public
    */
-  public GetContentType(): string | null {
-    return this.GetHeader("Content-Type");
+  public contentType(): string | null {
+    return this.header("Content-Type");
+  }
+
+  /**
+   * Rise an HTTP error from the server.
+   * Optionally, you may provide the response text.
+   *
+   * @param {number | HttpStatus} status
+   * @param {string} message
+   * @return {HttpError}
+   * @api public
+   */
+  public abort(status: number | HttpStatus, message?: string): HttpError {
+    throw new HttpError(message || "Something went wrong", status);
   }
 
   /**
@@ -150,18 +143,18 @@ export class HttpResponse extends HttpMessage {
    *
    * Example :
    *
-   *   WithLastModified(new Date())
-   *   WithLastModified("2020-12-06")
+   *   withLastModified(new Date())
+   *   withLastModified("2020-12-06")
    *
    * @param {Date} value
    * @returns {Object}
    * @api public
    */
-  public WithLastModified(value: string | Date): this {
+  public withLastModified(value: string | Date): this {
     if (typeof value === "string") {
       value = new Date(value);
     }
-    this.WithHeader("Last-Modified", value.toUTCString());
+    this.withHeader("Last-Modified", value.toUTCString());
     return this;
   }
 
@@ -171,24 +164,24 @@ export class HttpResponse extends HttpMessage {
    * @returns {Date}
    * @api public
    */
-  public GetLastModified() {
-    const date = this.GetHeader("Last-Modified");
+  public lastModified() {
+    const date = this.header("Last-Modified");
     if (date) return new Date(date);
   }
 
   /**
-   * Render `Html` template.
+   * Render `html` template.
    *
    * Example:
    *
-   *    Html`<b>Hello Xanny</b>`
+   *    html`<b>Hello Xanny</b>`
    *
    * @param {TemplateStringsArray} string
    * @param {unknown[]} values
    * @returns {string}
    * @api public
    */
-  public Html(strings: TemplateStringsArray, ...values: unknown[]): this {
+  public html(strings: TemplateStringsArray, ...values: unknown[]): this {
     const l = strings.length - 1;
     let html = "";
 
@@ -202,19 +195,19 @@ export class HttpResponse extends HttpMessage {
     }
     html += strings[l];
     // encode html.
-    this.body = encode(html);
+    this._body = encode(html);
     return this;
   }
 
   /**
-   * Return `JSON` responses.
+   * Return `json` responses.
    *
    * @param {Record<string, any>} value
    * @returns {this}
    */
-  public Json(value: Record<string, any>): this {
-    this.WithContentType(MediaTypes.JSON);
-    this.body = encode(
+  public json(value: Record<string, any>): this {
+    this.withContentType(MediaTypes.JSON);
+    this._body = encode(
       typeof value === "object" ? JSON.stringify(value) : value,
     );
     return this;
@@ -227,7 +220,7 @@ export class HttpResponse extends HttpMessage {
    * @returns {boolean}
    * @api public
    */
-  public IsRedirectStatus(status: number | HttpStatus): boolean {
+  public isRedirectStatus(status: number | HttpStatus): boolean {
     return [
       HttpStatus.MULTIPLECHOICES,
       HttpStatus.MOVEDPERMANENTLY,
@@ -246,16 +239,16 @@ export class HttpResponse extends HttpMessage {
    * @returns {Object}
    * @api public
    */
-  public WithBody(
+  public withBody(
     body?: string | Deno.Reader | Uint8Array | undefined,
   ): this {
     if (typeof body === "undefined") {
-      this.WithStatus(HttpStatus.NOCONTENT);
-      this.RemoveHeader("Content-Type");
-      this.RemoveHeader("Content-Length");
-      this.RemoveHeader("Transfer-Encoding");
+      this.withStatus(HttpStatus.NOCONTENT);
+      this.delHeader("Content-Type");
+      this.delHeader("Content-Length");
+      this.delHeader("Transfer-Encoding");
     }
-    this.body = body || "";
+    this._body = body || "";
     return this;
   }
 
@@ -264,12 +257,12 @@ export class HttpResponse extends HttpMessage {
    *
    * For example:
    *
-   *   WithCookie("full=of; tasty=chocolate")
+   *   withCookie("full=of; tasty=chocolate")
    *
    * @returns {string}
    * @api public
    */
-  public WithCookie(value: string): this {
+  public withCookie(value: string): this {
     assert(typeof value === "string", "Cookie must be string");
     this.res.headers?.set("Cookie", value);
     return this;
@@ -281,11 +274,11 @@ export class HttpResponse extends HttpMessage {
    * @returns {void}
    * @api public
    */
-  public Return(): void {
+  public send(): void {
     this.res.respond({
-      body: this.body,
-      headers: this.GetHeaders(),
-      status: this.GetStatusCode(),
+      body: this._body,
+      headers: this.headers(),
+      status: this.statusCode(),
     });
   }
 }

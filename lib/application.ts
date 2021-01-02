@@ -15,66 +15,25 @@
  */
 
 import { DefaultServer, ServerTLS } from "../deps.ts";
-import { HttpRouting } from "./httpRouting.ts";
+import {
+  ApplicationOptions,
+  ListenOptions,
+  ListenTlsOptions,
+  RoutingOptions,
+} from "./types.d.ts";
+import { HttpRouting, RegistredRoutes } from "./httpRouting.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { Middleware, MiddlewareResolver } from "./middleware.ts";
-
-export interface RoutingOptions {
-  /** A custom length for parameters * This defaults to `100 characters`. */
-  maxParamLength?: number;
-  /** Configurable Handler to be used when no route matches. */
-  notFoundHandler?: Middleware;
-  /** Maximum allowed routes */
-  maxRoutes?: number;
-}
-
-export interface ApplicationOptions {
-  /** If set to `true`, proxy headers will be trusted when processing requests.
-   * This defaults to `false`. */
-  proxy?: boolean;
-  /** Return array of subdomains in the domain name of the request.
-   * This defaults to `2`. */
-  subdomainOffset?: string[] | 2;
-  /** Return header for identifying the originating IP address of a client connecting to a web server
-   * through an HTTP proxy or a load balancer */
-  proxyIpHeader?: string | "X-Forwarded-For";
-}
-
-export interface ListenSimpleOptions {
-  /** A unique name for a computer or network node in a network
-   * This defaults to `0.0.0.0` */
-  hostname?: string;
-  /** Numbers used by protocols for operation of network applications.
-   * This defaults to `4200` */
-  port: number;
-}
-
-export interface ListenTlsOptions extends ListenSimpleOptions {
-  certFile: string;
-  keyFile: string;
-  /** The listening will be over HTTPS */
-  secure: true;
-}
-
-export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
-
-/**
- * Register list of routes.
- *
- * @var {Routes}
- * @api public
- */
-export const RegistredRoutes: HttpRouting[] = [];
+import { MiddlewareResolver } from "./middleware.ts";
 
 /**
  * Routing Options.
  *
  * @var {RouteOptions}
- * @api public
+ * @api private
  */
-export var RouteOptions: RoutingOptions = {};
+var RouteOptions: RoutingOptions = {};
 
 /* Initialize and Expose `Application` class */
 export class Application {
@@ -91,18 +50,18 @@ export class Application {
    * @returns {boolean}
    * @api public
    */
-  public IsSecure(options: ListenOptions): options is ListenTlsOptions {
+  public isSecure(options: ListenOptions): options is ListenTlsOptions {
     return "secure" in options;
   }
 
   /**
-   * NewRoute registers an empty route.
+   * Routes registers an empty route.
    *
    * @param {RoutingOptions} options
    * @returns {HttpRouting}
    * @api public
    */
-  public NewRoute(options?: RoutingOptions): HttpRouting {
+  public routes(options?: RoutingOptions): HttpRouting {
     if (typeof options !== "undefined") {
       RouteOptions = options;
     }
@@ -111,7 +70,6 @@ export class Application {
       [],
       async (Request: HttpRequest, ResponseWriter: HttpResponse) => {},
     );
-    RegistredRoutes.push(route);
     return route;
   }
 
@@ -121,7 +79,7 @@ export class Application {
    * @returns {object}
    * @api public
    */
-  public Settings(): ApplicationOptions {
+  public settings(): ApplicationOptions {
     return this.options;
   }
 
@@ -134,24 +92,24 @@ export class Application {
    * @returns {Object}
    * @api public
    */
-  public async ListenAndServe(
+  public async listenAndServe(
     options: ListenOptions,
   ): Promise<void | HttpError> {
     if (RegistredRoutes.length === 0) {
       throw new HttpError("Register at least one route.");
     }
-    const server = this.IsSecure(options)
+    const server = this.isSecure(options)
       ? ServerTLS(options)
       : DefaultServer(options);
     try {
       for await (const request of server) {
         // Match attempts to match the given request against the router's registered routes.
-        const req = await new HttpRequest(request);
+        const req = new HttpRequest(request);
         const res = new HttpResponse(request);
         // If the match failure type (eg: not found) has a registered handler,
         // the handler is assigned to the Handler.
         if (
-          await this.Match(req, res) === HttpStatus.NOTFOUND &&
+          await this.match(req, res) === HttpStatus.NOTFOUND &&
           RouteOptions.notFoundHandler !== undefined
         ) {
           RouteOptions.notFoundHandler(req, res);
@@ -175,25 +133,25 @@ export class Application {
    * @return {void | HttpStatus }
    * @api public
    */
-  public async Match(
+  public async match(
     Request: HttpRequest,
     ResponseWriter: HttpResponse,
   ): Promise<HttpStatus | void> {
     for (const route of RegistredRoutes) {
       if (
-        route.HasPath(Request.GetPath()) && route.HasMethod(Request.GetMethod())
+        route.hasPath(Request.path()) && route.hasMethod(Request.method())
       ) {
         if (typeof route.path !== "string") {
           // Set a parameter to the given value.
-          const r = route.path.exec(Request.GetPath());
+          const r = route.path.exec(Request.path());
           Request.parameters = r?.groups;
         }
         const middleware = new MiddlewareResolver(Request, ResponseWriter);
         // Resolve the registred middlewares. The order is very important.
         Promise.all([
-          middleware.ResolveGlobalMiddlewares(),
-          middleware.ResolveMiddlewareGroups(route.middlewareGroups),
-          middleware.ResolveMiddlewares(route.middleware),
+          middleware.resolveGlobalMiddlewares(),
+          middleware.resolveMiddlewareGroups(route.middlewareGroups()),
+          middleware.resolveMiddlewares(route.middlewares()),
         ]).then(() => {
           // Excecute the handle function.
           route.action(Request, ResponseWriter);
@@ -209,7 +167,7 @@ export class Application {
    * @returns {string}
    * @api public
    */
-  public Inspect(value: unknown): string {
+  public inspect(value: unknown): string {
     return Deno.inspect(value);
   }
 }

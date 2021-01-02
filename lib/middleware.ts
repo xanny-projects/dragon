@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { Middleware, MiddlewareGroups } from "./types.d.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HandlerFunc, HttpRouting } from "./httpRouting.ts";
+import { HttpRouting } from "./httpRouting.ts";
 
 // When a request is received by Xanny, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
 // So if an error occurs you must use return `MiddlewareState.Cancel`.
@@ -24,13 +25,6 @@ import { HandlerFunc, HttpRouting } from "./httpRouting.ts";
 export enum MiddlewareState {
   Next,
   Cancel,
-} // Middleware interface is anything with Next function.
-
-export interface Middleware extends HandlerFunc {} // Groups of middleware.
-
-export interface MiddlewareGroups {
-  name: string;
-  handlers: Middleware[];
 }
 
 /* Initialize and Expose `MiddlewareResolver` class */
@@ -54,12 +48,12 @@ export class MiddlewareResolver {
    * @returns {void}
    * @api public
    */
-  public async ResolveMiddlewareGroups(
+  public async resolveMiddlewareGroups(
     middlewareGroups: MiddlewareGroups[],
   ): Promise<void> {
     if (middlewareGroups.length > 0) {
       for (const middlewareG of middlewareGroups) {
-        await this.ResolveMiddlewares(middlewareG.handlers);
+        await this.resolveMiddlewares(middlewareG.handlers);
       }
     }
   }
@@ -71,7 +65,7 @@ export class MiddlewareResolver {
    * @returns {void}
    * @api public
    */
-  public async ResolveMiddlewares(middlewares: Middleware[]): Promise<void> {
+  public async resolveMiddlewares(middlewares: Middleware[]): Promise<void> {
     if (middlewares.length > 0) {
       for (const middleware of middlewares) {
         const currentMiddleware = await middleware(this.request, this.response);
@@ -91,7 +85,7 @@ export class MiddlewareResolver {
    * @returns {void}
    * @api public
    */
-  public async ResolveGlobalMiddlewares(): Promise<void> {
-    await this.ResolveMiddlewares(HttpRouting.globalMiddleware);
+  public async resolveGlobalMiddlewares(): Promise<void> {
+    await this.resolveMiddlewares(HttpRouting.globalMiddlewares());
   }
 }

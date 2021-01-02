@@ -26,20 +26,23 @@ const httpRouting = new HttpRouting(
   async () => Promise.resolve(),
 );
 
-httpRouting.WithMethods(RequestMethod.GET);
+httpRouting.withMethods(RequestMethod.GET);
 
 Deno.test({
   name: "should push `HEAD` if the method is GET",
   fn(): void {
-    assertEquals(httpRouting.methods, [RequestMethod.GET, RequestMethod.HEAD]);
+    assertEquals(
+      httpRouting.methods(),
+      [RequestMethod.GET, RequestMethod.HEAD],
+    );
   },
 });
 
 Deno.test({
   name: "should add new methods",
   fn(): void {
-    httpRouting.WithMethods(RequestMethod.POST);
-    assertEquals(httpRouting.methods, [
+    httpRouting.withMethods(RequestMethod.POST);
+    assertEquals(httpRouting.methods(), [
       RequestMethod.GET,
       RequestMethod.HEAD,
       RequestMethod.POST,
@@ -50,27 +53,27 @@ Deno.test({
 Deno.test({
   name: "should check if route has given method",
   fn(): void {
-    assertEquals(httpRouting.HasMethod(RequestMethod.GET), true);
-    assertEquals(httpRouting.HasMethod(RequestMethod.POST), true);
-    assertEquals(httpRouting.HasMethod(RequestMethod.HEAD), true);
-    assertNotEquals(httpRouting.HasMethod(RequestMethod.PUT), true);
+    assertEquals(httpRouting.hasMethod(RequestMethod.GET), true);
+    assertEquals(httpRouting.hasMethod(RequestMethod.POST), true);
+    assertEquals(httpRouting.hasMethod(RequestMethod.HEAD), true);
+    assertNotEquals(httpRouting.hasMethod(RequestMethod.PUT), true);
   },
 });
 
 Deno.test({
   name: "should check if a route with the given name exists",
   fn(): void {
-    assertEquals(httpRouting.HasName(), false);
-    httpRouting.WithName("root:path");
-    assertEquals(httpRouting.HasName(), true);
+    assertEquals(httpRouting.hasName(), false);
+    httpRouting.withName("root:path");
+    assertEquals(httpRouting.hasName(), true);
   },
 });
 
 Deno.test({
   name: "should check if a route with the given path exists",
   fn(): void {
-    assertEquals(httpRouting.HasPath("/"), true);
-    assertEquals(httpRouting.HasPath("/testing"), false);
+    assertEquals(httpRouting.hasPath("/"), true);
+    assertEquals(httpRouting.hasPath("/testing"), false);
   },
 });
 
@@ -81,22 +84,22 @@ Deno.test({
       Request: HttpRequest,
       ResponseWriter: HttpResponse,
     ) => Promise.resolve();
-    httpRouting.WithMiddleware(middleware);
-    assertEquals(httpRouting.middleware.length, 1);
+    httpRouting.withMiddleware(middleware);
+    assertEquals(httpRouting.middlewares().length, 1);
   },
 });
 
 Deno.test({
   name: "should register a group of middleware",
   fn(): void {
-    httpRouting.WithMiddlewareGroups("testing", [
+    httpRouting.withMiddlewareGroups("testing", [
       async (Request: HttpRequest, ResponseWriter: HttpResponse) =>
         Promise.resolve(),
       async (Request: HttpRequest, ResponseWriter: HttpResponse) =>
         Promise.resolve(),
     ]);
-    assertEquals(Array.isArray(httpRouting.middleware), true);
-    assertEquals(httpRouting.middlewareGroups.length, 1);
-    assertEquals(httpRouting.middlewareGroups[0].handlers.length, 2);
+    assertEquals(Array.isArray(httpRouting.middlewares()), true);
+    assertEquals(httpRouting.middlewareGroups().length, 1);
+    assertEquals(httpRouting.middlewareGroups()[0].handlers.length, 2);
   },
 });

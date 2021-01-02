@@ -15,7 +15,7 @@
  */
 
 import { decode } from "../deps.ts";
-import { MediaTypes } from "./httpResponse.ts";
+import { MediaTypes } from "./httpMessage.ts";
 
 /**
  * Extract the entire body portion of an incoming request stream and exposes it

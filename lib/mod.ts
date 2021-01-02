@@ -16,15 +16,17 @@
 
 export type {
   ApplicationOptions,
+  HandlerFunc,
   ListenOptions,
+  Middleware,
+  MiddlewareGroups,
   RoutingOptions,
-} from "./application.ts";
-export type { HandlerFunc } from "./httpRouting.ts";
-export type { Middleware, MiddlewareGroups } from "./middleware.ts";
+} from "./types.d.ts";
 
 export { Application } from "./application.ts";
-export { RequestMethod } from "./httpRouting.ts";
+export { HttpRouting, RequestMethod } from "./httpRouting.ts";
 export { HttpRequest } from "./httpRequest.ts";
+export { MediaTypes } from "./httpMessage.ts";
 export { MiddlewareState } from "./middleware.ts";
-export { HttpResponse, MediaTypes } from "./httpResponse.ts";
+export { HttpResponse } from "./httpResponse.ts";
 export { HttpError, HttpStatus } from "./httpError.ts";

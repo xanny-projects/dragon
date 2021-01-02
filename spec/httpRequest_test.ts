@@ -69,51 +69,44 @@ function MockingServerRequest(
 const httpRequest = new HttpRequest(MockingServerRequest() as any);
 
 Deno.test({
-  name: "should return default offset",
-  fn(): void {
-    assertEquals(httpRequest.defaultOffset, 2);
-  },
-});
-
-Deno.test({
   name: "should return `Http` method",
   fn(): void {
-    assertEquals(httpRequest.GetMethod(), RequestMethod.GET);
+    assertEquals(httpRequest.method(), RequestMethod.GET);
   },
 });
 
 Deno.test({
   name: "should return `Url` without query",
   fn(): void {
-    assertMatch(httpRequest.Url(), /testing/);
+    assertMatch(httpRequest.url(), /testing/);
   },
 });
 
 Deno.test({
   name: "should return `Host` header",
   fn(): void {
-    assertEquals(httpRequest.HasHeader("X-Forwarded-Host"), false);
-    assertEquals(httpRequest.HostName(), "localhost");
+    assertEquals(httpRequest.hasHeader("X-Forwarded-Host"), false);
+    assertEquals(httpRequest.hostName(), "localhost");
   },
 });
 
 Deno.test({
   name: "should return `Http` as protocol",
   fn(): void {
-    assertEquals(httpRequest.GetProtocol(), "HTTP/1.1");
+    assertEquals(httpRequest.protocol(), "HTTP/1.1");
   },
 });
 
 Deno.test({
   name: "should return `Body` of the message without parser",
   fn(): void {
-    assertEquals(httpRequest.GetBodyWithoutParser(), "Hello Xanny");
+    assertEquals(httpRequest.bodyWithoutParser(), "Hello Xanny");
   },
 });
 
 Deno.test({
   name: "should return content length header",
   fn(): void {
-    assertNotEquals(httpRequest.ContentLength(), null);
+    assertNotEquals(httpRequest.contentLength(), null);
   },
 });

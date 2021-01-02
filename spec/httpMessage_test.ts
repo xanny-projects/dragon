@@ -65,7 +65,10 @@ Deno.test({
   name: "should add new header value",
   fn(): void {
     assertEquals(
-      httpMessage.withHeader("Host", "https://github.com/xanny-projects/xanny"),
+      httpMessage.withHeader(
+        "Host",
+        "https://github.com/xanny-projects/Dragon",
+      ),
       httpMessage,
     );
   },

@@ -322,9 +322,9 @@ export class HttpRouting {
    *
    * Example:
    *
-   *    Path("/xaany");
-   *    Path(/xanny/);
-   *    Path(/xanny\/(?<id>[0-9]+)/u);
+   *    Path("/dragon");
+   *    Path(/Dragon/);
+   *    Path(/Dragon\/(?<id>[0-9]+)/u);
    *
    * @param {string} value
    * @returns {Object}

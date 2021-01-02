@@ -25,7 +25,7 @@ async function main(args: string[]): Promise<void> {
 
   r.Path("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Xanny").send();
+      ResponseWriter.withBody("Hello Dragon").send();
     },
   ).withMiddleware(Cache);
 
@@ -34,4 +34,4 @@ async function main(args: string[]): Promise<void> {
 
 await main(Deno.args);
 
-console.log("🦕 Xanny listining...");
+console.log("Dragon listining...");

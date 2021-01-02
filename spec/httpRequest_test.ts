@@ -43,7 +43,7 @@ function MockingServerRequest(
   host = "localhost",
   method = RequestMethod.GET,
   proto = "HTTP/1.1",
-  body = "Hello Xanny",
+  body = "Hello Dragon",
   headerVal = {},
 ): ServerRequest {
   // init headers
@@ -100,7 +100,7 @@ Deno.test({
 Deno.test({
   name: "should return `Body` of the message without parser",
   fn(): void {
-    assertEquals(httpRequest.bodyWithoutParser(), "Hello Xanny");
+    assertEquals(httpRequest.bodyWithoutParser(), "Hello Dragon");
   },
 });
 

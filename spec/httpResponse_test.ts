@@ -37,7 +37,7 @@ import { ServerResponse } from "../lib/types.d.ts";
 function MockingServerRequest(
   status = 200,
   headers = new Headers(),
-  body = "Hello Xanny",
+  body = "Hello Dragon",
   trailers?: () => Promise<Headers> | Headers,
 ): ServerResponse {
   return {
@@ -85,7 +85,7 @@ Deno.test({
 Deno.test({
   name: "should render `HTML` template",
   fn(): void {
-    const setTemplate = httpResponse.html`<h1>Xanny Render Testing!</h1>`;
+    const setTemplate = httpResponse.html`<h1>Dragon Render Testing!</h1>`;
     assertNotEquals(setTemplate.body, null);
     assertEquals(
       setTemplate.body,
@@ -94,11 +94,12 @@ Deno.test({
         104,
         49,
         62,
-        88,
+        68,
+        114,
         97,
+        103,
+        111,
         110,
-        110,
-        121,
         32,
         82,
         101,
@@ -129,7 +130,7 @@ Deno.test({
   name: "should render `Json`",
   fn(): void {
     const setJson = httpResponse.json({
-      project: "Xanny",
+      project: "Dragon",
     });
     assertEquals(typeof setJson.body, "object");
     assertEquals(
@@ -147,11 +148,12 @@ Deno.test({
         34,
         58,
         34,
-        88,
+        68,
+        114,
         97,
+        103,
+        111,
         110,
-        110,
-        121,
         34,
         125,
       ]),

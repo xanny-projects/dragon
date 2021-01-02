@@ -28,8 +28,8 @@ const your = (code) => here;
 ## Environment
 
 <pre><code>
-Xanny version: X.Y.Z
-<!-- Check whether this is still an issue in the most recent xanny version -->
+Dragon version: X.Y.Z
+<!-- Check whether this is still an issue in the most recent Dragon version -->
 
 For Tooling issues:
 - Node version: XX  <!-- run `node --version` -->

@@ -19,7 +19,7 @@ import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 import { HttpRouting } from "./httpRouting.ts";
 
-// When a request is received by Xanny, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
+// When a request is received by Dragon, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
 // So if an error occurs you must use return `MiddlewareState.Cancel`.
 // If not use Next to handle the next middleware.
 export enum MiddlewareState {

@@ -20,19 +20,19 @@ import { BodyParser } from "../lib/bodyParser.ts";
 Deno.test({
   name: "Should parser data when header `application/json` ",
   async fn(): Promise<void> {
-    const r = new StringReader('{"name":"Xanny"}');
+    const r = new StringReader('{"name":"Dragon"}');
     const parser = await BodyParser(r, "application/json");
     assertEquals(typeof parser, "object");
-    assertEquals(parser, { "name": "Xanny" });
+    assertEquals(parser, { "name": "Dragon" });
   },
 });
 
 Deno.test({
   name: "Should parser data when header `application/x-www-form-urlencoded` ",
   async fn(): Promise<void> {
-    const r = new StringReader("framework=xanny&version=1.0");
+    const r = new StringReader("framework=Dragon&version=1.0");
     const parser = await BodyParser(r, "application/x-www-form-urlencoded");
     assertEquals(typeof parser, "object");
-    assertEquals(parser, { framework: "xanny", version: "1.0" });
+    assertEquals(parser, { framework: "Dragon", version: "1.0" });
   },
 });

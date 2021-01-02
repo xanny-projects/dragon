@@ -174,7 +174,7 @@ export class HttpResponse extends HttpMessage {
    *
    * Example:
    *
-   *    html`<b>Hello Xanny</b>`
+   *    html`<b>Hello Dragon</b>`
    *
    * @param {TemplateStringsArray} string
    * @param {unknown[]} values

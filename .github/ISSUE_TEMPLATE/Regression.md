@@ -1,6 +1,6 @@
 ---
 name: "\U0001F4A5 Regression"
-about: Report an unexpected while upgrading your xanny application!
+about: Report an unexpected while upgrading your Dragon application!
 title: ''
 labels: 'type: bug :sob:,needs triage'
 assignees: ''
@@ -27,7 +27,7 @@ const your = (code) => here;
 
 ## Environment
 <pre><code>
-Xanny version: A.B.C -> X.Y.Z
+Dragon version: A.B.C -> X.Y.Z
 
 For Tooling issues:
 - Node version: XX  <!-- run `node --version` -->

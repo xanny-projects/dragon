@@ -1,16 +1,16 @@
-# Xanny
+# Dragon
 
 <p align="left">
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xanny-projects/xanny/ci)
-![GitHub issues](https://img.shields.io/github/issues/xanny-projects/xanny)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/xanny)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xanny-projects/dragon/ci)
+![GitHub issues](https://img.shields.io/github/issues/xanny-projects/dragon)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/dragon)
 
 </p>
 
 <img align="right" src="https://avatars2.githubusercontent.com/u/75166135?s=150&v=4" height="150px">
 
-Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
+Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
 ### Features
 
@@ -25,7 +25,7 @@ Xanny is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for bu
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/xanny@0.4-beta/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/Dragon@1.0.1/lib/mod.ts";
 
 const app = new Application();
 
@@ -34,12 +34,12 @@ const r = app.routes({ maxRoutes:2 });
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Xanny").send();
+      ResponseWriter.withBody("Hello Dragon").send();
   });
 
 r.Path("/demo")
  .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Xanny Demo").send();
+    ResponseWriter.withBody("Hello Dragon Demo").send();
   });
 
 app.listenAndServe({ port: 8080 });
@@ -50,7 +50,7 @@ Here we register two routes mapping URL path to handler. if an incoming request 
 
 ## Documentation
 
-Get started with Xanny, learn the fundamentals and explore advanced topics.
+Get started with Dragon, learn the fundamentals and explore advanced topics.
 
 ### Table of content
 
@@ -68,11 +68,11 @@ Get started with Xanny, learn the fundamentals and explore advanced topics.
 Assuming you’ve already installed **Deno**, create a directory to hold your application, and make that your working directory.
 
 ```sh
-$ mkdir xanny-app
-$ cd xanny-app
+$ mkdir Dragon-app
+$ cd Dragon-app
 ```
 
-Creates an Xanny application. The `Application` class exported from xanny module and sets up the application with various options.
+Creates an Dragon application. The `Application` class exported from Dragon module and sets up the application with various options.
 
 ```ts
 const app = new Application();
@@ -96,14 +96,14 @@ Routing is made from the word route. It is used to determine the specific behavi
 
 #### 1- Basic Routing
 
-Xanny provides a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+Dragon provides a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
 ```ts
 const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Xanny").send();
+    ResponseWriter.withBody("Hello Dragon").send();
   });
 ```
 
@@ -152,7 +152,7 @@ const r = app.routes();
 
 You may define as many route parameters as required by your route.
 
-> 🚨 Xanny uses regex named group in order to match parameters.
+> 🚨 Dragon uses regex named group in order to match parameters.
 
 #### 4- Named Routes
 
@@ -255,7 +255,7 @@ Request.withHeader('X-Header-One', 'Header Value')
 
 ### Response Object
 
-All routes should return a response to be sent back to the user's browser. Xanny provides several different ways to return responses.
+All routes should return a response to be sent back to the user's browser. Dragon provides several different ways to return responses.
 
 Let's see some methods of response object.
 
@@ -275,7 +275,7 @@ Let's see some methods of response object.
 
 Cookies are small piece of information i.e. sent from a website and stored in user's web browser when user browses that website. Every time the user loads that website back, the browser sends that stored data back to website or server, to recognize user.
 
-Let's define a new route in your xanny app like set a new cookie:
+Let's define a new route in your Dragon app like set a new cookie:
 
 ```ts
 const r = app.routes();
@@ -302,7 +302,7 @@ const middleware = async function(Request: HttpRequest, ResponseWriter: HttpResp
   return MiddlewareState.Next;
 }
 
-const r = app.NewRoute();
+const r = app.routes();
   r.Path("/middleware/example")
   .withMethods(RequestMethod.GET)
   .withMiddleware(middleware)
@@ -316,7 +316,7 @@ const r = app.NewRoute();
 #### 2- Middleware Groups
 
 Sometimes you may want to group several middleware under a single key to make them easier to assign to routes.
-You may accomplish this using the `WithMiddlewareGroups`:
+You may accomplish this using the `withMiddlewareGroups`:
 
 ```ts
 
@@ -341,7 +341,7 @@ const r = app.routes();
 
 #### 3- Global Middleware
 
-If you want a middleware to run during every HTTP request to your application, you should use `GlobalMiddleware` methods:
+If you want a middleware to run during every HTTP request to your application, you should use `globalMiddleware` methods:
 
 ```ts
 
@@ -361,7 +361,7 @@ const r = app.routes();
 
 ### Full Examples
 
-Here's a complete, runnable example of a small xanny based server:
+Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
 import {
@@ -374,7 +374,7 @@ import {
 async function main(args: string[]): Promise<void> {
   const app = new Application();
   const r = app.routes({ maxRoutes:1 });
-  r.Path("/xanny")
+  r.Path("/Dragon")
    .withMethods(RequestMethod.GET)
    .withName("root")
    .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
@@ -402,7 +402,7 @@ main(Deno.args).then(() => {
 | Express       | 4.17.1        | ✓       | 166k requests in 40.08s, 39.5 MB read      |
 | Fastify       | 3.9.1         | ✓       | 1081k requests in 40.07s ,189 MB read      |
 | Oak           | 4.0.0         | ✓       | 243k requests in 40.12s, 27 MB read        |
-| **Xanny**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
+| **Dragon**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
 
 This is a synthetic, `hello world` benchmark that aims to evaluate the framework overhead. The overhead that each framework has on your application depends on your application, you should **always** benchmark if performance matters to you.
 
@@ -410,19 +410,19 @@ This is a synthetic, `hello world` benchmark that aims to evaluate the framework
 
 We appreciate your help 👋!
 
-We encourage you to contribute to Xanny! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed.
+We encourage you to contribute to Dragon! Please check out the  [guidelines](/CONTRIBUTING) about how to proceed.
 
 ## Sponsors
 
-We would like to extend our thanks to the following sponsors for funding xanny development. If you are interested in becoming a sponsor, please visit the Xanny [Open collective page](opencollective.com/xanny-projects).
+We would like to extend our thanks to the following sponsors for funding Dragon development. If you are interested in becoming a sponsor, please visit the Dragon [Open collective page](opencollective.com/Dragon-projects).
 
 ## Code of Conduct
 
-In order to ensure that the Xanny community is welcoming to all, please review and abide by the [Code of Conduct](/CODE_OF_CONDUCT).
+In order to ensure that the Dragon community is welcoming to all, please review and abide by the [Code of Conduct](/CODE_OF_CONDUCT).
 
 ## Security Issues
 
-If you discover a security vulnerability in Xanny, please see [Security Policies and Procedures](/SECURITY).
+If you discover a security vulnerability in Dragon, please see [Security Policies and Procedures](/SECURITY).
 
 ## Changelog
 
@@ -430,12 +430,12 @@ Detailed changes for each release are documented in the [release notes](/CHANGEL
 
 ## People
 
-- The original author of Xanny is [Yasser A.Idrissi](https://github.com/getspooky).
+- The original author of Dragon is [Yasser A.Idrissi](https://github.com/getspooky).
 
-- [List of all contributors](https://github.com/xanny-projects/xanny/graphs/contributors)
+- [List of all contributors](https://github.com/Dragon-projects/Dragon/graphs/contributors)
 
 ## License
 
-The Xanny framework is open-sourced software licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
+The Dragon framework is open-sourced software licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
 
 

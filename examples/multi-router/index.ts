@@ -25,4 +25,4 @@ async function main(args: string[]): Promise<void> {
 
 await main(Deno.args);
 
-console.log("🦕 Xanny listining...");
+console.log("Dragon listining...");

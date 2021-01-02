@@ -1,6 +1,6 @@
-# Contributing to xanny
+# Contributing to Dragon
 
-We would love for you to contribute to `xanny` and help make it even better than it is
+We would love for you to contribute to `Dragon` and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
 <!--* [Code of Conduct](#coc)-->
@@ -44,7 +44,7 @@ We want to fix all the issues as soon as possible, but before fixing a bug we ne
 
 In order to reproduce bugs we will systematically ask you to provide a minimal reproduction scenario using a repository or [Gist](https://gist.github.com/). Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
 
-- version of Xanny used
+- version of Dragon used
 - 3rd-party libraries and their versions
 - and most importantly - a use-case that fails
 
@@ -52,9 +52,9 @@ In order to reproduce bugs we will systematically ask you to provide a minimal r
 
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-1. Search [GitHub](https://github.com/xanny-project/xanny/pulls) for an open or closed PR
+1. Search [GitHub](https://github.com/Dragon-project/Dragon/pulls) for an open or closed PR
    that relates to your submission. You don't want to duplicate effort.
-2. Fork the xanny-project/xanny repo.
+2. Fork the Dragon-project/Dragon repo.
 3. Make your changes in a new git branch:
 
 
@@ -63,7 +63,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
    ```
 
 4. Create your patch, **including appropriate test cases**.
-5. Run the full Xanny test suite
+5. Run the full Dragon test suite
 6. Commit your changes using a descriptive commit message that follows our
    [commit message conventions](#commit). Adherence to these conventions
    is necessary because release notes are automatically generated from these messages.
@@ -79,11 +79,11 @@ Before you submit your Pull Request (PR) consider the following guidelines:
    git push origin my-fix-branch
    ```
 
-8. In GitHub, send a pull request to `xanny:main`.
+8. In GitHub, send a pull request to `Dragon:main`.
 If we suggest changes then:
 
   - Make the required updates.
-  - Re-run the `xanny` test suites to ensure tests are still passing.
+  - Re-run the `Dragon` test suites to ensure tests are still passing.
   - Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
   ```shell
@@ -97,7 +97,7 @@ That's it! Thank you for your contribution!
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
-we use the git commit messages to **generate the Xanny change log**.
+we use the git commit messages to **generate the Dragon change log**.
 
 ### Commit Message Format
 

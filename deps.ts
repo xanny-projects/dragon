@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/** External dependencies that xanny depends upon */
+/** External dependencies that Dragon depends upon */
 export {
   serve as DefaultServer,
   ServerRequest,

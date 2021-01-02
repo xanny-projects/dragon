@@ -24,7 +24,7 @@ export type {
 } from "./types.d.ts";
 
 export { Application } from "./application.ts";
-export { RequestMethod, HttpRouting } from "./httpRouting.ts";
+export { HttpRouting, RequestMethod } from "./httpRouting.ts";
 export { HttpRequest } from "./httpRequest.ts";
 export { MediaTypes } from "./httpMessage.ts";
 export { MiddlewareState } from "./middleware.ts";

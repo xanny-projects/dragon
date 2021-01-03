@@ -8,7 +8,7 @@
 
 </p>
 
-<img align="right" src="https://drive.google.com/uc?id=19el9wu52mdjLqTweWQ-zqVuclyShVuR8" height="170px">
+<img align="right" src="https://avatars2.githubusercontent.com/u/75166135?s=150&v=4" height="150px">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
@@ -25,7 +25,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@1.0.1/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@1.0.4/lib/mod.ts";
 
 const app = new Application();
 

@@ -112,7 +112,7 @@ export class Application {
           await this.match(req, res) === HttpStatus.NOTFOUND &&
           RouteOptions.notFoundHandler !== undefined
         ) {
-          RouteOptions.notFoundHandler(req, res);
+          await RouteOptions.notFoundHandler(req, res);
         }
       }
     } catch (err) {
@@ -137,28 +137,40 @@ export class Application {
     Request: HttpRequest,
     ResponseWriter: HttpResponse,
   ): Promise<HttpStatus | void> {
+    var is_match = false;
+    // find next matching routes.
     for (const route of RegistredRoutes) {
-      if (
-        route.hasPath(Request.path()) && route.hasMethod(Request.method())
-      ) {
-        if (typeof route.path !== "string") {
-          // Set a parameter to the given value.
-          const r = route.path.exec(Request.path());
-          Request.parameters = r?.groups;
-        }
-        const middleware = new MiddlewareResolver(Request, ResponseWriter);
-        // Resolve the registred middlewares. The order is very important.
-        Promise.all([
-          middleware.resolveGlobalMiddlewares(),
-          middleware.resolveMiddlewareGroups(route.middlewareGroups()),
-          middleware.resolveMiddlewares(route.middlewares()),
-        ]).then(() => {
-          // Excecute the handle function.
-          route.action(Request, ResponseWriter);
-        });
+      if (!route.hasPath(Request.path())) {
+        is_match = false;
+        continue;
       }
+      if (!route.hasMethod(Request.method())) {
+        is_match = false;
+        continue;
+      }
+      if (typeof route.path !== "string") {
+        // Set a parameter to the given value.
+        const r = route.path.exec(Request.path());
+        Request.parameters = r?.groups;
+      }
+      // route is found
+      is_match = true;
+      // Resolve the registred middlewares.
+      const middleware = new MiddlewareResolver(Request, ResponseWriter);
+      // The order is very important.
+      Promise.all([
+        middleware.resolveGlobalMiddlewares(),
+        middleware.resolveMiddlewareGroups(route.middlewareGroups()),
+        middleware.resolveMiddlewares(route.middlewares()),
+      ]).then(() => {
+        // Excecute the handle function.
+        route.action(Request, ResponseWriter);
+      });
     }
-    return HttpStatus.NOTFOUND;
+    // no match
+    if (is_match !== true) {
+      return HttpStatus.NOTFOUND;
+    }
   }
 
   /**

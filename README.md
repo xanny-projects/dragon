@@ -175,7 +175,7 @@ Using `notFoundHandler` option. you may define a route that will be executed whe
 ```ts
 
 const fallback = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
-  ResponseWriter.html(`🤦 Page Not Found`).send();
+  ResponseWriter.html`🤦 Page Not Found`.send();
   return MiddlewareState.Cancel;
 }
 
@@ -288,7 +288,9 @@ const r = app.routes();
 
 ### Middlewares
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. Middleware functions are always invoked in the order in which they are added.
+Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
+
+> 💬 Middleware functions are always invoked in the order in which they are added.
 
 Middleware is commonly used to perform tasks like body parsing for URL-encoded or JSON requests, cookie parsing for basic cookie handling.
 

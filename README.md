@@ -260,16 +260,17 @@ All routes should return a response to be sent back to the user's browser. Drago
 Let's see some methods of response object.
 
 | Index         | Methods              | Description                                                    |
-|:-------------:| :-----------------| :-----------------------------------------------------------------|
+|:-------------:| :--------------------| :--------------------------------------------------------------|
 | 1             | *statusCode*     | Set the response status code. The status code is a 3-digit integer result code of the server's attempt.|
 | 2             | *withStatus*        | Set an instance with the specified status code.                 |
 | 3             | *withContentLength* | Set Content-Length field to `n`.                                |
 | 4             | *withLastModified*  | Set the Last-Modified date using a `string` or a `Date`.        |
 | 5             | *html*              | Renders a view and sends the rendered HTML string to the client.|
-| 6             | *json*              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json` |
-| 7             | *isRedirectStatus* | Determines if a HTTP `Status` is a `RedirectStatus` (3XX).       |
-| 8             | *abort*            | Rise an HTTP error from the server. |
-| 9             | *withBody*         | Set the response body. |
+| 6             | *json*              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json`                                                             |
+| 7             | *isRedirectStatus*  | Determines if a HTTP `Status` is a `RedirectStatus` (3XX).      |
+| 8             | *abort*             | Rise an HTTP error from the server.                             |
+| 9             | *withBody*          | Set the response body.                                          |
+| 10            | *redirect*          | Redirect the client to another URL with optional response `status` defaulting to 302.                                                                                      |
 
 ### Cookies
 

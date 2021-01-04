@@ -21,7 +21,7 @@ import { HttpError, HttpStatus } from "./httpError.ts";
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
-  Back,
+  Back = "back",
 }
 
 /**
@@ -167,6 +167,33 @@ export class HttpResponse extends HttpMessage {
   public lastModified() {
     const date = this.header("Last-Modified");
     if (date) return new Date(date);
+  }
+
+  /**
+   * Redirect the client to another URL with optional response `status` defaulting to 302.
+   *
+   * Examples:
+   *
+   *   redirect('/deno/space')
+   *
+   * @param {string|RedirectOptions} url
+   * @param {number|HttpStatus} status
+   * @returns {void}
+   * @api public
+   */
+  public redirect(
+    url: string | RedirectOptions,
+    status = HttpStatus.FOUND,
+  ): void {
+    // "back" is an alias for the referrer.
+    if (url == RedirectOptions.Back) {
+      url = this.header("Referrer") || "/";
+    }
+    // set status Permanent: (301 and 308), Temporary: (302, 303, and 307).
+    this.withStatus(HttpStatus.FOUND);
+    // set location.
+    this.withHeader("Location", encodeURI(url));
+    return this.send();
   }
 
   /**

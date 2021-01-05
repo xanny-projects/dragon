@@ -15,6 +15,7 @@
  */
 
 import { Response } from "../deps.ts";
+import { RequestMethod } from "./httpRouting.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
 
@@ -50,6 +51,12 @@ export interface RoutingOptions {
   notFoundHandler?: Middleware;
   /** Maximum allowed routes */
   maxRoutes?: number;
+}
+
+/** CORS Option Interface */
+export interface CORSOptions {
+  headers: Array<RequestMethod>;
+  origin: string;
 }
 
 export interface ApplicationOptions {

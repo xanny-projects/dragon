@@ -61,6 +61,7 @@ Get started with Dragon, learn the fundamentals and explore advanced topics.
 * [Responses](#response-object)
 * [Cookies](#cookies)
 * [Middlewares](#middlewares)
+* [Handling CORS Requests](#handling-cors-requests)
 * [Full Example](#full-examples)
 
 ### Installation
@@ -361,6 +362,16 @@ const r = app.routes();
     //
   });
 ```
+
+### Handling CORS Requests
+
+CORS is shorthand for Cross-Origin Resource Sharing. It is a mechanism to allow or restrict requested resources on a web server depend on where the HTTP request was initiated.
+
+This policy is used to secure a certain web server from access by other website or domain.
+
+**CORSMethodMiddleware** intends to make it easier to strictly set the `Access-Control-Allow-Methods` response header.
+
+Here is an example of using [CORSMethodMiddleware](examples/cors-method-middleware) along with a custom `OPTIONS` handler to set all the required CORS headers.
 
 ### Full Examples
 

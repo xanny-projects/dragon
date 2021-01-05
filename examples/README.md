@@ -7,5 +7,5 @@ This page contains list of examples using Dragon.
 - [multi-router](multi-router) - Working with multiple Dragon routers.
 - [params](params) - Working with route parameters.
 - [404-page](404-page) - 404 Page not found.
-- [cors-method-middleware] - CORS Requests.
+- [cors-method-middleware](cors-method-middleware) - CORS Requests.
 

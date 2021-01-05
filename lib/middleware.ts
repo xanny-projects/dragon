@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Middleware, MiddlewareGroups } from "./types.d.ts";
+import { CORSOptions, Middleware, MiddlewareGroups } from "./types.d.ts";
+import { HttpRouting } from "./httpRouting.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { HttpRouting } from "./httpRouting.ts";
 
 // When a request is received by Dragon, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
 // So if an error occurs you must use return `MiddlewareState.Cancel`.
@@ -88,4 +88,27 @@ export class MiddlewareResolver {
   public async resolveGlobalMiddlewares(): Promise<void> {
     await this.resolveMiddlewares(HttpRouting.globalMiddlewares());
   }
+}
+
+/**
+ * CORSMethodMiddleware automatically sets the Access-Control-Allow-Methods response header.
+ * on requests for routes that have an OPTIONS method matcher to all the method matchers on
+ * the route.
+ *
+ * @param {CORSOptions} cors
+ * @returns {Middleware}
+ * @api public
+ */
+export function CORSMethodMiddleware(cors: CORSOptions): Middleware {
+  return async function (
+    Request: HttpRequest,
+    ResponseWriter: HttpResponse,
+  ): Promise<MiddlewareState> {
+    ResponseWriter.withHeader(
+      "Access-Control-Allow-Origin",
+      cors.origin || "0.0.0.0",
+    )
+      .withHeader("Access-Control-Allow-Headers", cors.headers.join(","));
+    return MiddlewareState.Next;
+  };
 }

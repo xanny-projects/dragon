@@ -27,6 +27,6 @@ export { Application } from "./application.ts";
 export { HttpRouting, RequestMethod } from "./httpRouting.ts";
 export { HttpRequest } from "./httpRequest.ts";
 export { MediaTypes } from "./httpMessage.ts";
-export { MiddlewareState } from "./middleware.ts";
+export { CORSMethodMiddleware, MiddlewareState } from "./middleware.ts";
 export { HttpResponse } from "./httpResponse.ts";
 export { HttpError, HttpStatus } from "./httpError.ts";

@@ -46,3 +46,8 @@
 
 - Return HttpStatus.NOTFOUND if no match
 - Fix fallback routes documentation (use Template Literals)
+
+## v1.0.6 💥
+
+- Add Handling CORS Requests
+- Redirect the client to another URL with optional response `status` defaulting to 302

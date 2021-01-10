@@ -9,7 +9,7 @@
 
 </p>
 
-<img align="right" src="https://drive.google.com/uc?id=1CNNewMkMkWwY0IoEMfT2aRKMGfAtHgwa" width="160" height="160">
+<img align="right" src="https://drive.google.com/uc?id=1CNNewMkMkWwY0IoEMfT2aRKMGfAtHgwa" width="260" height="160">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
@@ -26,7 +26,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.0.6/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
 
 const app = new Application();
 
@@ -423,12 +423,12 @@ You may accomplish this using the `withMiddlewareGroups`:
 ```ts
 
 const StartSession = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
-  //
+  // Code implementation.
   return MiddlewareState.Next;
 }
 
 const VerifyCsrfToken = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
-  //
+  // Code implementation.
   return MiddlewareState.Next;
 }
 
@@ -457,7 +457,7 @@ const r = app.routes();
   .withMethods(RequestMethod.GET)
   .globalMiddleware(middleware)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
-    //
+    // Code implementation.
   });
 ```
 
@@ -476,7 +476,7 @@ Here is an example of using [CORSMethodMiddleware](examples/cors-method-middlewa
 Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
-import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.0.6/lib/mod.ts";
+import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
 
 async function main(args: string[]): Promise<void> {
   const app = new Application();
@@ -486,6 +486,7 @@ async function main(args: string[]): Promise<void> {
    .withName("root")
    .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<void> {
       //
+      ResponseWriter.withBody("Dragon").send();
    });
 
 app.listenAndServe({ port: 8080 });

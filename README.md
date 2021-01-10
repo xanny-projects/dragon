@@ -2,13 +2,14 @@
 
 <p align="left">
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xanny-projects/dragon/ci)
-![GitHub issues](https://img.shields.io/github/issues/xanny-projects/dragon)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/xanny-projects/dragon)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/xanny-projects/dragon/ci?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/xanny-projects/dragon?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/xanny-projects/dragon?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/xanny-projects/dragon?style=for-the-badge)
 
 </p>
 
-<img align="right" src="https://drive.google.com/uc?id=1CNNewMkMkWwY0IoEMfT2aRKMGfAtHgwa" height="160px">
+<img align="right" src="https://drive.google.com/uc?id=1CNNewMkMkWwY0IoEMfT2aRKMGfAtHgwa" width="160" height="160">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
@@ -25,7 +26,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@1.0.4/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.0.6/lib/mod.ts";
 
 const app = new Application();
 
@@ -43,6 +44,9 @@ r.Path("/demo")
   });
 
 app.listenAndServe({ port: 8080 });
+
+console.log("🐉 Serveur listining");
+
 ```
 
 Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passingWe believe development must be an enjoyable and creative experience to be truly fulfilling
@@ -79,17 +83,32 @@ Creates an Dragon application. The `Application` class exported from Dragon modu
 const app = new Application();
 ```
 
-The following table describes the properties of the optional options object.
+An instance of application has some optional properties as well:
 
-| Index         | Property            | Type       | Default            |
-|:-------------:| :-------------------| :----------| :------------------|
-| 1             | *proxy*             | Boolean    | false              |
-| 2             | *proxyIpHeader*     | string     | X-Forwarded-For    |
-| 3             | *hostname*          | string     | 0.0.0.0            |
-| 4             | *port*              | number     | 4200               |
-| 5             | *certFile*          | string     | null               |
-| 6             | *keyFile*           | string     | null               |
-| 7             | *secure*            | boolean    | true               |
+- `proxyIpHeader`
+
+  Return header for identifying the originating IP address of a client connecting to a web server through an `HTTP proxy` or a `load balancer`.  
+
+- `hostname`      
+
+  A unique name for a computer or network node in a network. This defaults to `0.0.0.0`.
+
+- `port`
+
+  Numbers used by protocols for operation of network applications.
+
+- `certFile`
+
+  A concatenation of all Certificate Authority (CA).
+
+- `keyFile`
+
+  The associated private key. 
+
+- `secure`
+
+  The listening will be over HTTPS.
+
 
 ### Routing
 
@@ -110,11 +129,17 @@ const r = app.routes();
 
 The optional options parameter specifies the behavior of the router.
 
-| Index         | Description                   | Type       | Default            |
-|:-------------:| :-----------------------------| :----------| :------------------|
-| 1             | *maxParamLength*              | number     | false              |
-| 2             | *notFoundHandler*             | Function   | undefined          |
-| 3             | *maxRoutes*                   | number     | undefined          |
+- `maxParamLength`
+
+  A custom length for parameters * This defaults to `100 characters`.
+
+- `notFoundHandler`
+
+  Configurable Handler to be used when no route matches.
+
+- `maxRoutes`  
+
+  Maximum allowed routes.
 
 #### 2- Available Router Methods
 
@@ -189,30 +214,75 @@ const r = app.routes({
 
 The `HttpRequest` class provides an object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
 
-The following table specifies some of the methods associated with request object.
+An instance of request object has some methods associated as well:
 
-| Index         | Methods                       | Description                                                    |
-|:-------------:| :-----------------------------| :--------------------------------------------------------------|
-| 1             | *method*                   | Returns the HTTP verb for the request.                         |
-| 2             | *url*                         | Returns the full URL for incoming request.                     |
-| 4             | *urlQuery*                    | Returns the full URL for incoming request.                     |
-| 5             | *urlQuery*                    | Returns the full URL for incoming request (with query string). |
-| 6             | *path*                     | Returns the request's path information                         |
-| 7             | *isXHR*                       | Check if the request was an `_XMLHttpRequest_`.                |
-| 8             | *hostName*                    | Returns the `Host` header field to a hostname.                 |
-| 9             | *isIpv4*                      | Value must be valid IPv4.                                      |
-| 10            | *isIpv6*                      | Value must be valid IPv6.                                      |
-| 11            | *contentLength*               | Indicates the size of the entity-body, in bytes, sent to the recipient.                                      |
-| 12            | *body*                     | It contains key-value pairs of data submitted in the request body                                            |
-| 13            | *bodyWithoutParser*        | Get the body of the message without parsing.                    |
-| 14            | *contentType*              | Returns the media type of the resource.                         |
-| 15            | *contentType*              | Returns the media type of the resource.                         |
-| 16            | *protocol*                 | Returns `http` or `https` when requested with TLS.              |
-| 17            | *queryParams*              | Returns an array of object containing a property for each query string parameter in the route.   |
-| 18            | *queryParam*               | Returns specific query param.                                   |
-| 19            | *secure*                      | Verify if the request is secure `HTTPS`.                        |
-| 20            | *params*                   | An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.                     |
-| 22            | *Secure*           | Verify if the request is secure `HTTPS`.                        |
+- `method` 
+
+  Returns the HTTP verb for the request. 
+
+- `url`
+
+  Returns the full URL for incoming request.  
+
+- `urlQuery`
+
+   Returns the full URL for incoming request.
+  
+- `path`
+
+  Returns the request's path information
+
+- `isXHR`
+
+  Check if the request was an `_XMLHttpRequest_`.
+
+- `hostName`
+
+  Returns the `Host` header field to a hostname.
+
+- `isIpv4`
+
+  Determines whether the host name is an IP address 4 bytes.
+
+- `isIpv6`
+
+  Determines whether the host name is a valid IPv6.
+
+- `contentLength`
+
+  Indicates the size of the entity-body, in bytes, sent to the recipient.
+
+- `body`
+
+  It contains key-value pairs of data submitted in the request body.
+
+- `bodyWithoutParser`
+
+  Get the body of the message without parsing.
+
+- `contentType`
+
+  Returns the media type of the resource.
+
+- `schemes`
+
+  Returns `http` or `https` when requested with TLS.
+
+- `queryParams`
+
+  Returns an array of object containing a property for each query string parameter in the route.
+
+- `queryParam`
+
+  Returns specific query param.
+
+- `params`
+
+  An object containing properties mapped to the named route `parameters` For example, if you have the route /user/:name, then the "name" property is available as `const {name} = GetParams();` This object defaults to {}.
+
+- `secure`
+
+  Verify if the request is secure `HTTPS`.
 
 ### Headers
 
@@ -260,18 +330,46 @@ All routes should return a response to be sent back to the user's browser. Drago
 
 Let's see some methods of response object.
 
-| Index         | Methods              | Description                                                    |
-|:-------------:| :--------------------| :--------------------------------------------------------------|
-| 1             | *statusCode*     | Set the response status code. The status code is a 3-digit integer result code of the server's attempt.|
-| 2             | *withStatus*        | Set an instance with the specified status code.                 |
-| 3             | *withContentLength* | Set Content-Length field to `n`.                                |
-| 4             | *withLastModified*  | Set the Last-Modified date using a `string` or a `Date`.        |
-| 5             | *html*              | Renders a view and sends the rendered HTML string to the client.|
-| 6             | *json*              | Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json`                                                             |
-| 7             | *isRedirectStatus*  | Determines if a HTTP `Status` is a `RedirectStatus` (3XX).      |
-| 8             | *abort*             | Rise an HTTP error from the server.                             |
-| 9             | *withBody*          | Set the response body.                                          |
-| 10            | *redirect*          | Redirect the client to another URL with optional response `status` defaulting to 302.                                                                                      |
+- `statusCode`
+
+  Set the response status code. The status code is a 3-digit integer result code of the server's attempt.
+
+- `withStatus`
+
+  Set an instance with the specified status code.
+
+- `withContentLength`
+
+  Set Content-Length field to `n`. 
+
+- `withLastModified`
+
+  Set the Last-Modified date using a `string` or a `Date`.
+
+- `withBody`
+
+  Set the response body.
+
+- `html`
+
+   Renders a view and sends the rendered HTML string to the client.
+
+- `json`
+
+  Returns the response in JSON format ,as well as set the `Content-Type` header to `application/json`.
+
+- `redirect`
+
+  Redirect the client to another URL with optional response `status` defaulting to 302.
+
+- `isRedirectStatus`
+
+  Determines if a HTTP `Status` is a `RedirectStatus` (3XX).
+
+- `abort`
+
+  Rise an HTTP error from the server.
+
 
 ### Cookies
 
@@ -378,12 +476,7 @@ Here is an example of using [CORSMethodMiddleware](examples/cors-method-middlewa
 Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
-import {
-  Application,
-  HttpRequest,
-  HttpResponse,
-  RequestMethod
-} from "./lib/mod.ts";
+import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.0.6/lib/mod.ts";
 
 async function main(args: string[]): Promise<void> {
   const app = new Application();
@@ -391,7 +484,7 @@ async function main(args: string[]): Promise<void> {
   r.Path("/Dragon")
    .withMethods(RequestMethod.GET)
    .withName("root")
-   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
+   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<void> {
       //
    });
 
@@ -399,10 +492,9 @@ app.listenAndServe({ port: 8080 });
 
 }
 
-main(Deno.args).then(() => {
-  console.log("Serveur listining");
-});
+await main(Deno.args);
 
+console.log("🐉 Serveur listining");
 ```
 
 ## Benchmarks
@@ -416,7 +508,7 @@ main(Deno.args).then(() => {
 | Express       | 4.17.1        | ✓       | 166k requests in 40.08s, 39.5 MB read      |
 | Fastify       | 3.9.1         | ✓       | 1081k requests in 40.07s ,189 MB read      |
 | Oak           | 4.0.0         | ✓       | 243k requests in 40.12s, 27 MB read        |
-| **Dragon**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read**  |
+| **Dragon**     | **1.0.0**     | **✓**   | **416k requests in 40.21s, 37.1 MB read** |
 
 This is a synthetic, `hello world` benchmark that aims to evaluate the framework overhead. The overhead that each framework has on your application depends on your application, you should **always** benchmark if performance matters to you.
 

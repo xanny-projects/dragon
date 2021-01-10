@@ -19,25 +19,25 @@ export {
   serve as DefaultServer,
   ServerRequest,
   serveTLS as ServerTLS,
-} from "https://deno.land/std@0.77.0/http/server.ts";
-export { decode, encode } from "https://deno.land/std@0.77.0/encoding/utf8.ts";
-export { getCookies } from "https://deno.land/std@0.77.0/http/cookie.ts";
+} from "https://deno.land/std@0.82.0/http/server.ts";
+export { decode, encode } from "https://deno.land/std@0.82.0/encoding/utf8.ts";
+export { getCookies } from "https://deno.land/std@0.82.0/http/cookie.ts";
 export {
   assertEquals,
   assertMatch,
   assertNotEquals,
   assertThrows,
-} from "https://deno.land/std@0.77.0/testing/asserts.ts";
+} from "https://deno.land/std@0.82.0/testing/asserts.ts";
 export {
   assert,
   DenoStdInternalError,
-} from "https://deno.land/std@0.77.0/_util/assert.ts";
-export { StringReader } from "https://deno.land/std@0.77.0/io/mod.ts";
+} from "https://deno.land/std@0.82.0/_util/assert.ts";
+export { StringReader } from "https://deno.land/std@0.82.0/io/mod.ts";
 
 /**
  * Export Types.
  *
  * @see {@link https://github.com/microsoft/TypeScript/issues/28481}
  */
-export type { Response } from "https://deno.land/std@0.77.0/http/server.ts";
-export type { Cookies } from "https://deno.land/std@0.77.0/http/cookie.ts";
+export type { Response } from "https://deno.land/std@0.82.0/http/server.ts";
+export type { Cookies } from "https://deno.land/std@0.82.0/http/cookie.ts";

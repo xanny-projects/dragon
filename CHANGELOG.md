@@ -51,3 +51,10 @@
 
 - Add Handling CORS Requests
 - Redirect the client to another URL with optional response `status` defaulting to 302
+
+## v1.0.8 🎃
+
+- Fix & Improve documentation.
+- Update to Deno 1.6.2
+- Update std to 0.82.0
+- Rename protocol to schemes

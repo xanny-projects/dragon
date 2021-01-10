@@ -207,7 +207,7 @@ export class HttpRequest extends HttpMessage {
    * @returns {string}
    * @api public
    */
-  public protocol(): string {
+  public schemes(): string {
     return this.req.proto;
   }
 
@@ -257,7 +257,7 @@ export class HttpRequest extends HttpMessage {
    * @api public
    */
   public secure(): boolean {
-    return /^https/i.test(this.protocol());
+    return /^https/i.test(this.schemes());
   }
 
   /**

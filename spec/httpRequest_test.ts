@@ -93,7 +93,7 @@ Deno.test({
 Deno.test({
   name: "should return `Http` as protocol",
   fn(): void {
-    assertEquals(httpRequest.protocol(), "HTTP/1.1");
+    assertEquals(httpRequest.schemes(), "HTTP/1.1");
   },
 });
 

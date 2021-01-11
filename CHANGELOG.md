@@ -58,3 +58,12 @@
 - Update to Deno 1.6.2
 - Update std to 0.82.0
 - Rename protocol to schemes
+
+## v1.0.9 🧙‍♂️
+
+- Fix typo.
+- Add build-in middlewares:
+
+  - `X-XSS-Protection`
+  - `X-Frame-Options`
+  - `CORSMethodMiddleware`

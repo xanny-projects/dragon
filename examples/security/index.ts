@@ -3,6 +3,7 @@ import {
   HttpRequest,
   HttpResponse,
   RequestMethod,
+  XFRAMEProtectionMiddleware,
   XSSProtectionMiddleware,
 } from "../../lib/mod.ts";
 
@@ -15,7 +16,8 @@ async function main(args: string[]): Promise<void> {
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.withBody("Hello Dragon").send();
     },
-  ).withMiddleware(XSSProtectionMiddleware);
+  ).withMiddleware(XSSProtectionMiddleware)
+    .withMiddleware(XFRAMEProtectionMiddleware("DENY"));
 
   app.listenAndServe({ port: 8080 });
 }

@@ -121,10 +121,10 @@ export function CORSMethodMiddleware(cors: CORSOptions): Middleware {
  * @returns {MiddlewareState}
  * @api public
  */
-export function XSSProtectionMiddleware(
+export async function XSSProtectionMiddleware(
   Request: HttpRequest,
   ResponseWriter: HttpResponse,
-): MiddlewareState {
+): Promise<MiddlewareState> {
   ResponseWriter.withHeader("X-XSS-Protection", "0");
   return MiddlewareState.Next;
 }

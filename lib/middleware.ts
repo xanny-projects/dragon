@@ -112,3 +112,19 @@ export function CORSMethodMiddleware(cors: CORSOptions): Middleware {
     return MiddlewareState.Next;
   };
 }
+
+/**
+ * The X-XSS-Protection HTTP header aimed to offer a basic protection against cross-site scripting (XSS) attacks.
+ *  
+ * @param {HttpRequest} Request
+ * @param {HttpResponse} ResponseWriter
+ * @returns {MiddlewareState}
+ * @api public
+ */
+export async function XSSProtectionMiddleware(
+  Request: HttpRequest,
+  ResponseWriter: HttpResponse,
+): Promise<MiddlewareState> {
+  ResponseWriter.withHeader("X-XSS-Protection", "0");
+  return MiddlewareState.Next;
+}

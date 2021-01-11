@@ -30,6 +30,7 @@ export { MediaTypes } from "./httpMessage.ts";
 export {
   CORSMethodMiddleware,
   MiddlewareState,
+  XFRAMEProtectionMiddleware,
   XSSProtectionMiddleware,
 } from "./middleware.ts";
 export { HttpResponse } from "./httpResponse.ts";

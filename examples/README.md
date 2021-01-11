@@ -8,4 +8,4 @@ This page contains list of examples using Dragon.
 - [params](params) - Working with route parameters.
 - [404-page](404-page) - 404 Page not found.
 - [cors-method-middleware](cors-method-middleware) - CORS Requests.
-
+- [Security](security) - Provides security middlewares.

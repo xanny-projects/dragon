@@ -66,7 +66,6 @@ Get started with Dragon, learn the fundamentals and explore advanced topics.
 * [Cookies](#cookies)
 * [Middlewares](#middlewares)
 * [Handling CORS Requests](#handling-cors-requests)
-* [Security](#security)
 * [Full Example](#full-examples)
 
 ### Installation
@@ -394,6 +393,12 @@ Middleware provide a convenient mechanism for inspecting and filtering HTTP requ
 > 💬 Middleware functions are always invoked in the order in which they are added.
 
 Middleware is commonly used to perform tasks like body parsing for URL-encoded or JSON requests, cookie parsing for basic cookie handling.
+
+Dragon provides build-in middlewares like:
+
+- [X-XSS-Protection](examples/security/index.ts)
+- [X-Frame-Options](examples/security/index.ts)
+- [CORSMethodMiddleware](examples/cors-method-middleware)
 
 #### 1- Assigning Middleware To Routes
 

@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { CORSOptions, Middleware, MiddlewareGroups } from "./types.d.ts";
+import {
+  CORSOptions,
+  Middleware,
+  MiddlewareGroups,
+  XFrameOptions,
+} from "./types.d.ts";
 import { HttpRouting } from "./httpRouting.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
@@ -127,4 +132,26 @@ export async function XSSProtectionMiddleware(
 ): Promise<MiddlewareState> {
   ResponseWriter.withHeader("X-XSS-Protection", "0");
   return MiddlewareState.Next;
+}
+
+/**
+ * The X-XSS-Protection HTTP header aimed to offer a basic protection against cross-site scripting (XSS) attacks.
+ *  
+ * @param {XFrameOptions} options
+ * @returns {Middleware}
+ * @api public
+ */
+export function XFRAMEProtectionMiddleware(options: XFrameOptions): Middleware {
+  return async function (
+    Request: HttpRequest,
+    ResponseWriter: HttpResponse,
+  ): Promise<MiddlewareState> {
+    if (options === "ALLOW-FROM") {
+      console.warn(
+        "X-Frame-Options no longer supports `ALLOW-FROM` due to poor browser support.",
+      );
+    }
+    ResponseWriter.withHeader("X-Frame-Options", options);
+    return MiddlewareState.Next;
+  };
 }

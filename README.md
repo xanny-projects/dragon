@@ -39,7 +39,7 @@ r.Path("/hello")
   });
 
 r.Path("/demo")
- .HandleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+ .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
     ResponseWriter.withBody("Hello Dragon Demo").send();
   });
 
@@ -88,9 +88,9 @@ An instance of application has some optional properties as well:
 
 - `proxyIpHeader`
 
-  Return header for identifying the originating IP address of a client connecting to a web server through an `HTTP proxy` or a `load balancer`.  
+  Return header for identifying the originating IP address of a client connecting to a web server through an `HTTP proxy` or a `load balancer`.
 
-- `hostname`      
+- `hostname`
 
   A unique name for a computer or network node in a network. This defaults to `0.0.0.0`.
 
@@ -104,7 +104,7 @@ An instance of application has some optional properties as well:
 
 - `keyFile`
 
-  The associated private key. 
+  The associated private key.
 
 - `secure`
 
@@ -138,7 +138,7 @@ The optional options parameter specifies the behavior of the router.
 
   Configurable Handler to be used when no route matches.
 
-- `maxRoutes`  
+- `maxRoutes`
 
   Maximum allowed routes.
 
@@ -217,18 +217,18 @@ The `HttpRequest` class provides an object represents the HTTP request and has p
 
 An instance of request object has some methods associated as well:
 
-- `method` 
+- `method`
 
-  Returns the HTTP verb for the request. 
+  Returns the HTTP verb for the request.
 
 - `url`
 
-  Returns the full URL for incoming request.  
+  Returns the full URL for incoming request.
 
 - `urlQuery`
 
    Returns the full URL for incoming request.
-  
+
 - `path`
 
   Returns the request's path information
@@ -341,7 +341,7 @@ Let's see some methods of response object.
 
 - `withContentLength`
 
-  Set Content-Length field to `n`. 
+  Set Content-Length field to `n`.
 
 - `withLastModified`
 
@@ -551,5 +551,3 @@ Detailed changes for each release are documented in the [release notes](/CHANGEL
 ## License
 
 The Dragon framework is open-sourced software licensed under the [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
-
-

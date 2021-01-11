@@ -91,3 +91,6 @@ export interface ListenTlsOptions extends ListenSimpleOptions {
 export type ParameterPayload = { [key: string]: string };
 
 export type ListenOptions = ListenSimpleOptions | ListenTlsOptions;
+
+/** X-Frame-Options HTTP response header options */
+export type XFrameOptions = "SAMEORIGIN" | "DENY" | "ALLOW-FROM";

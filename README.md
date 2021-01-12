@@ -49,7 +49,7 @@ console.log("🐉 Serveur listining");
 
 ```
 
-Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passingWe believe development must be an enjoyable and creative experience to be truly fulfilling
+Here we register two routes mapping URL path to handler. if an incoming request URL matches one of the paths, the corresponding handler is called passing. We believe development must be an enjoyable and creative experience to be truly fulfilling
 (`HttpRequest`, `HttpResponse`) as parameters.
 
 ## Documentation
@@ -131,7 +131,7 @@ The optional options parameter specifies the behavior of the router.
 
 - `maxParamLength`
 
-  A custom length for parameters * This defaults to `100 characters`.
+  A custom length for parameters.
 
 - `notFoundHandler`
 
@@ -388,7 +388,7 @@ const r = app.routes();
 
 ### Middlewares
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application.
+Middleware provides a convenient mechanism for inspecting and filtering HTTP requests entering your application.
 
 > 💬 Middleware functions are always invoked in the order in which they are added.
 
@@ -476,12 +476,6 @@ CORS is shorthand for Cross-Origin Resource Sharing. It is a mechanism to allow 
 **CORSMethodMiddleware** intends to make it easier to strictly set the `Access-Control-Allow-Methods` response header.
 
 Here is an example of using [CORSMethodMiddleware](examples/cors-method-middleware) along with a custom `OPTIONS` handler to set all the required CORS headers.
-
-### Security
-
-Security is a topic of paramount importance in the development of Web applications and Dragon provides several security enhancements to the request/response cycle. Each one can be independently enabled or disabled with a setting.
-
-- [X-XSS-Protection](examples/security/index.ts)
 
 ### Full Examples
 

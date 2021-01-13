@@ -26,7 +26,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
 
 const app = new Application();
 
@@ -370,6 +370,10 @@ Let's see some methods of response object.
 
   Rise an HTTP error from the server.
 
+- `end`
+
+  Return a response.
+
 
 ### Cookies
 
@@ -482,7 +486,7 @@ Here is an example of using [CORSMethodMiddleware](examples/cors-method-middlewa
 Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
-import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
+import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
 
 async function main(args: string[]): Promise<void> {
   const app = new Application();

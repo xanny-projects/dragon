@@ -14,7 +14,7 @@ async function main(args: string[]): Promise<void> {
 
   r.Path("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon").send();
+      ResponseWriter.withBody("Hello Dragon").end();
     },
   ).withMiddleware(XSSProtectionMiddleware)
     .withMiddleware(XFRAMEProtectionMiddleware("DENY"));

@@ -475,7 +475,7 @@ async function Fallback(
     </body>
   </html>
   `
-    .send();
+    .end();
 }
 
 async function main(args: string[]): Promise<void> {
@@ -485,7 +485,7 @@ async function main(args: string[]): Promise<void> {
 
   r.Path("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon").send();
+      ResponseWriter.withBody("Hello Dragon").end();
     },
   );
 

@@ -13,7 +13,7 @@ async function main(args: string[]): Promise<void> {
 
   r.Path("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon CORS").send();
+      ResponseWriter.withBody("Hello Dragon CORS").end();
     },
   ).withMiddleware(
     CORSMethodMiddleware(

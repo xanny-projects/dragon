@@ -13,7 +13,7 @@ async function main(args: string[]): Promise<void> {
   r.Path("/").withMethods(RequestMethod.PUT).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       console.log("Hello world");
-      ResponseWriter.withBody("Hello Dragon").send();
+      ResponseWriter.withBody("Hello Dragon").end();
     },
   );
 

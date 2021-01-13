@@ -26,7 +26,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
 
 const app = new Application();
 
@@ -35,12 +35,12 @@ const r = app.routes({ maxRoutes:2 });
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon").send();
+      ResponseWriter.withBody("Hello Dragon").end();
   });
 
 r.Path("/demo")
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon Demo").send();
+    ResponseWriter.withBody("Hello Dragon Demo").end();
   });
 
 app.listenAndServe({ port: 8080 });
@@ -123,7 +123,7 @@ const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon").send();
+    ResponseWriter.withBody("Hello Dragon").end();
   });
 ```
 
@@ -172,7 +172,7 @@ const r = app.routes();
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
     const { id:userID } = await Request.params();
-    ResponseWriter.withBody(`User with id ${userID}`).send();
+    ResponseWriter.withBody(`User with id ${userID}`).end();
   });
 ```
 
@@ -201,7 +201,7 @@ Using `notFoundHandler` option. you may define a route that will be executed whe
 ```ts
 
 const fallback = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
-  ResponseWriter.html`🤦 Page Not Found`.send();
+  ResponseWriter.html`🤦 Page Not Found`.end();
   return MiddlewareState.Cancel;
 }
 
@@ -370,6 +370,10 @@ Let's see some methods of response object.
 
   Rise an HTTP error from the server.
 
+- `end`
+
+  Return a response.
+
 
 ### Cookies
 
@@ -382,7 +386,7 @@ const r = app.routes();
   r.Path("/demo")
    .withMethods(RequestMethod.GET)
    .handleFunc(async function (Request: HttpRequest, ResponseWriter:  HttpResponse): Promise<any> {
-       ResponseWriter.withCookie("id=a3fWa; Max-Age=2592000").send();
+       ResponseWriter.withCookie("id=a3fWa; Max-Age=2592000").end();
     });
 ```
 
@@ -482,7 +486,7 @@ Here is an example of using [CORSMethodMiddleware](examples/cors-method-middlewa
 Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
-import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.0.8/lib/mod.ts";
+import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
 
 async function main(args: string[]): Promise<void> {
   const app = new Application();
@@ -492,7 +496,7 @@ async function main(args: string[]): Promise<void> {
    .withName("root")
    .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<void> {
       //
-      ResponseWriter.withBody("Dragon").send();
+      ResponseWriter.withBody("Dragon").end();
    });
 
 app.listenAndServe({ port: 8080 });

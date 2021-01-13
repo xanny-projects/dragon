@@ -193,7 +193,7 @@ export class HttpResponse extends HttpMessage {
     this.withStatus(HttpStatus.FOUND);
     // set location.
     this.withHeader("Location", encodeURI(url));
-    return this.send();
+    return this.end();
   }
 
   /**
@@ -298,12 +298,13 @@ export class HttpResponse extends HttpMessage {
   /**
    * Return a response.
    *
+   * @param {string} content
    * @returns {void}
    * @api public
    */
-  public send(): void {
+  public end(content?: string): void {
     this.res.respond({
-      body: this._body,
+      body: this._body || content || "",
       headers: this.headers(),
       status: this.statusCode(),
     });

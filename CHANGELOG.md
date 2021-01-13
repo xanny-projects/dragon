@@ -67,3 +67,9 @@
   - `X-XSS-Protection`
   - `X-Frame-Options`
   - `CORSMethodMiddleware`
+
+## v1.1.0 🧞
+
+- Fix Documentation.
+- Add `isHttpError` helper function
+- Use `end` method instead of `send`

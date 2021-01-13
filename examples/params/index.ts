@@ -13,7 +13,7 @@ async function main(args: string[]): Promise<void> {
   r.Path(/user\/(?<id>[0-9]{1,})/u).withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       const { id: userID } = Request.params();
-      ResponseWriter.withBody(`Hello ${userID}`).send();
+      ResponseWriter.withBody(`Hello ${userID}`).end();
     },
   );
 

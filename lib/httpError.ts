@@ -191,3 +191,13 @@ export class HttpError extends Error {
     return this.status;
   }
 }
+
+/**
+ * Check if given value is an `HttpError`
+ * 
+ * @param {any} value 
+ * @returns {boolean}
+ */
+export function isHttpError(value: any): value is HttpError {
+  return value instanceof HttpError;
+}

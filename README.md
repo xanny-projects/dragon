@@ -35,12 +35,12 @@ const r = app.routes({ maxRoutes:2 });
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon").send();
+      ResponseWriter.withBody("Hello Dragon").end();
   });
 
 r.Path("/demo")
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon Demo").send();
+    ResponseWriter.withBody("Hello Dragon Demo").end();
   });
 
 app.listenAndServe({ port: 8080 });
@@ -123,7 +123,7 @@ const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon").send();
+    ResponseWriter.withBody("Hello Dragon").end();
   });
 ```
 
@@ -172,7 +172,7 @@ const r = app.routes();
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
     const { id:userID } = await Request.params();
-    ResponseWriter.withBody(`User with id ${userID}`).send();
+    ResponseWriter.withBody(`User with id ${userID}`).end();
   });
 ```
 
@@ -201,7 +201,7 @@ Using `notFoundHandler` option. you may define a route that will be executed whe
 ```ts
 
 const fallback = async function(Request: HttpRequest, ResponseWriter: HttpResponse) {
-  ResponseWriter.html`🤦 Page Not Found`.send();
+  ResponseWriter.html`🤦 Page Not Found`.end();
   return MiddlewareState.Cancel;
 }
 
@@ -382,7 +382,7 @@ const r = app.routes();
   r.Path("/demo")
    .withMethods(RequestMethod.GET)
    .handleFunc(async function (Request: HttpRequest, ResponseWriter:  HttpResponse): Promise<any> {
-       ResponseWriter.withCookie("id=a3fWa; Max-Age=2592000").send();
+       ResponseWriter.withCookie("id=a3fWa; Max-Age=2592000").end();
     });
 ```
 
@@ -492,7 +492,7 @@ async function main(args: string[]): Promise<void> {
    .withName("root")
    .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<void> {
       //
-      ResponseWriter.withBody("Dragon").send();
+      ResponseWriter.withBody("Dragon").end();
    });
 
 app.listenAndServe({ port: 8080 });

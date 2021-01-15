@@ -110,3 +110,13 @@ Deno.test({
     assertNotEquals(httpRequest.contentLength(), null);
   },
 });
+
+Deno.test({
+  name:
+    "should return determine if the incoming request expects a `JSON` response",
+  fn(): void {
+    assertEquals(httpRequest.expectsJson(), false);
+    httpRequest.withHeader("Content-Type", "application/json");
+    assertEquals(httpRequest.expectsJson(), true);
+  },
+});

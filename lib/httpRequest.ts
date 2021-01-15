@@ -16,7 +16,7 @@
 
 import { Cookies, getCookies, ServerRequest } from "../deps.ts";
 import { ParameterPayload, QueryPayload } from "./types.d.ts";
-import { Header, HttpMessage } from "./httpMessage.ts";
+import { Header, HttpMessage, MediaTypes } from "./httpMessage.ts";
 import { BodyParser } from "./bodyParser.ts";
 
 /**
@@ -244,6 +244,22 @@ export class HttpRequest extends HttpMessage {
    */
   public params(): ParameterPayload {
     return this._parameters || {};
+  }
+
+  /**
+   * Quickly determine if the incoming request expects a JSON response.
+   * 
+   * @returns {boolean}
+   * @api public
+   */
+  public expectsJson(): boolean {
+    if (
+      this.hasHeader("Content-Type") &&
+      this.header("Content-Type") == MediaTypes.JSON
+    ) {
+      return true;
+    }
+    return false;
   }
 
   /**

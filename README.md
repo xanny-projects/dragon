@@ -216,6 +216,10 @@ The `HttpRequest` class provides an object represents the HTTP request and has p
 
 An instance of request object has some methods associated as well:
 
+- `expectsJson`
+
+  Quickly determine if the incoming request expects a JSON response.
+
 - `method`
 
   Returns the HTTP verb for the request.
@@ -231,6 +235,10 @@ An instance of request object has some methods associated as well:
 - `path`
 
   Returns the request's path information
+
+- `prefers`
+
+  Determine which content type out of a given array of content types is most preferred by the request. If none of the provided content types are accepted by the request, `null` will be returned.
 
 - `isXHR`
 

@@ -247,6 +247,25 @@ export class HttpRequest extends HttpMessage {
   }
 
   /**
+   * Determine which content type out of a given array of content types is most preferred by the request.
+   * 
+   * @param {MediaTypes[]} contentType
+   * @returns {boolean | null}
+   * @api public
+   */
+  public prefers(contentType: MediaTypes[]): boolean | null {
+    for (const media of contentType) {
+      if (
+        this.hasHeader("Content-Type") &&
+        this.header("Content-Type") === media
+      ) {
+        return true;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Quickly determine if the incoming request expects a JSON response.
    * 
    * @returns {boolean}

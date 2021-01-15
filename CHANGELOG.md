@@ -73,3 +73,8 @@
 - Fix Documentation.
 - Add `isHttpError` helper function
 - Use `end` method instead of `send`
+
+## v1.1.1 🚣
+
+- Add `expectsJson` method to quickly determine if the incoming request expects a JSON response.
+- Add `prefers` method to determine which content type out of a given array of content types is most preferred by the request.

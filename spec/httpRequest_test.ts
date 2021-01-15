@@ -15,6 +15,7 @@
  */
 
 import { assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
+import { MediaTypes } from "../lib/httpMessage.ts";
 import { RequestMethod } from "../lib/httpRouting.ts";
 import { HttpRequest } from "../lib/httpRequest.ts";
 
@@ -108,5 +109,26 @@ Deno.test({
   name: "should return content length header",
   fn(): void {
     assertNotEquals(httpRequest.contentLength(), null);
+  },
+});
+
+Deno.test({
+  name: "should determine if the incoming request expects a `JSON` response",
+  fn(): void {
+    assertEquals(httpRequest.expectsJson(), false);
+    httpRequest.withHeader("Content-Type", MediaTypes.JSON);
+    assertEquals(httpRequest.expectsJson(), true);
+  },
+});
+
+Deno.test({
+  name:
+    "should determine which content type out of a given array of content types is most preferred by the request",
+  fn(): void {
+    httpRequest.withHeader("Content-Type", "application/json");
+    assertEquals(httpRequest.prefers([MediaTypes.JSON]), true);
+    assertEquals(httpRequest.prefers([MediaTypes.HTML]), null);
+    httpRequest.delHeader("Content-Type");
+    assertEquals(httpRequest.prefers([MediaTypes.GZIP]), null);
   },
 });

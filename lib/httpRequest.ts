@@ -16,7 +16,7 @@
 
 import { Cookies, getCookies, ServerRequest } from "../deps.ts";
 import { ParameterPayload, QueryPayload } from "./types.d.ts";
-import { Header, HttpMessage } from "./httpMessage.ts";
+import { Header, HttpMessage, MediaTypes } from "./httpMessage.ts";
 import { BodyParser } from "./bodyParser.ts";
 
 /**
@@ -244,6 +244,41 @@ export class HttpRequest extends HttpMessage {
    */
   public params(): ParameterPayload {
     return this._parameters || {};
+  }
+
+  /**
+   * Determine which content type out of a given array of content types is most preferred by the request.
+   * 
+   * @param {MediaTypes[]} contentType
+   * @returns {boolean | null}
+   * @api public
+   */
+  public prefers(contentType: MediaTypes[]): boolean | null {
+    for (const media of contentType) {
+      if (
+        this.hasHeader("Content-Type") &&
+        this.header("Content-Type") === media
+      ) {
+        return true;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Quickly determine if the incoming request expects a JSON response.
+   * 
+   * @returns {boolean}
+   * @api public
+   */
+  public expectsJson(): boolean {
+    if (
+      this.hasHeader("Content-Type") &&
+      this.header("Content-Type") == MediaTypes.JSON
+    ) {
+      return true;
+    }
+    return false;
   }
 
   /**

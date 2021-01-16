@@ -103,9 +103,9 @@ export class Application {
       : DefaultServer(options);
     try {
       for await (const request of server) {
-        // Match attempts to match the given request against the router's registered routes.
         const req = new HttpRequest(request);
         const res = new HttpResponse(request);
+        // Match attempts to match the given request against the router's registered routes.
         // If the match failure type (eg: not found) has a registered handler,
         // the handler is assigned to the Handler.
         if (

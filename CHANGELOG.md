@@ -78,3 +78,9 @@
 
 - Add `expectsJson` method to quickly determine if the incoming request expects a JSON response.
 - Add `prefers` method to determine which content type out of a given array of content types is most preferred by the request.
+
+## v1.1.2 🕹
+
+- Add `permanentRedirect` method to return a 301 status code
+- New Dragon logo
+- Fix Typo `examples`

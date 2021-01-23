@@ -197,6 +197,17 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
+   * Use the permanentRedirect method to return a 301 status code:
+   * 
+   * @param {string} url
+   * @returns {void}
+   * @api public
+   */
+  public permanentRedirect(url: string): void {
+    return this.redirect(url, 301);
+  }
+
+  /**
    * Render `html` template.
    *
    * Example:

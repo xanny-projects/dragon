@@ -1,4 +1,4 @@
-# Dragon
+# Dragon.js
 
 <p align="left">
 
@@ -8,8 +8,6 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/xanny-projects/dragon?style=for-the-badge)
 
 </p>
-
-<img align="right" src="https://drive.google.com/uc?id=1gVU9z-Y4JspjoueAb7n16sp_AxYBOEXz" width="150" height="150">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 

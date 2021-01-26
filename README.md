@@ -9,7 +9,7 @@
 
 </p>
 
-<img align="right" src="https://drive.google.com/uc?id=1gVU9z-Y4JspjoueAb7n16sp_AxYBOEXz" width="150" height="150">
+<img align="right" src="https://drive.google.com/uc?id=19uB8XRhlI_5wS1VijFWO-yvb-0qSbKoT" width="150" height="150">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 
@@ -26,7 +26,7 @@ Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for b
 Let's start registering a couple of URL paths and handlers:
 
 ```ts
-import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
+import { Application, RequestMethod, HttpRequest, HttpResponse } from "https://deno.land/x/dragon@v1.1.4/lib/mod.ts";
 
 const app = new Application();
 
@@ -35,12 +35,12 @@ const r = app.routes({ maxRoutes:2 });
 r.Path("/hello")
  .withMethods(RequestMethod.GET)
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-      ResponseWriter.withBody("Hello Dragon").end();
+      ResponseWriter.end("Hello Dragon");
   });
 
 r.Path("/demo")
  .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon Demo").end();
+    ResponseWriter.end("Hello Dragon Demo");
   });
 
 app.listenAndServe({ port: 8080 });
@@ -123,7 +123,7 @@ const r = app.routes();
   r.Path("/hello")
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
-    ResponseWriter.withBody("Hello Dragon").end();
+    ResponseWriter.end("Hello Dragon");
   });
 ```
 
@@ -143,15 +143,11 @@ The optional options parameter specifies the behavior of the router.
 
 #### 2- Available Router Methods
 
-The router allows you to register routes that respond to any HTTP verb:
+The router allows you to register routes that respond to any HTTP verb: `GET`, `POST`, `PUT`, `DELETE`
 
 ```ts
 const r = app.routes();
   r.withMethods(RequestMethod.GET);
-  r.withMethods(RequestMethod.POST);
-  r.withMethods(RequestMethod.PUT);
-  r.withMethods(RequestMethod.DELETE);
-  r.withMethods(RequestMethod.PATCH);
 ```
 
 Sometimes you may need to register a route that responds to multiple HTTP verbs.
@@ -172,7 +168,7 @@ const r = app.routes();
   .withMethods(RequestMethod.GET)
   .handleFunc(async function (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<any> {
     const { id:userID } = await Request.params();
-    ResponseWriter.withBody(`User with id ${userID}`).end();
+    ResponseWriter.end(`User with id ${userID}`);
   });
 ```
 
@@ -325,8 +321,8 @@ Request.delHeader('X-Header-Name');
 The `withHeader` method is used to add a series of headers to the response before sending it back to the user.
 
 ```ts
-Request.withHeader('X-Header-One', 'Header Value')
-       .withHeader('X-Header-One', 'Header Value')
+Request.withHeader('X-Header-One', 'Header Value 1')
+       .withHeader('X-Header-Two', 'Header Value 2')
        .send();
 ```
 
@@ -494,11 +490,10 @@ Here is an example of using [CORSMethodMiddleware](examples/cors-method-middlewa
 Here's a complete, runnable example of a small Dragon based server:
 
 ```ts
-import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.1.0/lib/mod.ts";
+import { Application, HttpRequest, HttpResponse, RequestMethod } from "https://deno.land/x/dragon@v1.1.4/lib/mod.ts";
 
-async function main(args: string[]): Promise<void> {
-  const app = new Application();
-  const r = app.routes({ maxRoutes:1 });
+const app = new Application();
+const r = app.routes({ maxRoutes:1 });
   r.Path("/Dragon")
    .withMethods(RequestMethod.GET)
    .withName("root")
@@ -510,8 +505,6 @@ async function main(args: string[]): Promise<void> {
 app.listenAndServe({ port: 8080 });
 
 }
-
-await main(Deno.args);
 
 console.log("🐉 Serveur listining");
 ```

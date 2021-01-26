@@ -84,3 +84,11 @@
 - Add `permanentRedirect` method to return a 301 status code
 - New Dragon logo
 - Fix Typo `examples`
+
+## v1.1.4 🌘
+
+- Fix `post` request keeps loading.
+- Remove `match` method.
+- Add `handleHttpRequest` to handle an HTTP request from the Deno server.
+- Add `ResponseOutput` interface.
+- Fix Documentation.

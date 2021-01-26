@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { DefaultServer, ServerTLS } from "../deps.ts";
+import { DefaultServer, ServerRequest, ServerTLS } from "../deps.ts";
 import {
   ApplicationOptions,
   ListenOptions,
@@ -103,17 +103,7 @@ export class Application {
       : DefaultServer(options);
     try {
       for await (const request of server) {
-        const req = new HttpRequest(request);
-        const res = new HttpResponse(request);
-        // Match attempts to match the given request against the router's registered routes.
-        // If the match failure type (eg: not found) has a registered handler,
-        // the handler is assigned to the Handler.
-        if (
-          await this.match(req, res) === HttpStatus.NOTFOUND &&
-          RouteOptions.notFoundHandler !== undefined
-        ) {
-          await RouteOptions.notFoundHandler(req, res);
-        }
+        this.handleHttpRequest(request);
       }
     } catch (err) {
       throw new HttpError(err.message || "Internal Server Error");
@@ -124,39 +114,39 @@ export class Application {
   }
 
   /**
-   * Match attempts to match the given request against the router's registered routes.
-   * If the request matches a route of this router or one of its subrouters the Route
-   * execute handler.
-   *
-   * @param {HttpRequest} Request
-   * @param {HttpResponse} ResponseWriter
-   * @return {void | HttpStatus }
-   * @api public
+   * Handle an HTTP request from the Deno server.
+   * 
+   * @param {ServerRequest} serverRequest - The incoming request object.
+   * @returns {void | HttpStatus }
+   * @api private
    */
-  public async match(
-    Request: HttpRequest,
-    ResponseWriter: HttpResponse,
-  ): Promise<HttpStatus | void> {
+  private async handleHttpRequest(serverRequest: ServerRequest) {
+    // Instantiate Resquest & Response.
+    const request = new HttpRequest(serverRequest);
+    const response = new HttpResponse(serverRequest);
+    // Attempts to match the given request against the router's registered routes.
+    // If the request matches a route of this router or one of its subrouters the Route
+    // execute handler.
     var is_match = false;
     // find next matching routes.
     for (const route of RegistredRoutes) {
-      if (!route.hasPath(Request.path())) {
+      if (!route.hasPath(request.path())) {
         is_match = false;
         continue;
       }
-      if (!route.hasMethod(Request.method())) {
+      if (!route.hasMethod(request.method())) {
         is_match = false;
         continue;
       }
       if (typeof route.path !== "string") {
         // Set a parameter to the given value.
-        const r = route.path.exec(Request.path());
-        Request.parameters = r?.groups;
+        const r = route.path.exec(request.path());
+        request.parameters = r?.groups;
       }
       // route is found
       is_match = true;
       // Resolve the registred middlewares.
-      const middleware = new MiddlewareResolver(Request, ResponseWriter);
+      const middleware = new MiddlewareResolver(request, response);
       // The order is very important.
       Promise.all([
         middleware.resolveGlobalMiddlewares(),
@@ -164,12 +154,12 @@ export class Application {
         middleware.resolveMiddlewares(route.middlewares()),
       ]).then(() => {
         // Excecute the handle function.
-        route.action(Request, ResponseWriter);
+        route.action(request, response);
       });
     }
     // no match
-    if (is_match !== true) {
-      return HttpStatus.NOTFOUND;
+    if (is_match !== true && RouteOptions.notFoundHandler !== undefined) {
+      await RouteOptions.notFoundHandler(request, response);
     }
   }
 

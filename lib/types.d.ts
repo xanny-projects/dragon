@@ -59,6 +59,14 @@ export interface CORSOptions {
   origin: string;
 }
 
+/** Response Output Interface */
+export interface ResponseOutput {
+  body: Uint8Array | string | Deno.Reader;
+  headers: Headers;
+  status: number;
+  end?: () => ResponseOutput | undefined;
+}
+
 export interface ApplicationOptions {
   /** If set to `true`, proxy headers will be trusted when processing requests.
    * This defaults to `false`. */

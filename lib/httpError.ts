@@ -168,27 +168,7 @@ export class HttpError extends Error {
     public readonly message: string,
     public readonly status: number = HttpStatus.INTERNALSERVERERROR,
   ) {
-    super();
-  }
-
-  /**
-    * Return error message.
-    *
-    * @returns {string}
-    * @api public
-    */
-  public msg(): string {
-    return this.message;
-  }
-
-  /**
-    * Return error status.
-    *
-    * @returns {number}
-    * @api public
-    */
-  public statusCode(): number {
-    return this.status;
+    super(message);
   }
 }
 

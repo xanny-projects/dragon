@@ -9,7 +9,7 @@
 
 </p>
 
-<img align="right" src="https://drive.google.com/uc?id=19uB8XRhlI_5wS1VijFWO-yvb-0qSbKoT" width="150" height="150">
+<img align="right" src="https://drive.google.com/uc?id=19uB8XRhlI_5wS1VijFWO-yvb-0qSbKoT" width="180" height="180">
 
 Dragon is a _simple_, _fast_ and _low_ **HTTP** router and **URL** matcher for building **Deno** servers. If you need performance and good productivity, you will love it.
 

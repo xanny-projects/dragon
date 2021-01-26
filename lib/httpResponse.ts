@@ -15,7 +15,7 @@
  */
 
 import { assert, encode } from "../deps.ts";
-import { ServerResponse } from "./types.d.ts";
+import { ResponseOutput, ServerResponse } from "./types.d.ts";
 import { HttpMessage, MediaTypes } from "./httpMessage.ts";
 import { HttpError, HttpStatus } from "./httpError.ts";
 
@@ -184,7 +184,7 @@ export class HttpResponse extends HttpMessage {
   public redirect(
     url: string | RedirectOptions,
     status = HttpStatus.FOUND,
-  ): void {
+  ): this {
     // "back" is an alias for the referrer.
     if (url == RedirectOptions.Back) {
       url = this.header("Referrer") || "/";
@@ -193,7 +193,7 @@ export class HttpResponse extends HttpMessage {
     this.withStatus(HttpStatus.FOUND);
     // set location.
     this.withHeader("Location", encodeURI(url));
-    return this.end();
+    return this;
   }
 
   /**
@@ -203,7 +203,7 @@ export class HttpResponse extends HttpMessage {
    * @returns {void}
    * @api public
    */
-  public permanentRedirect(url: string): void {
+  public permanentRedirect(url: string): this {
     return this.redirect(url, 301);
   }
 
@@ -307,17 +307,20 @@ export class HttpResponse extends HttpMessage {
   }
 
   /**
-   * Return a response.
-   *
+   * Send the response to the client making the request.
+   * 
    * @param {string} content
-   * @returns {void}
+   * @returns {ResponseOutput}
    * @api public
    */
-  public end(content?: string): void {
-    this.res.respond({
+  public async end(content?: string): Promise<ResponseOutput> {
+    const output = {
       body: this._body || content || "",
       headers: this.headers(),
       status: this.statusCode(),
-    });
+    };
+    this.res.respond(output);
+    // The output is only returned for unit testing purposes.
+    return output;
   }
 }

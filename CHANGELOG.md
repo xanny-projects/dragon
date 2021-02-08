@@ -92,3 +92,8 @@
 - Add `handleHttpRequest` to handle an HTTP request from the Deno server.
 - Add `ResponseOutput` interface.
 - Fix Documentation.
+
+## v1.1.5 ⛄
+
+- Remove `HttpStatus` interface.
+- Rename `middleware` to `HttpMiddleware`.

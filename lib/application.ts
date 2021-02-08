@@ -22,21 +22,21 @@ import {
   RoutingOptions,
 } from "./types.d.ts";
 import { HttpRouting, RegistredRoutes } from "./httpRouting.ts";
-import { HttpError, HttpStatus } from "./httpError.ts";
+import { HttpError } from "./httpError.ts";
 import { HttpRequest } from "./httpRequest.ts";
 import { HttpResponse } from "./httpResponse.ts";
-import { MiddlewareResolver } from "./middleware.ts";
+import { MiddlewareResolver } from "./httpMiddleware.ts";
 
-/**
+/* Initialize and Expose `Application` class */
+export class Application {
+  /**
  * Routing Options.
  *
  * @var {RouteOptions}
  * @api private
  */
-var RouteOptions: RoutingOptions = {};
+  private _routeOptions: RoutingOptions = {};
 
-/* Initialize and Expose `Application` class */
-export class Application {
   /**
   * Construct a new, empty instance of the {@code NewApplication} object.
   * @param {ApplicationOptions} options
@@ -63,7 +63,7 @@ export class Application {
    */
   public routes(options?: RoutingOptions): HttpRouting {
     if (typeof options !== "undefined") {
-      RouteOptions = options;
+      this._routeOptions = options;
     }
     const route = new HttpRouting(
       "/",
@@ -158,8 +158,8 @@ export class Application {
       });
     }
     // no match
-    if (is_match !== true && RouteOptions.notFoundHandler !== undefined) {
-      await RouteOptions.notFoundHandler(request, response);
+    if (is_match !== true && this._routeOptions.notFoundHandler !== undefined) {
+      await this._routeOptions.notFoundHandler(request, response);
     }
   }
 

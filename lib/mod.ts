@@ -32,6 +32,6 @@ export {
   MiddlewareState,
   XFRAMEProtectionMiddleware,
   XSSProtectionMiddleware,
-} from "./middleware.ts";
+} from "./httpMiddleware.ts";
 export { HttpResponse } from "./httpResponse.ts";
 export { HttpError, HttpStatus } from "./httpError.ts";

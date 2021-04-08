@@ -19,10 +19,10 @@ import {
   Middleware,
   MiddlewareGroups,
   XFrameOptions,
-} from "./types.d.ts";
-import { HttpRouting } from "./httpRouting.ts";
-import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
+} from "../types.d.ts";
+import { HttpRouting } from "../router/mod.ts";
+import { HttpRequest } from "../http/request.ts";
+import { HttpResponse } from "../http/response.ts";
 
 // When a request is received by Dragon, each middleware that matches the request is run in the order it is initialized until there is a terminating action.
 // So if an error occurs you must use return `MiddlewareState.Cancel`.
@@ -105,10 +105,10 @@ export class MiddlewareResolver {
  * @api public
  */
 export function CORSMethodMiddleware(cors: CORSOptions): Middleware {
-  return async function (
+  return function (
     Request: HttpRequest,
     ResponseWriter: HttpResponse,
-  ): Promise<MiddlewareState> {
+  ): MiddlewareState {
     ResponseWriter.withHeader(
       "Access-Control-Allow-Origin",
       cors.origin || "0.0.0.0",
@@ -126,10 +126,10 @@ export function CORSMethodMiddleware(cors: CORSOptions): Middleware {
  * @returns {MiddlewareState}
  * @api public
  */
-export async function XSSProtectionMiddleware(
+export function XSSProtectionMiddleware(
   Request: HttpRequest,
   ResponseWriter: HttpResponse,
-): Promise<MiddlewareState> {
+): MiddlewareState {
   ResponseWriter.withHeader("X-XSS-Protection", "0");
   return MiddlewareState.Next;
 }
@@ -142,10 +142,10 @@ export async function XSSProtectionMiddleware(
  * @api public
  */
 export function XFRAMEProtectionMiddleware(options: XFrameOptions): Middleware {
-  return async function (
+  return function (
     Request: HttpRequest,
     ResponseWriter: HttpResponse,
-  ): Promise<MiddlewareState> {
+  ): MiddlewareState {
     if (options === "ALLOW-FROM") {
       console.warn(
         "X-Frame-Options no longer supports `ALLOW-FROM` due to poor browser support.",

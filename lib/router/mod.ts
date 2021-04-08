@@ -19,10 +19,8 @@ import {
   Middleware,
   MiddlewareGroups,
   RoutingOptions,
-} from "./types.d.ts";
-import { HttpError } from "./httpError.ts";
-import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
+} from "../types.d.ts";
+import { HttpError, HttpRequest, HttpResponse } from "../http/mod.ts";
 
 /**
  * Request methods to indicate the desired action to be performed.
@@ -247,7 +245,7 @@ export class HttpRouting {
    * @api public
    */
   public hasMiddlewareGroups(name: string): boolean {
-    for (var middleware of this._middlewareGroups) {
+    for (const middleware of this._middlewareGroups) {
       if (middleware.name === name) {
         return true;
       }
@@ -322,15 +320,15 @@ export class HttpRouting {
    *
    * Example:
    *
-   *    Path("/dragon");
-   *    Path(/Dragon/);
-   *    Path(/Dragon\/(?<id>[0-9]+)/u);
+   *    withPath("/dragon");
+   *    withPath(/Dragon/);
+   *    withPath(/Dragon\/(?<id>[0-9]+)/u);
    *
    * @param {string} value
    * @returns {Object}
    * @api public
    */
-  public Path(value: string | RegExp): HttpRouting {
+  public withPath(value: string | RegExp): HttpRouting {
     const maxAllowedRoutes = RouteOptions.maxRoutes;
     if (
       typeof maxAllowedRoutes !== "undefined" &&

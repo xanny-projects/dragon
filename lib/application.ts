@@ -21,11 +21,9 @@ import {
   ListenTlsOptions,
   RoutingOptions,
 } from "./types.d.ts";
-import { HttpRouting, RegistredRoutes } from "./httpRouting.ts";
-import { HttpError } from "./httpError.ts";
-import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
-import { MiddlewareResolver } from "./httpMiddleware.ts";
+import { HttpError, HttpRequest, HttpResponse } from "./http/mod.ts";
+import { HttpRouting, RegistredRoutes } from "./router/mod.ts";
+import { MiddlewareResolver } from "./middleware/mod.ts";
 
 /* Initialize and Expose `Application` class */
 export class Application {
@@ -127,15 +125,15 @@ export class Application {
     // Attempts to match the given request against the router's registered routes.
     // If the request matches a route of this router or one of its subrouters the Route
     // execute handler.
-    var is_match = false;
+    var isMatch = false;
     // find next matching routes.
     for (const route of RegistredRoutes) {
       if (!route.hasPath(request.path())) {
-        is_match = false;
+        isMatch = false;
         continue;
       }
       if (!route.hasMethod(request.method())) {
-        is_match = false;
+        isMatch = false;
         continue;
       }
       if (typeof route.path !== "string") {
@@ -144,7 +142,7 @@ export class Application {
         request.parameters = r?.groups;
       }
       // route is found
-      is_match = true;
+      isMatch = true;
       // Resolve the registred middlewares.
       const middleware = new MiddlewareResolver(request, response);
       // The order is very important.
@@ -158,7 +156,7 @@ export class Application {
       });
     }
     // no match
-    if (is_match !== true && this._routeOptions.notFoundHandler !== undefined) {
+    if (isMatch !== true && this._routeOptions.notFoundHandler !== undefined) {
       await this._routeOptions.notFoundHandler(request, response);
     }
   }

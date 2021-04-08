@@ -15,9 +15,8 @@
  */
 
 import { assertEquals, assertNotEquals } from "../deps.ts";
-import { HttpRouting, RequestMethod } from "../lib/httpRouting.ts";
-import { HttpRequest } from "../lib/httpRequest.ts";
-import { HttpResponse } from "../lib/httpResponse.ts";
+import { HttpRouting, RequestMethod } from "../lib/router/mod.ts";
+import { HttpRequest, HttpResponse } from "../lib/http/mod.ts";
 
 // Simulate HttpRouting injection.
 const httpRouting = new HttpRouting(

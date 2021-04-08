@@ -15,8 +15,7 @@
  */
 
 import { assert, assertEquals, assertThrows } from "../deps.ts";
-import { HttpError } from "../lib/httpError.ts";
-import { HttpMessage } from "../lib/httpMessage.ts";
+import { HttpError, HttpMessage } from "../lib/http/mod.ts";
 
 // Simulate header injection.
 const header = new Headers();

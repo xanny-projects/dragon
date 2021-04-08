@@ -15,7 +15,7 @@
  */
 
 import { assertEquals, StringReader } from "../deps.ts";
-import { BodyParser } from "../lib/bodyParser.ts";
+import { BodyParser } from "../lib/utils/bodyParser.ts";
 
 Deno.test({
   name: "Should parser data when header `application/json` ",

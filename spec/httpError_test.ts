@@ -15,7 +15,7 @@
  */
 
 import { assertEquals } from "../deps.ts";
-import { HttpError, HttpStatus } from "../lib/httpError.ts";
+import { HttpError } from "../lib/http/error.ts";
 
 Deno.test({
   name: "should return a status code",

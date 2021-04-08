@@ -20,9 +20,7 @@ import {
   assertThrows,
   DenoStdInternalError,
 } from "../deps.ts";
-import { HttpResponse } from "../lib/httpResponse.ts";
-import { HttpError } from "../lib/httpError.ts";
-import { MediaTypes } from "../lib/httpMessage.ts";
+import { HttpError, HttpResponse, MediaTypes } from "../lib/http/mod.ts";
 import { ServerResponse } from "../lib/types.d.ts";
 
 /**

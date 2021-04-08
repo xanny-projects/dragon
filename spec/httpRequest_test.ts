@@ -15,9 +15,8 @@
  */
 
 import { assertEquals, assertMatch, assertNotEquals } from "../deps.ts";
-import { MediaTypes } from "../lib/httpMessage.ts";
-import { RequestMethod } from "../lib/httpRouting.ts";
-import { HttpRequest } from "../lib/httpRequest.ts";
+import { HttpRequest, MediaTypes } from "../lib/http/mod.ts";
+import { RequestMethod } from "../lib/router/mod.ts";
 
 interface ServerRequest {
   url: string;

@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-import { assertEquals, assertThrows } from "../deps.ts";
+import { assertEquals } from "../deps.ts";
 import { Application } from "../lib/application.ts";
-import { RegistredRoutes } from "../lib/httpRouting.ts";
-import { HttpError } from "../lib/httpError.ts";
-import { HttpRequest } from "../lib/httpRequest.ts";
-import { HttpResponse } from "../lib/httpResponse.ts";
+import { RegistredRoutes } from "../lib/router/mod.ts";
 
 // Simulate Application  injection.
 const application = new Application();

@@ -10,9 +10,11 @@ assignees: ''
 ## Bug Report
 
 ## Current behavior
+
 <!-- Describe how the issue manifests. -->
 
 ## Input Code
+
 <!-- REPL or Repo link if applicable: -->
 
 ```ts
@@ -20,9 +22,11 @@ const your = (code) => here;
 ```
 
 ## Expected behavior
+
 <!-- A clear and concise description of what you expected to happen (or code). -->
 
 ## Possible Solution
+
 <!--- Only if you have suggestions on a fix for the bug -->
 
 ## Environment
@@ -38,4 +42,3 @@ For Tooling issues:
 Others:
 <!-- Anything else relevant?  Operating system version, IDE, package manager, ... -->
 </code></pre>
-

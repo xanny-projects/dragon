@@ -4,10 +4,12 @@
 
 ### Features
 
-- Developer friendly, very expressive and help the developer in their daily use, without sacrificing performance and security.
+- Developer friendly, very expressive and help the developer in their daily use,
+  without sacrificing performance and security.
 - Lightweight and modular design allows for a flexible framework.
 - Focus on high performance.
-- Middleware support, incoming HTTP request can be handled by a chain of middlewares and the final action.
+- Middleware support, incoming HTTP request can be handled by a chain of
+  middlewares and the final action.
 - Excellent and fluent documentation.
 
 ## v0.4-beta 🌋
@@ -50,7 +52,8 @@
 ## v1.0.6 💥
 
 - Add Handling CORS Requests
-- Redirect the client to another URL with optional response `status` defaulting to 302
+- Redirect the client to another URL with optional response `status` defaulting
+  to 302
 
 ## v1.0.8 🎃
 
@@ -76,8 +79,10 @@
 
 ## v1.1.1 🚣
 
-- Add `expectsJson` method to quickly determine if the incoming request expects a JSON response.
-- Add `prefers` method to determine which content type out of a given array of content types is most preferred by the request.
+- Add `expectsJson` method to quickly determine if the incoming request expects
+  a JSON response.
+- Add `prefers` method to determine which content type out of a given array of
+  content types is most preferred by the request.
 
 ## v1.1.2 🕹
 

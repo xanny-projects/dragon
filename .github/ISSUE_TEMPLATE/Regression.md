@@ -10,12 +10,15 @@ assignees: ''
 ## Regression
 
 ## Potential Commit/PR that introduced the regression**
+
 <!-- If you have time to investigate, what PR/date introduced this issue. -->
 
 ## Describe the regression
+
 <!-- A clear and concise description of what the regression is. -->
 
 ## Input Code
+
 <!--- If you have link to our REPL or a standalone repo please link that! -->
 
 ```ts
@@ -23,9 +26,11 @@ const your = (code) => here;
 ```
 
 ## Expected behavior/code
+
 <!-- A clear and concise description of what you expected to happen (or code). -->
 
 ## Environment
+
 <pre><code>
 Dragon version: A.B.C -> X.Y.Z
 

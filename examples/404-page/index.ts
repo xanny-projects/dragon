@@ -483,8 +483,8 @@ async function main(args: string[]): Promise<void> {
 
   const r = app.routes({ notFoundHandler: Fallback, maxRoutes: 1 });
 
-  r.Path("/").withMethods(RequestMethod.GET).handleFunc(
-    async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
+  r.withPath("/").withMethods(RequestMethod.GET).handleFunc(
+    function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.withBody("Hello Dragon").end();
     },
   );

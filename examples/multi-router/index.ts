@@ -11,7 +11,7 @@ async function main(args: string[]): Promise<void> {
 
   const r = app.routes({ maxRoutes: 1 });
 
-  r.Path("/").withMethods(RequestMethod.GET).handleFunc(
+  r.withPath("/").withMethods(RequestMethod.GET).handleFunc(
     async function (Request: HttpRequest, ResponseWriter: HttpResponse) {
       ResponseWriter.withBody("Hello from root route.").end();
     },

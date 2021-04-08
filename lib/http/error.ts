@@ -178,6 +178,6 @@ export class HttpError extends Error {
  * @param {any} value 
  * @returns {boolean}
  */
-export function isHttpError(value: any): value is HttpError {
+export function isHttpError(value: unknown): value is HttpError {
   return value instanceof HttpError;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HttpError } from "./httpError.ts";
+import { HttpError } from "./error.ts";
 
 /**
  * HTTP headers let the client and the server pass additional information with an HTTP request or response.

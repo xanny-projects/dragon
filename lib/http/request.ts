@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Cookies, getCookies, ServerRequest } from "../deps.ts";
-import { ParameterPayload, QueryPayload } from "./types.d.ts";
-import { Header, HttpMessage, MediaTypes } from "./httpMessage.ts";
-import { BodyParser } from "./bodyParser.ts";
+import { getCookies, ServerRequest } from "../../deps.ts";
+import { ParameterPayload, QueryPayload } from "../types.d.ts";
+import { Header, HttpMessage, MediaTypes } from "./message.ts";
+import { BodyParser } from "../utils/bodyParser.ts";
 
 /**
  * Representation of an outgoing, client-side request.
@@ -298,10 +298,10 @@ export class HttpRequest extends HttpMessage {
   /**
    * Retrieves cookies sent by the request.
    *
-   * @returns {Cookies}
+   * @returns {Record<string,string>}
    * @api public
    */
-  public cookie(): Cookies {
+  public cookie(): Record<string, string> {
     return getCookies(this.req);
   }
 }

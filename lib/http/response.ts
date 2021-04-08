@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { assert, encode } from "../deps.ts";
-import { ResponseOutput, ServerResponse } from "./types.d.ts";
-import { HttpMessage, MediaTypes } from "./httpMessage.ts";
-import { HttpError, HttpStatus } from "./httpError.ts";
+import { assert } from "../../deps.ts";
+import { ResponseOutput, ServerResponse } from "../types.d.ts";
+import { HttpMessage, MediaTypes } from "./message.ts";
+import { HttpError, HttpStatus } from "./error.ts";
+import { encode } from "../utils/utf8.ts";
 
 /* "Back" is special-cased to provide Referrer support. */
 export enum RedirectOptions {
@@ -243,7 +244,7 @@ export class HttpResponse extends HttpMessage {
    * @param {Record<string, any>} value
    * @returns {this}
    */
-  public json(value: Record<string, any>): this {
+  public json(value: Record<string, unknown>): this {
     this.withContentType(MediaTypes.JSON);
     this._body = encode(
       typeof value === "object" ? JSON.stringify(value) : value,
@@ -313,7 +314,7 @@ export class HttpResponse extends HttpMessage {
    * @returns {ResponseOutput}
    * @api public
    */
-  public async end(content?: string): Promise<ResponseOutput> {
+  public end(content?: string): ResponseOutput {
     const output = {
       body: this._body || content || "",
       headers: this.headers(),

@@ -15,18 +15,21 @@
  */
 
 import { Response } from "../deps.ts";
-import { RequestMethod } from "./httpRouting.ts";
-import { HttpRequest } from "./httpRequest.ts";
-import { HttpResponse } from "./httpResponse.ts";
+import { RequestMethod } from "./router/mod.ts";
+import { HttpRequest, HttpResponse } from "./http/mod.ts";
 
 // Handler function.
 export interface HandlerFunc {
-  (Request: HttpRequest, ResponseWriter: HttpResponse): Promise<unknown>;
+  (
+    Request: HttpRequest,
+    ResponseWriter: HttpResponse,
+  ): Promise<unknown> | unknown;
 }
 
-// Middleware & MiddlewareGroups interfaces.
-export interface Middleware extends HandlerFunc {} // Groups of middleware.
+//  Middleware & MiddlewareGroups interfaces.
+export interface Middleware extends HandlerFunc {}
 
+// Groups of middleware.
 export interface MiddlewareGroups {
   name: string;
   handlers: Middleware[];

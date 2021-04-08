@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { decode } from "../deps.ts";
-import { MediaTypes } from "./httpMessage.ts";
+import { decode } from "../utils/utf8.ts";
+import { MediaTypes } from "../http/message.ts";
 
 /**
  * Extract the entire body portion of an incoming request stream and exposes it
